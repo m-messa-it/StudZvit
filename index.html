@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudDoc — Автоматизоване формування студентської документації за ДСТУ</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StudDoc">
+    <meta name="description" content="StudDoc — Відкритий безкоштовний сервіс для створення титульних сторінок та звітів за стандартами ДСТУ.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,9 +25,17 @@
     <!-- Головна навігаційна панель -->
     <header class="navbar">
         <div class="nav-container">
-            <div class="brand-wrap" onclick="перейтиДо('головна')">
-                <div class="brand-logo">SD</div>
-                <span class="brand-name">StudDoc</span>
+            <div style="display:flex; align-items:center;">
+                <div class="brand-wrap" onclick="перейтиДо('головна')">
+                    <div class="brand-logo">SD</div>
+                    <span class="brand-name">StudDoc</span>
+                </div>
+
+                <!-- Стрілочки навігації (Назад / Вперед) -->
+                <div class="nav-history-arrows">
+                    <button class="nav-arrow-btn" id="btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад (⬅️)">&larr;</button>
+                    <button class="nav-arrow-btn" id="btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед (➡️)">&rarr;</button>
+                </div>
             </div>
 
             <nav class="nav-links">
@@ -32,6 +48,7 @@
             </nav>
 
             <div class="nav-actions">
+                <button class="btn btn-sm btn-outline-primary" id="btn-pwa-install" onclick="встановитиДодаток()" title="Встановити StudDoc як додаток на телефон або ПК">📲 Додаток</button>
                 <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                 <button class="btn-profile" onclick="відкритиПрофіль()">
                     <span>Мій профіль</span>
@@ -120,6 +137,49 @@
                     <span>Стандарт оформлення</span>
                 </div>
             </div>
+
+            <!-- Блок підтримки телефонів та встановлення як додаток -->
+            <div class="stores-section">
+                <div class="hero-pill" style="margin-bottom:10px;">
+                    <span class="pulse-dot"></span>
+                    <span>Мобільний та комп'ютерний додаток без інтернету</span>
+                </div>
+                <h3>StudDoc на телефоні та комп'ютері</h3>
+                <p>
+                    Використовуйте StudDoc як рідний додаток на смартфоні чи ПК без необхідності реєстрації чи оплати. Встановіть за 1 клік на будь-яку платформу:
+                </p>
+                <div class="stores-grid">
+                    <div class="store-pill" onclick="показатиГідСтору('apple')">
+                        <span class="store-icon">🍏</span>
+                        <div>
+                            <span class="store-text-sub">Для iPhone та iPad</span>
+                            <span class="store-text-main">App Store / Safari PWA</span>
+                        </div>
+                    </div>
+                    <div class="store-pill" onclick="показатиГідСтору('google')">
+                        <span class="store-icon">🤖</span>
+                        <div>
+                            <span class="store-text-sub">Для смартфонів Android</span>
+                            <span class="store-text-main">Google Play / PWA</span>
+                        </div>
+                    </div>
+                    <div class="store-pill" onclick="показатиГідСтору('microsoft')">
+                        <span class="store-icon">💻</span>
+                        <div>
+                            <span class="store-text-sub">Для комп'ютерів Windows</span>
+                            <span class="store-text-main">Microsoft Store / Edge</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Нижня навігація -->
+            <div class="page-nav-bar">
+                <span style="font-size:13px; color:var(--text-muted);">Крок 1 з 5: Оберіть інструмент або почніть з титульної сторінки</span>
+                <button class="page-nav-btn primary" onclick="перейтиДо('титулка')">
+                    Створити титульну сторінку &rarr;
+                </button>
+            </div>
         </section>
 
         <!-- ==================== 2. ГЕНЕРАТОР ТИТУЛЬНОЇ ==================== -->
@@ -132,6 +192,31 @@
                 <div style="display:flex; gap:8px;">
                     <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                     <button class="btn btn-sm btn-outline-primary" onclick="очиститиФормуТитулки()">🧹 Очистити форму</button>
+                </div>
+            </div>
+
+            <!-- Простий 3-кроковий гід для студентів та викладачів -->
+            <div class="steps-strip">
+                <div class="step-card">
+                    <div class="step-circle">1</div>
+                    <div class="step-content">
+                        <strong>Заповніть поля</strong>
+                        <span>Введіть дані або зніміть непотрібні галочки</span>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-circle">2</div>
+                    <div class="step-content">
+                        <strong>Погляньте на зразок</strong>
+                        <span>Праворуч видно реальний вигляд бланка А4 за ДСТУ</span>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-circle">3</div>
+                    <div class="step-content">
+                        <strong>Перевірте та скачайте</strong>
+                        <span>Перегляньте перед завантаженням та збережіть у Word</span>
+                    </div>
                 </div>
             </div>
 
@@ -251,7 +336,7 @@
                     </div>
 
                     <div class="btn-group-actions">
-                        <button class="btn btn-primary" onclick="завантажитиТитулку()">📄 Завантажити .docx (Word)</button>
+                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('титулка')">👁️ Переглянути та завантажити .docx</button>
                         <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк / PDF</button>
                         <button class="btn btn-outline-primary" onclick="зберегтиПрофіль()">💾 Зберегти профіль</button>
                     </div>
@@ -299,6 +384,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Нижня навігація між вкладками (стрілочки) -->
+            <div class="page-nav-bar">
+                <button class="page-nav-btn" onclick="перейтиДо('головна')">&larr; На головну</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="page-nav-btn" onclick="переглянутиПередЗавантаженням('титулка')">👁️ Перевірити документ</button>
+                    <button class="page-nav-btn primary" onclick="перейтиДо('конструктор')">До конструктора звіту &rarr;</button>
+                </div>
+            </div>
         </section>
 
         <!-- ==================== 3. КОНСТРУКТОР ЗВІТУ ==================== -->
@@ -311,6 +405,31 @@
                 <div style="display:flex; gap:8px;">
                     <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнийРозділЗвіту()">+ Додати власний розділ</button>
                     <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Заповнити зразок</button>
+                </div>
+            </div>
+
+            <!-- Простий 3-кроковий гід для студентів та викладачів -->
+            <div class="steps-strip">
+                <div class="step-card">
+                    <div class="step-circle">1</div>
+                    <div class="step-content">
+                        <strong>Оберіть потрібні розділи</strong>
+                        <span>Заповнюйте мету, теорію, код на будь-якій мові чи висновки</span>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-circle">2</div>
+                    <div class="step-content">
+                        <strong>Перевірте готовність</strong>
+                        <span>Чек-лист праворуч миттєво рахує сторінки за ДСТУ</span>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-circle">3</div>
+                    <div class="step-content">
+                        <strong>Перегляньте та збережіть</strong>
+                        <span>Перевірте документ перед скачуванням та збережіть .docx</span>
+                    </div>
                 </div>
             </div>
 
@@ -365,25 +484,52 @@
                         </div>
                     </div>
 
-                    <!-- Розділ 4: Хід роботи та лістинг коду -->
+                    <!-- Розділ 4: Хід роботи та лістинг коду (будь-яка мова) -->
                     <div class="accordion-section">
                         <button class="accordion-trigger" onclick="переключитиРозділ(this)">
                             <div class="acc-title-left">
                                 <span class="acc-index">4</span>
                                 <span class="acc-name">Хід роботи та програмний код</span>
+                                <span class="acc-badge" style="background:#e0e7ff; color:#4338ca;">Будь-яка мова</span>
                             </div>
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
                             <label style="font-size:13px; font-weight:700; margin-bottom:6px; display:block;">Опис послідовності виконання:</label>
-                            <textarea id="хід-роботи" class="form-control" rows="6" placeholder="Опишіть покроковий хід виконання..." oninput="оновитиЧекліст()"></textarea>
+                            <textarea id="хід-роботи" class="form-control" rows="5" placeholder="Опишіть покроковий хід виконання..." oninput="оновитиЧекліст()"></textarea>
 
                             <div style="margin-top:16px;">
-                                <label style="font-size:13px; font-weight:700; margin-bottom:6px; display:block;">Лістинг програми (моноширинний шрифт у Word):</label>
-                                <textarea id="код-програми" class="form-control" rows="6" style="font-family: Consolas, monospace; background: #0f172a; color: #f8fafc;" placeholder="// Вставте фрагмент коду програми..."></textarea>
+                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+                                    <label style="font-size:13px; font-weight:700; margin-bottom:0;">Лістинг програми (код можна писати на будь-чому):</label>
+                                    <span style="font-size:11.5px; color:var(--text-muted);">Моноширинний шрифт Consolas у Word</span>
+                                </div>
+
+                                <!-- Швидкий вибір будь-якої мови програмування -->
+                                <div class="lang-pills-wrap">
+                                    <button type="button" class="lang-pill active" onclick="обратиМовуКоду('Python', 'main.py')">🐍 Python</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('C#', 'Program.cs')">💻 C#</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('C++', 'main.cpp')">⚡ C++</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('Java', 'Main.java')">☕ Java</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('JavaScript', 'script.js')">🌐 JavaScript</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('SQL', 'query.sql')">🗄️ SQL</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('HTML / CSS', 'index.html')">🎨 HTML/CSS</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('PHP', 'index.php')">🐘 PHP</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('Rust', 'main.rs')">🦀 Rust</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('Pascal', 'program.pas')">📖 Pascal</button>
+                                    <button type="button" class="lang-pill" onclick="обратиМовуКоду('Інша', 'code.txt')">✏️ Будь-яка інша</button>
+                                </div>
+
+                                <textarea id="код-програми" class="form-control" rows="6" style="font-family: Consolas, monospace; background: #0f172a; color: #38bdf8;" placeholder="// Вставте фрагмент коду програми..."></textarea>
                                 <div class="grid-2" style="margin-top:8px;">
-                                    <input type="text" id="мова-коду" class="form-control" placeholder="Мова (C#, JS, Python...)" value="C#">
-                                    <input type="text" id="назва-файлу" class="form-control" placeholder="Назва файлу (Program.cs)">
+                                    <input type="text" id="мова-коду" class="form-control" placeholder="Мова (Python, C++, C#, SQL, JS...)" value="Python">
+                                    <input type="text" id="назва-файлу" class="form-control" placeholder="Назва файлу (main.py)" value="main.py">
+                                </div>
+
+                                <!-- Контейнер для додаткових блоків коду (інших файлів) -->
+                                <div id="список-додаткових-блоків-коду"></div>
+
+                                <div style="margin-top:10px;">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="додатиБлокКоду()">+ Додати ще один блок коду (інший файл чи мову)</button>
                                 </div>
                             </div>
                         </div>
@@ -452,7 +598,7 @@
 
                     <!-- Кнопки експорту звіту -->
                     <div class="btn-group-actions" style="margin-top:24px;">
-                        <button class="btn btn-primary" onclick="завантажитиЗвіт()">📄 Завантажити звіт у Word (.docx)</button>
+                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('звіт')">👁️ Переглянути та завантажити звіт (.docx)</button>
                         <button class="btn btn-secondary" onclick="зберегтиЧернеткуФайлом()">💾 Завантажити чернетку у файл</button>
                         <button class="btn btn-secondary" onclick="document.getElementById('файл-чернетки').click()">📂 Відкрити чернетку з файлу</button>
                         <button class="btn btn-outline-primary" onclick="очиститиЗвіт()">Очистити поля</button>
@@ -486,6 +632,15 @@
                             <div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">(Стандарт ДСТУ: 1800 знаків = 1 друкований аркуш)</div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Нижня навігація між вкладками (стрілочки) -->
+            <div class="page-nav-bar">
+                <button class="page-nav-btn" onclick="перейтиДо('титулка')">&larr; До титульної сторінки</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="page-nav-btn" onclick="переглянутиПередЗавантаженням('звіт')">👁️ Перевірити звіт</button>
+                    <button class="page-nav-btn primary" onclick="перейтиДо('нормоконтроль')">До нормоконтролю тексту &rarr;</button>
                 </div>
             </div>
         </section>
@@ -541,6 +696,12 @@
                     <li><strong>Український апостроф:</strong> стандартизація символів апострофа до літерного знака (’).</li>
                     <li><strong>Нерозривні пробіли:</strong> додавання зв'язки перед одиницями виміру та скороченнями (р., с., рис., табл., грн.).</li>
                 </ul>
+            </div>
+
+            <!-- Нижня навігація (стрілочки Назад / Вперед) -->
+            <div class="page-nav-bar">
+                <button class="page-nav-btn" onclick="перейтиДо('конструктор')">&larr; До конструктора звіту</button>
+                <button class="page-nav-btn primary" onclick="перейтиДо('джерела')">До списку джерел &rarr;</button>
             </div>
         </section>
 
@@ -619,6 +780,12 @@
                     <p style="font-size:13.5px; color:var(--text-muted);">Джерела ще не додані. Заповніть форму вище.</p>
                 </div>
             </div>
+
+            <!-- Нижня навігація (стрілочки Назад / Вперед) -->
+            <div class="page-nav-bar">
+                <button class="page-nav-btn" onclick="перейтиДо('нормоконтроль')">&larr; До нормоконтролю</button>
+                <button class="page-nav-btn primary" onclick="перейтиДо('про-сервіс')">Про сервіс &rarr;</button>
+            </div>
         </section>
 
         <!-- ==================== 6. ПРО СЕРВІС ==================== -->
@@ -632,8 +799,8 @@
                 <h3>Принципи роботи сервісу</h3>
                 <ul>
                     <li><strong>100% Безкоштовно та відкрито:</strong> у додатку повністю відсутні платні тарифи, приховані підписки або штучні обмеження на кількість сформованих файлів чи сторінок.</li>
-                    <li><strong>Повна гнучкість заповнення:</strong> студент не обмежений фіксованими шаблонами — можна додавати довільні власні поля титульної сторінки та створювати власні розділи звіту.</li>
-                    <li><strong>Конфіденційність та безпека:</strong> усі дані зберігаються виключно на пристрої користувача за допомогою технології <code>localStorage</code>. Жодні ваші документи чи особисті відомості не передаються на сторонні сервери.</li>
+                    <li><strong>Повна гнучкість заповнення:</strong> студент не обмежений фіксованими шаблонами — можна додавати довільні власні поля титульної сторінки, писати код на будь-якій мові програмування та створювати власні розділи звіту.</li>
+                    <li><strong>Конфіденційність та безпека:</strong> усі дані зберігаються виключно на пристрої користувача. Жодні ваші документи чи особисті відомості не передаються на сторонні сервери.</li>
                     <li><strong>Клієнтська генерація документів:</strong> файли Microsoft Word (.docx) створюються прямо у веб-браузері за допомогою нативного JavaScript без потреби у сторонньому серверному програмному забезпеченні.</li>
                 </ul>
 
@@ -674,6 +841,12 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Нижня навігація (стрілочки Назад / Вперед) -->
+            <div class="page-nav-bar">
+                <button class="page-nav-btn" onclick="перейтиДо('джерела')">&larr; До списку джерел</button>
+                <button class="page-nav-btn primary" onclick="перейтиДо('головна')">На головну &rarr;</button>
             </div>
         </section>
 
@@ -728,6 +901,50 @@
                     <button class="btn btn-sm btn-secondary" onclick="закритиПрофіль()">Закрити</button>
                     <button class="btn btn-sm btn-primary" onclick="зберегтиПрофіль()">Зберегти профіль</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== МОДАЛЬНЕ ВІКНО ПЕРЕГЛЯДУ ПЕРЕД СКАЧУВАННЯМ ==================== -->
+    <div id="модальне-перегляд-перед-завантаженням" class="modal-overlay" style="display:none;">
+        <div class="modal-card modal-lg">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-title">📋 Перевірка документа перед скачуванням</span>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                        Перевірте чи все вірно заповнено перед тим, як зберегти файл Word.
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="закритиПереглядПередЗавантаженням()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="вміст-перевірки-документа" class="doc-review-box"></div>
+                <div style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text-secondary); margin-top:10px;">
+                    <span>💡</span>
+                    <span>Ви можете повернутися стрілочкою «Назад» і внести будь-які зміни, або завантажити документ зараз.</span>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content:space-between;">
+                <button class="btn btn-secondary" onclick="закритиПереглядПередЗавантаженням()">
+                    &larr; Внести зміни
+                </button>
+                <button class="btn btn-primary" id="btn-підтвердити-скачування" onclick="підтвердитиЗавантаження()">
+                    📥 Все вірно, скачати Word (.docx) &rarr;
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== МОДАЛЬНЕ ВІКНО ІНСТРУКЦІЇ СТОРІВ ==================== -->
+    <div id="модальне-стор" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="modal-title" id="заголовок-стору">📲 Встановлення додатку</span>
+                <button class="modal-close-btn" onclick="закритиГідСтору()">&times;</button>
+            </div>
+            <div class="modal-body" id="тіло-гіда-стору" style="font-size:13.5px; line-height:1.6; color:var(--text-secondary);"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="закритиГідСтору()">&larr; Зрозуміло</button>
             </div>
         </div>
     </div>

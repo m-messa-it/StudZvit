@@ -36,10 +36,36 @@ function показатиСповіщення(повідомлення, тип) 
 }
 
 // ============================================================
-// 2. НАВІГАЦІЯ МІЖ ВКЛАДКАМИ
+// 2. НАВІГАЦІЯ МІЖ ВКЛАДКАМИ ТА ІСТОРІЯ (СТРІЛОЧКИ НАЗАД / ВПЕРЕД)
 // ============================================================
 
-function перейтиДо(ідСторінки) {
+var історіяНавігації = ["головна"];
+var індексІсторії = 0;
+var списокСторінок = ["головна", "титулка", "конструктор", "нормоконтроль", "джерела", "про-сервіс"];
+
+function оновитиСтрілочкиНавігації() {
+    var btnBack = document.getElementById("btn-nav-back");
+    var btnForward = document.getElementById("btn-nav-forward");
+    if (btnBack) {
+        btnBack.disabled = (індексІсторії <= 0);
+    }
+    if (btnForward) {
+        btnForward.disabled = (індексІсторії >= історіяНавігації.length - 1);
+    }
+}
+
+function перейтиДо(ідСторінки, безДодаванняВІсторію) {
+    if (!безДодаванняВІсторію) {
+        if (індексІсторії < історіяНавігації.length - 1) {
+            історіяНавігації = історіяНавігації.slice(0, індексІсторії + 1);
+        }
+        if (історіяНавігації[індексІсторії] !== ідСторінки) {
+            історіяНавігації.push(ідСторінки);
+            індексІсторії = історіяНавігації.length - 1;
+        }
+    }
+    оновитиСтрілочкиНавігації();
+
     document.querySelectorAll(".page-view").forEach(function(el) {
         el.style.display = "none";
     });
@@ -59,6 +85,32 @@ function перейтиДо(ідСторінки) {
     window.scrollTo({ top: 0, behavior: "smooth" });
     оновитиПрев();
     оновитиЧекліст();
+}
+
+function навігаціяНазад() {
+    if (індексІсторії > 0) {
+        індексІсторії--;
+        перейтиДо(історіяНавігації[індексІсторії], true);
+    } else {
+        var поточна = історіяНавігації[індексІсторії];
+        var idx = списокСторінок.indexOf(поточна);
+        if (idx > 0) {
+            перейтиДо(списокСторінок[idx - 1]);
+        }
+    }
+}
+
+function навігаціяВперед() {
+    if (індексІсторії < історіяНавігації.length - 1) {
+        індексІсторії++;
+        перейтиДо(історіяНавігації[індексІсторії], true);
+    } else {
+        var поточна = історіяНавігації[індексІсторії];
+        var idx = списокСторінок.indexOf(поточна);
+        if (idx >= 0 && idx < списокСторінок.length - 1) {
+            перейтиДо(списокСторінок[idx + 1]);
+        }
+    }
 }
 
 // ============================================================
@@ -517,27 +569,6 @@ function завантажитиТитулку() {
         }));
     }
 
-    // Власні додані поля
-    власніПоляТитулки.forEach(function(item) {
-        if (item.назва || item.значення) {
-            абзаци.push(new D.Paragraph({
-                children: [new D.TextRun({ text: item.назва + ": " + item.значення, ...шрифтОсновний })],
-                alignment: D.AlignmentType.RIGHT,
-                spacing: { after: 60 }
-            }));
-        }
-    });
-
-    for (var k = 0; k < 4; k++) {
-        абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
-    }
-
-    // Місто та рік
-    абзаци.push(new D.Paragraph({
-        children: [new D.TextRun({ text: місто + " — " + рік, ...шрифтОсновний })],
-        alignment: D.AlignmentType.CENTER
-    }));
-
     var doc = new D.Document({
         sections: [{
             properties: {
@@ -776,16 +807,27 @@ function завантажитиЗвіт() {
         додатиТекст(теорія);
     }
 
-    // 3. Хід роботи
+    // 3. Хід роботи та лістинги коду (будь-яка мова)
     var хід = document.getElementById("хід-роботи").value.trim();
     var код = document.getElementById("код-програми").value;
-    if (хід || код) {
+    var маєКод = (код && код.trim()) || (додатковіБлокиКоду.some(function(b) { return b.код && b.код.trim(); }));
+
+    if (хід || маєКод) {
         додатиЗаголовок("3. ХІД ВИКОНАННЯ РОБОТИ");
         if (хід) додатиТекст(хід);
 
         if (код && код.trim()) {
+            var мова = (document.getElementById("мова-коду") ? document.getElementById("мова-коду").value.trim() : "");
+            var файл = (document.getElementById("назва-файлу") ? document.getElementById("назва-файлу").value.trim() : "");
+            var заголовокКоду = "Лістинг коду програми";
+            if (файл || мова) {
+                заголовокКоду += " (" + (файл ? файл + ", " : "") + (мова ? "мова " + мова : "") + "):";
+            } else {
+                заголовокКоду += ":";
+            }
+
             абзаци.push(new D.Paragraph({
-                children: [new D.TextRun({ text: "Лістинг програмного коду:", ...шрифтЖирний })],
+                children: [new D.TextRun({ text: заголовокКоду, ...шрифтЖирний })],
                 spacing: { before: 140, after: 80 },
                 indent: відступ
             }));
@@ -793,11 +835,37 @@ function завантажитиЗвіт() {
             var рядкиКоду = код.split("\n");
             рядкиКоду.forEach(function(k) {
                 абзаци.push(new D.Paragraph({
-                    children: [new D.TextRun({ text: k, font: "Consolas", size: 22 })],
+                    children: [new D.TextRun({ text: k, font: "Consolas", size: 20 })],
                     spacing: { line: 240, after: 0 }
                 }));
             });
         }
+
+        // Додаткові блоки коду
+        додатковіБлокиКоду.forEach(function(b, idx) {
+            if (b.код && b.код.trim()) {
+                var підпис = "Лістинг коду № " + (idx + 2);
+                if (b.файл || b.мова) {
+                    підпис += " (" + (b.файл ? b.файл + ", " : "") + (b.мова ? "мова " + b.мова : "") + "):";
+                } else {
+                    підпис += ":";
+                }
+
+                абзаци.push(new D.Paragraph({
+                    children: [new D.TextRun({ text: підпис, ...шрифтЖирний })],
+                    spacing: { before: 140, after: 80 },
+                    indent: відступ
+                }));
+
+                var рядкиДод = b.код.split("\n");
+                рядкиДод.forEach(function(k) {
+                    абзаци.push(new D.Paragraph({
+                        children: [new D.TextRun({ text: k, font: "Consolas", size: 20 })],
+                        spacing: { line: 240, after: 0 }
+                    }));
+                });
+            }
+        });
     }
 
     // 4. Результати
@@ -1319,6 +1387,260 @@ function escapeHtml(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+// ============================================================
+// 12. ПІДТРИМКА БУДЬ-ЯКИХ МОВ ПРОГРАМУВАННЯ ТА БЛОКІВ КОДУ
+// ============================================================
+
+var додатковіБлокиКоду = [];
+
+function обратиМовуКоду(новаМова, ім'яФайлу) {
+    var elМова = document.getElementById("мова-коду");
+    var elФайл = document.getElementById("назва-файлу");
+    if (elМова) elМова.value = новаМова;
+    if (elФайл && ім'яФайлу) elФайл.value = ім'яФайлу;
+
+    document.querySelectorAll(".lang-pill").forEach(function(pill) {
+        if (pill.textContent.indexOf(новаМова) !== -1 || (новаМова === 'Інша' && pill.textContent.indexOf('Будь-яка') !== -1)) {
+            pill.classList.add("active");
+        } else {
+            pill.classList.remove("active");
+        }
+    });
+    показатиСповіщення("Обрано мову: " + новаМова, "інфо");
+}
+
+function додатиБлокКоду() {
+    var id = "code_" + Date.now();
+    додатковіБлокиКоду.push({
+        id: id,
+        мова: "C++",
+        файл: "module.cpp",
+        код: ""
+    });
+    ререндеритиДодатковіБлокиКоду();
+    показатиСповіщення("Додано додатковий блок коду", "успіх");
+}
+
+function видалитиБлокКоду(id) {
+    додатковіБлокиКоду = додатковіБлокиКоду.filter(function(b) { return b.id !== id; });
+    ререндеритиДодатковіБлокиКоду();
+}
+
+function оновитиДаніБлокуКоду(id, поле, значення) {
+    var block = додатковіБлокиКоду.find(function(b) { return b.id === id; });
+    if (block) {
+        block[поле] = значення;
+    }
+}
+
+function ререндеритиДодатковіБлокиКоду() {
+    var box = document.getElementById("список-додаткових-блоків-коду");
+    if (!box) return;
+    box.innerHTML = "";
+
+    додатковіБлокиКоду.forEach(function(item, idx) {
+        var card = document.createElement("div");
+        card.className = "code-block-card";
+        card.innerHTML = 
+            '<div class="code-header">' +
+                '<strong>Блок коду № ' + (idx + 2) + ' (Будь-яка мова)</strong>' +
+                '<button type="button" class="btn btn-sm" style="color:#ef4444; background:transparent; padding:2px 6px;" onclick="видалитиБлокКоду(\'' + item.id + '\')">✕ Вилучити</button>' +
+            '</div>' +
+            '<div class="grid-2" style="margin-bottom:8px;">' +
+                '<input type="text" class="form-control" style="background:#020617; color:#f8fafc; border-color:#334155;" placeholder="Мова (Python, JS, C++, SQL...)" value="' + escapeHtml(item.мова) + '" oninput="оновитиДаніБлокуКоду(\'' + item.id + '\', \'мова\', this.value)">' +
+                '<input type="text" class="form-control" style="background:#020617; color:#f8fafc; border-color:#334155;" placeholder="Назва файлу" value="' + escapeHtml(item.файл) + '" oninput="оновитиДаніБлокуКоду(\'' + item.id + '\', \'файл\', this.value)">' +
+            '</div>' +
+            '<textarea rows="5" placeholder="// Код програми на будь-якій мові..." oninput="оновитиДаніБлокуКоду(\'' + item.id + '\', \'код\', this.value)">' + escapeHtml(item.код) + '</textarea>';
+        box.appendChild(card);
+    });
+}
+
+// ============================================================
+// 13. ПОПЕРЕДНІЙ ПЕРЕГЛЯД ТА ПЕРЕВІРКА ПЕРЕД ЗАВАНТАЖЕННЯМ
+// ============================================================
+
+var поточнийТипЗавантаження = "титулка";
+
+function переглянутиПередЗавантаженням(тип) {
+    поточнийТипЗавантаження = тип;
+    var reviewBox = document.getElementById("вміст-перевірки-документа");
+    var modal = document.getElementById("модальне-перегляд-перед-завантаженням");
+    if (!reviewBox || !modal) return;
+
+    var html = "";
+
+    if (тип === "титулка") {
+        var типРоботи = (чиУвімкнено("чек-тип") ? (document.getElementById("тип-роботи").value || "") : "");
+        var номер = чиУвімкнено("чек-номер") ? document.getElementById("номер-роботи").value.trim() : "";
+        var дисципліна = чиУвімкнено("чек-дисципліна") ? document.getElementById("дисципліна").value.trim() : "";
+        var тема = чиУвімкнено("чек-тема") ? document.getElementById("тема-роботи").value.trim() : "";
+        var заклад = чиУвімкнено("чек-заклад") ? document.getElementById("заклад").value.trim() : "";
+        var студент = чиУвімкнено("чек-студент") ? document.getElementById("студент-піб").value.trim() : "";
+        var група = чиУвімкнено("чек-група") ? document.getElementById("група").value.trim() : "";
+        var курс = чиУвімкнено("чек-курс") ? document.getElementById("курс").value.trim() : "";
+        var спец = чиУвімкнено("чек-спец") ? document.getElementById("спеціальність").value.trim() : "";
+        var викладач = чиУвімкнено("чек-викладач") ? document.getElementById("викладач-піб").value.trim() : "";
+        var посада = чиУвімкнено("чек-посада") ? document.getElementById("викладач-посада").value.trim() : "";
+        var місто = чиУвімкнено("чек-місто") ? document.getElementById("місто").value.trim() : "";
+        var рік = чиУвімкнено("чек-рік") ? document.getElementById("рік").value.trim() : "";
+
+        html += "<h4>ЗВЕДЕННЯ ТИТУЛЬНОЇ СТОРІНКИ (ДСТУ 3008:2015)</h4>";
+        html += "<div class='doc-review-line'><strong>Навчальний заклад:</strong> " + (заклад || "<em>Не вказано (буде вилучено з бланка)</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>Вид роботи:</strong> " + (типРоботи || "РОБОТА") + (номер ? " № " + номер : "") + "</div>";
+        html += "<div class='doc-review-line'><strong>Дисципліна:</strong> " + (дисципліна ? "«" + дисципліна + "»" : "<em>Не вказано</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>Тема роботи:</strong> " + (тема || "<em>Не вказано</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>Виконавець:</strong> " + (студент || "<em>Студент(ка)</em>") + (група ? ", група " + група : "") + (курс ? ", " + курс + " курс" : "") + (спец ? ", спец. " + спец : "") + "</div>";
+        html += "<div class='doc-review-line'><strong>Перевірив:</strong> " + (посада ? посада + " " : "") + (викладач || "<em>Не вказано</em>") + "</div>";
+        
+        if (власніПоляТитулки.length > 0) {
+            html += "<div class='doc-review-line'><strong>Додаткові поля:</strong> " + 
+                власніПоляТитулки.map(function(f){ return escapeHtml(f.назва) + ": " + escapeHtml(f.значення); }).join("; ") + "</div>";
+        }
+        
+        html += "<div class='doc-review-line'><strong>Вихідні дані:</strong> " + (місто || "Київ") + " — " + (рік || "2026") + "</div>";
+    } else {
+        var мета = document.getElementById("мета-роботи").value.trim();
+        var теорія = document.getElementById("теорія").value.trim();
+        var хід = document.getElementById("хід-роботи").value.trim();
+        var код = document.getElementById("код-програми").value.trim();
+        var моваКоду = document.getElementById("мова-коду").value.trim() || "Код";
+        var файлКоду = document.getElementById("назва-файлу").value.trim();
+        var результати = document.getElementById("результати").value.trim();
+        var висновки = document.getElementById("висновки").value.trim();
+
+        html += "<h4>ЗВЕДЕННЯ РОЗДІЛІВ ЗВІТУ (ДСТУ 3008:2015)</h4>";
+        html += "<div class='doc-review-line'><strong>1. Мета роботи:</strong> " + (мета ? "✓ Заповнено (" + мета.length + " знаків)" : "<em>Не заповнено (буде пропущено)</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>2. Теоретичні відомості:</strong> " + (теорія ? "✓ Заповнено (" + теорія.length + " знаків)" : "<em>Пропущено</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>3. Хід виконання роботи:</strong> " + (хід ? "✓ Заповнено (" + хід.length + " знаків)" : "<em>Пропущено</em>") + "</div>";
+
+        var всьогоКоду = 0;
+        if (код) всьогоКоду++;
+        всьогоКоду += додатковіБлокиКоду.filter(function(b){ return b.код && b.код.trim().length > 0; }).length;
+
+        html += "<div class='doc-review-line'><strong>4. Програмний код:</strong> " + (всьогоКоду > 0 ? "✓ Включено " + всьогоКоду + " блок(ів) коду (" + (файлКоду ? файлКоду + ", " : "") + моваКоду + ")" : "<em>Без лістингу</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>5. Результати роботи:</strong> " + (результати ? "✓ Заповнено" : "<em>Пропущено</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>6. Висновки:</strong> " + (висновки ? "✓ Заповнено (" + висновки.length + " знаків)" : "<em>Пропущено</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>7. Контрольні запитання:</strong> " + (контрольніЗапитання.length > 0 ? "✓ " + контрольніЗапитання.length + " запитань з відповідями" : "<em>Не додано</em>") + "</div>";
+        if (власніРозділиЗвіту.length > 0) {
+            html += "<div class='doc-review-line'><strong>8. Додаткові розділи:</strong> ✓ " + власніРозділиЗвіту.length + " розд.</div>";
+        }
+        html += "<div class='doc-review-line'><strong>9. Список використаних джерел:</strong> " + (списокДжерел.length > 0 ? "✓ " + списокДжерел.length + " джерел (ДСТУ 8302)" : "<em>Не додано</em>") + "</div>";
+    }
+
+    reviewBox.innerHTML = html;
+    modal.style.display = "flex";
+}
+
+function закритиПереглядПередЗавантаженням() {
+    var modal = document.getElementById("модальне-перегляд-перед-завантаженням");
+    if (modal) modal.style.display = "none";
+}
+
+function підтвердитиЗавантаження() {
+    закритиПереглядПередЗавантаженням();
+    if (поточнийТипЗавантаження === "титулка") {
+        завантажитиТитулку();
+    } else {
+        завантажитиЗвіт();
+    }
+}
+
+// ============================================================
+// 14. МОБІЛЬНИЙ ДОДАТОК (PWA) ТА СТОР-ГІДИ
+// ============================================================
+
+var deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var btn = document.getElementById("btn-pwa-install");
+    if (btn) btn.style.display = "inline-flex";
+});
+
+function встановитиДодаток() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choiceResult) {
+            if (choiceResult.outcome === "accepted") {
+                показатиСповіщення("StudDoc встановлено на пристрій!", "успіх");
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        показатиГідСтору("all");
+    }
+}
+
+function показатиГідСтору(платформа) {
+    var modal = document.getElementById("модальне-стор");
+    var title = document.getElementById("заголовок-стору");
+    var body = document.getElementById("тіло-гіда-стору");
+    if (!modal || !title || !body) return;
+
+    if (платформа === "apple") {
+        title.innerHTML = "🍏 Встановлення на iPhone та iPad (Apple)";
+        body.innerHTML = 
+            "<p><strong>Як зберегти StudDoc як додаток iOS (працює як з App Store):</strong></p>" +
+            "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
+                "<li>Відкрийте StudDoc у стандартному браузері <strong>Safari</strong>.</li>" +
+                "<li>Натисніть кнопку <strong>«Поділитися»</strong> (іконка квадрата зі стрілкою вгору внизу екрана).</li>" +
+                "<li>Прокрутіть меню та оберіть <strong>«На початковий екран» (Add to Home Screen)</strong>.</li>" +
+                "<li>Натисніть <strong>«Додати»</strong>. Додаток з'явиться на робочому столі з фірмовою іконкою!</li>" +
+            "</ol>";
+    } else if (платформа === "google") {
+        title.innerHTML = "🤖 Встановлення на Android (Google Play / PWA)";
+        body.innerHTML = 
+            "<p><strong>Як встановити StudDoc на телефон Android:</strong></p>" +
+            "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
+                "<li>Відкрийте StudDoc у браузері <strong>Google Chrome</strong>.</li>" +
+                "<li>Натисніть на три крапки в правому верхньому кутку браузера.</li>" +
+                "<li>Оберіть пункт <strong>«Встановити додаток»</strong> або <strong>«Додати на головний екран»</strong>.</li>" +
+                "<li>StudDoc працюватиме як повноцінний автономний мобільний додаток!</li>" +
+            "</ol>";
+    } else if (платформа === "microsoft") {
+        title.innerHTML = "💻 Встановлення на комп'ютер Windows (ПК / Ноутбук)";
+        body.innerHTML = 
+            "<p><strong>Як встановити додаток на Windows 10/11:</strong></p>" +
+            "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
+                "<li>Відкрийте StudDoc у браузері <strong>Microsoft Edge</strong> або <strong>Google Chrome</strong>.</li>" +
+                "<li>В адресному рядку праворуч натисніть значок <strong>«Встановити додаток StudDoc»</strong>.</li>" +
+                "<li>Додаток додасться у меню Пуск Windows та працюватиме офлайн!</li>" +
+            "</ol>";
+    } else {
+        title.innerHTML = "📲 Встановлення додатку StudDoc";
+        body.innerHTML = 
+            "<p>StudDoc працює на всіх смартфонах та ПК безкоштовно та без лімітів:</p>" +
+            "<ul style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
+                "<li><strong>iPhone / iPad:</strong> Safari ➔ «Поділитися» ➔ «На початковий екран».</li>" +
+                "<li><strong>Android:</strong> Chrome ➔ Меню ➔ «Встановити додаток».</li>" +
+                "<li><strong>Windows PC:</strong> Edge / Chrome ➔ Іконка в адресному рядку «Встановити».</li>" +
+            "</ul>";
+    }
+
+    modal.style.display = "flex";
+}
+
+function закритиГідСтору() {
+    var modal = document.getElementById("модальне-стор");
+    if (modal) modal.style.display = "none";
+}
+
+// Реєстрація Service Worker для підтримки PWA офлайн
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker.register("./sw.js").catch(function() {});
+    });
+}
+
+// Підтримка гарячих клавіш стрілочок навігації (Alt + Left / Alt + Right)
+window.addEventListener("keydown", function(e) {
+    if (e.altKey && e.key === "ArrowLeft") {
+        навігаціяНазад();
+    } else if (e.altKey && e.key === "ArrowRight") {
+        навігаціяВперед();
+    }
+});
+
 window.addEventListener("DOMContentLoaded", function() {
     var docs = localStorage.getItem("studdoc_docs") || "1";
     var words = localStorage.getItem("studdoc_words") || "340";
@@ -1328,4 +1650,5 @@ window.addEventListener("DOMContentLoaded", function() {
     завантажитиПрофіль();
     завантажитиЧернетку();
     оновитиПрев();
+    оновитиСтрілочкиНавігації();
 });
