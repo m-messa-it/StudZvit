@@ -1,6 +1,6 @@
 {
-  "name": "StudDoc — Автоматизоване формування студентської документації",
-  "short_name": "StudDoc",
+  "name": "StudZvit — Автоматизоване формування студентської документації",
+  "short_name": "StudZvit",
   "description": "Простий та зручний генератор титульних сторінок та звітів за стандартами ДСТУ",
   "start_url": "./index.html",
   "display": "standalone",
