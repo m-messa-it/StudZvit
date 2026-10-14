@@ -35,6 +35,17 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- Зовнішні бібліотеки (CDN) для створення Word (.docx) та PDF (.pdf) файлів на клієнті -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Резервні локальні копії для надійної офлайн-роботи -->
+    <script>
+        if (!window.docx) document.write('<script src="docx.umd.js"><\/script>');
+        if (!window.saveAs) document.write('<script src="FileSaver.min.js"><\/script>');
+        if (!window.html2pdf) document.write('<script src="html2pdf.bundle.min.js"><\/script>');
+    </script>
 </head>
 <body>
 
@@ -998,21 +1009,7 @@
     <!-- Контейнер сповіщень -->
     <div id="toast-box" class="toast-container"></div>
 
-    <!-- Бібліотеки для генерації Word (.docx) та PDF (.pdf) на клієнті -->
-    <script src="docx.umd.js"></script>
-    <script src="FileSaver.min.js"></script>
-    <script src="html2pdf.bundle.min.js"></script>
-    <script>
-        if (!window.docx) {
-            document.write('<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"><\/script>');
-        }
-        if (!window.saveAs) {
-            document.write('<script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"><\/script>');
-        }
-        if (!window.html2pdf) {
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
-        }
-    </script>
-    <script src="app.js"></script>
+    <!-- Головний файл логіки сайту -->
+    <script src="script.js"></script>
 </body>
 </html>
