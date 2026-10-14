@@ -1257,48 +1257,64 @@ textarea.form-control {
     max-width: 600px;
     margin: 0 auto 18px;
 }
-.stores-grid {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
+.store-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    text-align: left;
+    margin-top: 18px;
 }
-.store-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: #0f172a;
-    color: #ffffff;
-    padding: 10px 18px;
+.store-card {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: var(--transition);
+    position: relative;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
 }
-.store-pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.25);
-    background: #1e293b;
+.store-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-primary);
+    background: #ffffff;
 }
-.store-pill .store-icon {
-    font-size: 20px;
-    line-height: 1;
-}
-.store-text-sub {
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #94a3b8;
-    display: block;
-    font-weight: 500;
-}
-.store-text-main {
-    font-size: 13px;
+.store-card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #eef2ff;
+    color: var(--accent-primary);
+    font-size: 11px;
     font-weight: 700;
-    display: block;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
 }
+.store-card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+.store-card h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+.store-card-steps {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    padding-left: 18px;
+    margin-bottom: 14px;
+    flex-grow: 1;
+}
+.store-card-steps li {
+    margin-bottom: 6px;
+}
+
 
 /* Простий гід у 3 кроки */
 .steps-strip {

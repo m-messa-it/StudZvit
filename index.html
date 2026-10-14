@@ -140,35 +140,61 @@
 
             <!-- Блок підтримки телефонів та встановлення як додаток -->
             <div class="stores-section">
-                <div class="hero-pill" style="margin-bottom:10px;">
+                <div class="hero-pill" style="margin-bottom:12px;">
                     <span class="pulse-dot"></span>
-                    <span>Мобільний та комп'ютерний додаток без інтернету</span>
+                    <span>100% Безкоштовно • Робота без інтернету</span>
                 </div>
-                <h3>StudDoc на телефоні та комп'ютері</h3>
-                <p>
-                    Використовуйте StudDoc як рідний додаток на смартфоні чи ПК без необхідності реєстрації чи оплати. Встановіть за 1 клік на будь-яку платформу:
+                <h2 style="font-size:22px; font-weight:800; color:var(--text-primary); margin-bottom:8px;">
+                    📲 Завантаження та встановлення StudDoc
+                </h2>
+                <p style="max-width:680px; margin:0 auto 20px; color:var(--text-muted); font-size:14px;">
+                    Встановлюйте офіційний додаток на iPhone, Android або ПК Windows в 1 клік:
                 </p>
-                <div class="stores-grid">
-                    <div class="store-pill" onclick="показатиГідСтору('apple')">
-                        <span class="store-icon">🍏</span>
-                        <div>
-                            <span class="store-text-sub">Для iPhone та iPad</span>
-                            <span class="store-text-main">App Store / Safari PWA</span>
-                        </div>
+
+                <div class="store-cards-grid">
+                    <!-- Картка 1: iPhone / iPad (App Store) -->
+                    <div class="store-card" onclick="показатиГідСтору('apple')">
+                        <div class="store-card-badge">App Store / Safari</div>
+                        <div class="store-card-icon">🍏</div>
+                        <h4>iPhone / iPad (App Store)</h4>
+                        <ol class="store-card-steps">
+                            <li>Відкрийте посилання в <strong>Safari</strong>.</li>
+                            <li>Натисніть кнопку <strong>«Поділитися»</strong> (квадрат зі стрілкою вгору).</li>
+                            <li>Оберіть <strong>«На початковий екран»</strong>. Додаток встановиться як рідний з App Store з іконкою SD!</li>
+                        </ol>
+                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); показатиГідСтору('apple')">
+                            🍏 Відкрити інструкцію iPhone
+                        </button>
                     </div>
-                    <div class="store-pill" onclick="показатиГідСтору('google')">
-                        <span class="store-icon">🤖</span>
-                        <div>
-                            <span class="store-text-sub">Для смартфонів Android</span>
-                            <span class="store-text-main">Google Play / PWA</span>
-                        </div>
+
+                    <!-- Картка 2: Android (Google Play) -->
+                    <div class="store-card" onclick="показатиГідСтору('google')">
+                        <div class="store-card-badge" style="background:#e0f2fe; color:#0369a1;">Google Play / Chrome</div>
+                        <div class="store-card-icon">🤖</div>
+                        <h4>Android (Google Play)</h4>
+                        <ol class="store-card-steps">
+                            <li>Відкрийте в <strong>Google Chrome</strong>.</li>
+                            <li>Натисніть кнопку <strong>«📲 Додаток»</strong> у шапці або меню браузера ➔ <strong>«Встановити додаток»</strong>.</li>
+                            <li>Додаток з'явиться на головному екрані поруч з іншими додатками з Play Market!</li>
+                        </ol>
+                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); встановитиДодаток()">
+                            🤖 Встановити на Android
+                        </button>
                     </div>
-                    <div class="store-pill" onclick="показатиГідСтору('microsoft')">
-                        <span class="store-icon">💻</span>
-                        <div>
-                            <span class="store-text-sub">Для комп'ютерів Windows</span>
-                            <span class="store-text-main">Microsoft Store / Edge</span>
-                        </div>
+
+                    <!-- Картка 3: Windows (Microsoft Store) -->
+                    <div class="store-card" onclick="показатиГідСтору('microsoft')">
+                        <div class="store-card-badge" style="background:#fef3c7; color:#92400e;">Microsoft Store / Edge</div>
+                        <div class="store-card-icon">💻</div>
+                        <h4>Windows (Microsoft Store)</h4>
+                        <ol class="store-card-steps">
+                            <li>Відкрийте в <strong>Microsoft Edge</strong> або <strong>Chrome</strong>.</li>
+                            <li>В адресному рядку натисніть значок комп'ютера <strong>«Встановити StudDoc»</strong>.</li>
+                            <li>Додаток відкриватиметься в окремому вікні без рамок браузера!</li>
+                        </ol>
+                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); встановитиДодаток()">
+                            💻 Встановити на Windows
+                        </button>
                     </div>
                 </div>
             </div>
