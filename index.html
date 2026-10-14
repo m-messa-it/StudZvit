@@ -19,10 +19,7 @@
         <div class="nav-container">
             <div class="brand-wrap" onclick="перейтиДо('головна')">
                 <div class="brand-logo">SD</div>
-                <div>
-                    <span class="brand-name">StudDoc</span>
-                </div>
-                <span class="brand-tag">Безлімітний (0 ₴)</span>
+                <span class="brand-name">StudDoc</span>
             </div>
 
             <nav class="nav-links">
@@ -30,12 +27,12 @@
                 <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">Титульна сторінка</button>
                 <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">Конструктор звіту</button>
                 <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Нормоконтроль</button>
-                <button class="nav-tab" data-page="джерела" onclick="перейтиДо('джерела')">Список джерел (ДСТУ)</button>
+                <button class="nav-tab" data-page="джерела" onclick="перейтиДо('джерела')">Список джерел</button>
                 <button class="nav-tab" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">Про сервіс</button>
             </nav>
 
             <div class="nav-actions">
-                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">Заповнити зразок</button>
+                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">Зразок</button>
                 <button class="btn-profile" onclick="відкритиПрофіль()">
                     <span>Мій профіль</span>
                 </button>
@@ -555,7 +552,10 @@
             <div class="panel-card">
                 <div class="panel-top-bar">
                     <span class="panel-top-title">Сформований список джерел</span>
-                    <button class="btn btn-sm btn-secondary" onclick="скопіюватиСписокДжерел()">Скопіювати весь список</button>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-sm btn-outline-primary" onclick="перенестиДжерелаУЗвіт()">Перенести у звіт</button>
+                        <button class="btn btn-sm btn-secondary" onclick="скопіюватиСписокДжерел()">Скопіювати весь список</button>
+                    </div>
                 </div>
                 <div id="список-джерел-результат">
                     <p style="font-size:13.5px; color:var(--text-muted);">Джерела ще не додані. Заповніть форму вище або скористайтеся шаблонами.</p>
