@@ -1625,8 +1625,8 @@ function закритиГідСтору() {
     if (modal) modal.style.display = "none";
 }
 
-// Реєстрація Service Worker для підтримки PWA офлайн
-if ("serviceWorker" in navigator) {
+// Реєстрація Service Worker для підтримки PWA офлайн (тільки для http/https)
+if ("serviceWorker" in navigator && (window.location.protocol === "http:" || window.location.protocol === "https:")) {
     window.addEventListener("load", function() {
         navigator.serviceWorker.register("./sw.js").catch(function() {});
     });

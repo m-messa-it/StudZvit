@@ -979,8 +979,16 @@
     <div id="toast-box" class="toast-container"></div>
 
     <!-- Бібліотеки для генерації Word (.docx) на клієнті -->
-    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.min.js"></script>
-    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="docx.umd.js"></script>
+    <script src="FileSaver.min.js"></script>
+    <script>
+        if (!window.docx) {
+            document.write('<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"><\/script>');
+        }
+        if (!window.saveAs) {
+            document.write('<script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"><\/script>');
+        }
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

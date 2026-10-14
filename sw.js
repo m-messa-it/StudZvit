@@ -5,7 +5,10 @@ const ASSETS = [
     "./index.html",
     "./style.css",
     "./app.js",
-    "./manifest.json"
+    "./manifest.json",
+    "./docx.umd.js",
+    "./FileSaver.min.js",
+    "./icon.png"
 ];
 
 self.addEventListener("install", (e) => {
