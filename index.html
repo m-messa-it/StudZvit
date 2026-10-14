@@ -3,15 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudZvit — Автоматизоване формування студентської документації за ДСТУ</title>
-    <link rel="manifest" href="manifest.json">
+    <title>StudZvit — Генератор титульних сторінок та звітів за ДСТУ онлайн</title>
+    <meta name="description" content="StudZvit — Безкоштовний онлайн-сервіс для студентів та викладачів: створення титульних сторінок, оформлення лабораторних та курсових робіт, нормоконтроль за ДСТУ 3008:2015. Експорт у Word (.docx).">
+    <meta name="keywords" content="титулка онлайн, генератор титульних сторінок, звіт за дсту, курсова робота оформлення, лабораторна робота шаблон, дсту 3008:2015, студентські роботи word">
+    <meta name="author" content="StudZvit">
+    <meta name="robots" content="index, follow">
     <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
     <meta name="theme-color" content="#4f46e5">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="StudZvit">
-    <meta name="description" content="StudZvit — Відкритий безкоштовний сервіс для створення титульних сторінок та звітів за стандартами ДСТУ.">
+
+    <!-- Open Graph для Google, соцмереж та месенджерів -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="StudZvit — Онлайн генератор студентських робіт за ДСТУ">
+    <meta property="og:description" content="Створюйте титульні сторінки та звіти відповідно до ДСТУ в 1 клік. Безкоштовно та без обмежень. Експорт у .docx.">
+    <meta property="og:image" content="icon.png">
+
+    <!-- Структуровані дані для пошуку Google (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "StudZvit",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "UAH"
+      },
+      "description": "Безкоштовний онлайн-генератор титулок та звітів за стандартами ДСТУ"
+    }
+    </script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -48,7 +70,6 @@
             </nav>
 
             <div class="nav-actions">
-                <button class="btn btn-sm btn-outline-primary" id="btn-pwa-install" onclick="встановитиДодаток()" title="Встановити StudZvit як додаток на телефон або ПК">📲 Додаток</button>
                 <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                 <button class="btn-profile" onclick="відкритиПрофіль()">
                     <span>Мій профіль</span>
@@ -135,67 +156,6 @@
                 <div class="stat-item">
                     <strong>ДСТУ 3008:2015</strong>
                     <span>Стандарт оформлення</span>
-                </div>
-            </div>
-
-            <!-- Блок підтримки телефонів та встановлення як додаток -->
-            <div class="stores-section">
-                <div class="hero-pill" style="margin-bottom:12px;">
-                    <span class="pulse-dot"></span>
-                    <span>100% Безкоштовно • Робота без інтернету</span>
-                </div>
-                <h2 style="font-size:22px; font-weight:800; color:var(--text-primary); margin-bottom:8px;">
-                    📲 Завантаження та встановлення StudZvit
-                </h2>
-                <p style="max-width:680px; margin:0 auto 20px; color:var(--text-muted); font-size:14px;">
-                    Встановлюйте офіційний додаток на iPhone, Android або ПК Windows в 1 клік:
-                </p>
-
-                <div class="store-cards-grid">
-                    <!-- Картка 1: iPhone / iPad (App Store) -->
-                    <div class="store-card" onclick="показатиГідСтору('apple')">
-                        <div class="store-card-badge">App Store / Safari</div>
-                        <div class="store-card-icon">🍏</div>
-                        <h4>iPhone / iPad (App Store)</h4>
-                        <ol class="store-card-steps">
-                            <li>Відкрийте посилання в <strong>Safari</strong>.</li>
-                            <li>Натисніть кнопку <strong>«Поділитися»</strong> (квадрат зі стрілкою вгору).</li>
-                            <li>Оберіть <strong>«На початковий екран»</strong>. Додаток встановиться як рідний з App Store з іконкою SZ!</li>
-                        </ol>
-                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); показатиГідСтору('apple')">
-                            🍏 Відкрити інструкцію iPhone
-                        </button>
-                    </div>
-
-                    <!-- Картка 2: Android (Google Play) -->
-                    <div class="store-card" onclick="показатиГідСтору('google')">
-                        <div class="store-card-badge" style="background:#e0f2fe; color:#0369a1;">Google Play / Chrome</div>
-                        <div class="store-card-icon">🤖</div>
-                        <h4>Android (Google Play)</h4>
-                        <ol class="store-card-steps">
-                            <li>Відкрийте в <strong>Google Chrome</strong>.</li>
-                            <li>Натисніть кнопку <strong>«📲 Додаток»</strong> у шапці або меню браузера ➔ <strong>«Встановити додаток»</strong>.</li>
-                            <li>Додаток з'явиться на головному екрані поруч з іншими додатками з Play Market!</li>
-                        </ol>
-                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); встановитиДодаток()">
-                            🤖 Встановити на Android
-                        </button>
-                    </div>
-
-                    <!-- Картка 3: Windows (Microsoft Store) -->
-                    <div class="store-card" onclick="показатиГідСтору('microsoft')">
-                        <div class="store-card-badge" style="background:#fef3c7; color:#92400e;">Microsoft Store / Edge</div>
-                        <div class="store-card-icon">💻</div>
-                        <h4>Windows (Microsoft Store)</h4>
-                        <ol class="store-card-steps">
-                            <li>Відкрийте в <strong>Microsoft Edge</strong> або <strong>Chrome</strong>.</li>
-                            <li>В адресному рядку натисніть значок комп'ютера <strong>«Встановити StudZvit»</strong>.</li>
-                            <li>Додаток відкриватиметься в окремому вікні без рамок браузера!</li>
-                        </ol>
-                        <button class="btn btn-primary" style="width:100%;" onclick="event.stopPropagation(); встановитиДодаток()">
-                            💻 Встановити на Windows
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -961,19 +921,6 @@
         </div>
     </div>
 
-    <!-- ==================== МОДАЛЬНЕ ВІКНО ІНСТРУКЦІЇ СТОРІВ ==================== -->
-    <div id="модальне-стор" class="modal-overlay" style="display:none;">
-        <div class="modal-card">
-            <div class="modal-header">
-                <span class="modal-title" id="заголовок-стору">📲 Встановлення додатку</span>
-                <button class="modal-close-btn" onclick="закритиГідСтору()">&times;</button>
-            </div>
-            <div class="modal-body" id="тіло-гіда-стору" style="font-size:13.5px; line-height:1.6; color:var(--text-secondary);"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="закритиГідСтору()">&larr; Зрозуміло</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Контейнер сповіщень -->
     <div id="toast-box" class="toast-container"></div>

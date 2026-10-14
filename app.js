@@ -1392,11 +1392,11 @@ function escapeHtml(str) {
 
 var додатковіБлокиКоду = [];
 
-function обратиМовуКоду(новаМова, ім'яФайлу) {
+function обратиМовуКоду(новаМова, назваФайлу) {
     var elМова = document.getElementById("мова-коду");
     var elФайл = document.getElementById("назва-файлу");
     if (elМова) elМова.value = новаМова;
-    if (elФайл && ім'яФайлу) elФайл.value = ім'яФайлу;
+    if (elФайл && назваФайлу) elФайл.value = назваФайлу;
 
     document.querySelectorAll(".lang-pill").forEach(function(pill) {
         if (pill.textContent.indexOf(новаМова) !== -1 || (новаМова === 'Інша' && pill.textContent.indexOf('Будь-яка') !== -1)) {
