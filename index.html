@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudDoc — Генератор студентської документації</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Навігаційна панель -->
+    <header class="navbar">
+        <div class="brand" onclick="перейтиДо('головна')">StudDoc</div>
+        <nav class="nav-menu">
+            <button class="nav-btn active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
+            <button class="nav-btn" data-page="генератор" onclick="перейтиДо('генератор')">Титульна сторінка</button>
+            <button class="nav-btn" data-page="звіт" onclick="перейтиДо('звіт')">Конструктор звіту</button>
+            <button class="nav-btn" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Нормоконтроль</button>
+            <button class="nav-btn" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">Про сервіс</button>
+        </nav>
+        <button class="btn-settings" onclick="відкритиНалаштування()" title="Налаштування профілю">Профіль</button>
+    </header>
+
+    <main class="wrapper">
+
+        <!-- ==================== ГОЛОВНА ==================== -->
+        <section id="головна" class="page">
+            <div class="hero">
+                <h1>StudDoc</h1>
+                <p class="hero-sub">Веб-сервіс автоматизованого формування студентської звітної документації за стандартами ДСТУ</p>
+                <div class="hero-btns">
+                    <button class="btn btn-accent" onclick="перейтиДо('генератор')">Створити титульну</button>
+                    <button class="btn btn-outline" onclick="перейтиДо('звіт')">Зібрати звіт</button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature-card" onclick="перейтиДо('генератор')">
+                    <div class="feature-icon">1</div>
+                    <h3>Генератор титульних сторінок</h3>
+                    <p>Заповніть поля — отримайте ідеально оформлену титулку за стандартами вашого коледжу. Попередній перегляд в реальному часі.</p>
+                </div>
+                <div class="feature-card" onclick="перейтиДо('звіт')">
+                    <div class="feature-icon">2</div>
+                    <h3>Конструктор звіту</h3>
+                    <p>Зберіть повний звіт з лабораторної або практичної роботи: тема, мета, хід роботи, висновки та контрольні запитання.</p>
+                </div>
+                <div class="feature-card" onclick="перейтиДо('нормоконтроль')">
+                    <div class="feature-icon">3</div>
+                    <h3>Нормоконтроль тексту</h3>
+                    <p>Автоматичне виправлення подвійних пробілів, неправильних лапок, зайвих переносів та інших типових помилок оформлення.</p>
+                </div>
+                <div class="feature-card" onclick="перейтиДо('про-сервіс')">
+                    <div class="feature-icon">4</div>
+                    <h3>Експорт у Word та PDF</h3>
+                    <p>Завантажте готовий документ у форматі .docx або збережіть як PDF через вбудований друк браузера.</p>
+                </div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat"><strong id="stat-docs">0</strong><span>документів створено</span></div>
+                <div class="stat"><strong id="stat-saves">0</strong><span>автозбережень</span></div>
+                <div class="stat"><strong>100%</strong><span>безкоштовно</span></div>
+            </div>
+        </section>
+
+        <!-- ==================== ГЕНЕРАТОР ТИТУЛЬНОЇ ==================== -->
+        <section id="генератор" class="page" style="display:none;">
+            <h2 class="section-title">Генератор титульної сторінки</h2>
+            <p class="section-desc">Заповніть поля нижче. Попередній перегляд оновлюється автоматично.</p>
+
+            <div class="generator-layout">
+                <!-- Ліва колонка: форма -->
+                <div class="gen-form-wrap">
+                    <div class="form-group">
+                        <label>Тип роботи</label>
+                        <select id="тип-роботи" onchange="оновитиПрев()">
+                            <option value="Лабораторна робота">Лабораторна робота</option>
+                            <option value="Практична робота" selected>Практична робота</option>
+                            <option value="Курсова робота">Курсова робота</option>
+                            <option value="Контрольна робота">Контрольна робота</option>
+                            <option value="Самостійна робота">Самостійна робота</option>
+                        </select>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>Номер роботи</label>
+                            <input type="text" id="номер-роботи" placeholder="Наприклад: 5" oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Варіант (необов'язково)</label>
+                            <input type="text" id="варіант" placeholder="Наприклад: 12" oninput="оновитиПрев()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Дисципліна</label>
+                        <input type="text" id="дисципліна" placeholder="Наприклад: Об'єктно-орієнтоване програмування" oninput="оновитиПрев()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Тема роботи</label>
+                        <textarea id="тема-роботи" rows="2" placeholder="Наприклад: Робота з масивами та колекціями в C#" oninput="оновитиПрев()"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Навчальний заклад</label>
+                        <input type="text" id="заклад" placeholder="Наприклад: Рівненський коледж економіки, підприємництва та комп'ютерних технологій" oninput="оновитиПрев()">
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>ПІБ студента</label>
+                            <input type="text" id="студент-піб" placeholder="Наприклад: Овдійчук М. С." oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Група</label>
+                            <input type="text" id="група" placeholder="Наприклад: ІТ-41" oninput="оновитиПрев()">
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>Спеціальність</label>
+                            <input type="text" id="спеціальність" placeholder="Наприклад: 121 Інженерія програмного забезпечення" oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Курс</label>
+                            <input type="text" id="курс" placeholder="Наприклад: 2" oninput="оновитиПрев()">
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>ПІБ викладача</label>
+                            <input type="text" id="викладач-піб" placeholder="Наприклад: Іванов І. І." oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Рік</label>
+                            <input type="text" id="рік" placeholder="2026" oninput="оновитиПрев()">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-accent" onclick="завантажитиТитулку()">Завантажити .docx</button>
+                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">Друк / PDF</button>
+                        <button class="btn btn-outline" onclick="зберегтиПрофіль()">Зберегти профіль</button>
+                    </div>
+                </div>
+
+                <!-- Права колонка: попередній перегляд А4 -->
+                <div class="preview-wrap">
+                    <div class="preview-label">Попередній перегляд (А4)</div>
+                    <div class="a4-page" id="прев-титулка">
+                        <div class="a4-header" id="прев-заклад">Навчальний заклад</div>
+                        <div class="a4-center">
+                            <div class="a4-type" id="прев-тип">ПРАКТИЧНА РОБОТА</div>
+                            <div class="a4-number" id="прев-номер"></div>
+                            <div class="a4-discipline" id="прев-дисципліна">з дисципліни</div>
+                            <div class="a4-topic" id="прев-тема">Тема роботи</div>
+                            <div class="a4-variant" id="прев-варіант"></div>
+                        </div>
+                        <div class="a4-info">
+                            <div class="a4-student" id="прев-студент">Виконав(ла): студент(ка)</div>
+                            <div class="a4-group" id="прев-група">групи</div>
+                            <div class="a4-spec" id="прев-спец">спеціальності</div>
+                            <div class="a4-teacher" id="прев-викладач">Перевірив(ла):</div>
+                        </div>
+                        <div class="a4-footer">
+                            <div class="a4-city" id="прев-місто">Рівне</div>
+                            <div class="a4-year" id="прев-рік">2026</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== КОНСТРУКТОР ЗВІТУ ==================== -->
+        <section id="звіт" class="page" style="display:none;">
+            <h2 class="section-title">Конструктор звіту</h2>
+            <p class="section-desc">Зберіть повний звіт з лабораторної або практичної роботи. Кожен розділ можна розгорнути та заповнити.</p>
+
+            <div class="report-builder">
+                <!-- Титульна (автоматично з генератора) -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">1</span>
+                        <span>Титульна сторінка</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <p class="hint">Титульна сторінка буде згенерована автоматично з даних, які ви вказали на вкладці «Титульна сторінка». Перейдіть туди, щоб заповнити поля.</p>
+                        <button class="btn btn-outline" onclick="перейтиДо('генератор')">Перейти до генератора титульної</button>
+                    </div>
+                </div>
+
+                <!-- Мета роботи -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">2</span>
+                        <span>Мета роботи</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <textarea id="мета-роботи" rows="4" placeholder="Наприклад: Навчитися працювати з масивами та колекціями в мові C#, відпрацювати практичні навички створення, сортування та пошуку елементів."></textarea>
+                    </div>
+                </div>
+
+                <!-- Теоретичні відомості -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">3</span>
+                        <span>Теоретичні відомості (необов'язково)</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <textarea id="теорія" rows="6" placeholder="Короткий виклад основних понять та визначень за темою роботи..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Хід роботи -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">4</span>
+                        <span>Хід роботи</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <textarea id="хід-роботи" rows="8" placeholder="Опишіть покроково виконання роботи. Можна вставляти текст та код програми."></textarea>
+                        <div class="code-insert">
+                            <label>Вставити код програми:</label>
+                            <textarea id="код-програми" rows="6" class="code-area" placeholder="using System;&#10;&#10;class Program&#10;{&#10;    static void Main()&#10;    {&#10;        Console.WriteLine(&quot;Hello&quot;);&#10;    }&#10;}"></textarea>
+                            <div class="row-2" style="margin-top:8px;">
+                                <input type="text" id="мова-коду" placeholder="Мова (C#, JavaScript, Python...)" value="C#">
+                                <input type="text" id="назва-файлу" placeholder="Назва файлу (Program.cs)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Результати -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">5</span>
+                        <span>Результати виконання (скріншоти)</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <textarea id="результати" rows="4" placeholder="Опишіть отримані результати..."></textarea>
+                        <div class="screenshot-upload">
+                            <label>Додати скріншоти результатів:</label>
+                            <input type="file" id="скріншоти" accept="image/*" multiple onchange="попереднійПерегляд(this)">
+                            <div id="превю-скріншотів" class="screenshot-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Висновки -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">6</span>
+                        <span>Висновки</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <textarea id="висновки" rows="4" placeholder="Наприклад: Під час виконання практичної роботи було закріплено знання про роботу з масивами в C#..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Контрольні запитання -->
+                <div class="report-section">
+                    <div class="report-header" onclick="переключитиРозділ(this)">
+                        <span class="report-num">7</span>
+                        <span>Контрольні запитання</span>
+                        <span class="report-arrow">+</span>
+                    </div>
+                    <div class="report-body" style="display:none;">
+                        <div id="контрольні-список"></div>
+                        <div class="qa-add">
+                            <input type="text" id="нове-запитання" placeholder="Введіть запитання...">
+                            <input type="text" id="нова-відповідь" placeholder="Введіть відповідь...">
+                            <button class="btn btn-outline" onclick="додатиЗапитання()">Додати</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top:20px;">
+                    <button class="btn btn-accent" onclick="завантажитиЗвіт()">Завантажити звіт .docx</button>
+                    <button class="btn btn-secondary" onclick="зберегтиЧернетку()">Зберегти чернетку</button>
+                    <button class="btn btn-outline" onclick="очиститиЗвіт()">Очистити все</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== НОРМОКОНТРОЛЬ ==================== -->
+        <section id="нормоконтроль" class="page" style="display:none;">
+            <h2 class="section-title">Нормоконтроль тексту</h2>
+            <p class="section-desc">Вставте текст нижче. Сервіс автоматично виправить типові помилки оформлення відповідно до стандартів ДСТУ.</p>
+
+            <div class="normcontrol-layout">
+                <div class="nc-col">
+                    <label class="nc-label">Вхідний текст</label>
+                    <textarea id="вхідний-текст" rows="14" placeholder="Вставте текст, який потрібно перевірити та виправити..."></textarea>
+                    <button class="btn btn-accent" onclick="виконатиНормоконтроль()" style="margin-top:10px;width:100%;">Перевірити та виправити</button>
+                </div>
+                <div class="nc-col">
+                    <label class="nc-label">Виправлений текст</label>
+                    <textarea id="вихідний-текст" rows="14" readonly placeholder="Тут з'явиться виправлений текст..."></textarea>
+                    <button class="btn btn-secondary" onclick="скопіюватиРезультат()" style="margin-top:10px;width:100%;">Скопіювати результат</button>
+                </div>
+            </div>
+
+            <div class="nc-report" id="звіт-перевірки" style="display:none;">
+                <h3>Звіт перевірки</h3>
+                <ul id="список-виправлень"></ul>
+            </div>
+
+            <div class="nc-rules">
+                <h3>Правила, що перевіряються:</h3>
+                <ul>
+                    <li>Видалення подвійних та зайвих пробілів</li>
+                    <li>Заміна прямих лапок ("...") на українські типографічні (&laquo;...&raquo;)</li>
+                    <li>Видалення пробілів перед розділовими знаками (крапка, кома, двокрапка)</li>
+                    <li>Додавання пробілу після розділових знаків (якщо його бракує)</li>
+                    <li>Виправлення дефісів на тире у реченнях</li>
+                    <li>Видалення зайвих порожніх рядків (більше двох поспіль)</li>
+                    <li>Перша літера речення — велика</li>
+                    <li>Видалення невидимих Unicode-символів (нерозривні пробіли тощо)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== ПРО СЕРВІС ==================== -->
+        <section id="про-сервіс" class="page" style="display:none;">
+            <div class="about-content">
+                <h2>Про веб-сервіс StudDoc</h2>
+                <div class="about-block">
+                    <h3>Призначення</h3>
+                    <p><strong>StudDoc</strong> — це веб-сервіс автоматизованого формування та нормоконтролю студентської звітної документації. Створений для спрощення процесу оформлення лабораторних, практичних та курсових робіт відповідно до стандартів ДСТУ та внутрішніх вимог навчального закладу.</p>
+
+                    <h3>Основні можливості</h3>
+                    <ul>
+                        <li><strong>Генератор титульних сторінок</strong> — автоматичне створення титулки із заповнених полів з попереднім переглядом у реальному часі;</li>
+                        <li><strong>Конструктор звіту</strong> — покроковий збір повного звіту: тема, мета, хід роботи, висновки та контрольні запитання;</li>
+                        <li><strong>Нормоконтроль тексту</strong> — автоматичне виправлення типографічних помилок (подвійні пробіли, неправильні лапки, зайві переноси);</li>
+                        <li><strong>Експорт у Word (.docx)</strong> — завантаження готового документа з правильними шрифтами, полями та відступами;</li>
+                        <li><strong>Автозбереження</strong> — дані профілю та чернетки зберігаються в локальному сховищі браузера.</li>
+                    </ul>
+
+                    <h3>Технологічний стек</h3>
+                    <ul>
+                        <li><strong>HTML5</strong> — семантична розмітка структури сторінок;</li>
+                        <li><strong>CSS3</strong> — адаптивний інтерфейс, Flexbox та Grid для побудови макетів;</li>
+                        <li><strong>JavaScript (ES6+)</strong> — клієнтська логіка, робота з DOM, валідація форм;</li>
+                        <li><strong>LocalStorage API</strong> — збереження профілю та чернеток без реєстрації;</li>
+                        <li><strong>docx.js</strong> — генерація документів Word (.docx) безпосередньо в браузері;</li>
+                        <li><strong>FileSaver.js</strong> — збереження згенерованих файлів на пристрій користувача.</li>
+                    </ul>
+
+                    <h3>Стандарти оформлення</h3>
+                    <ul>
+                        <li>Шрифт: Times New Roman, 14 пт;</li>
+                        <li>Міжрядковий інтервал: 1.5;</li>
+                        <li>Поля: ліве — 30 мм, праве — 10 мм, верхнє та нижнє — 20 мм;</li>
+                        <li>Абзацний відступ: 1.25 см;</li>
+                        <li>Вирівнювання тексту: по ширині (justify).</li>
+                    </ul>
+
+                    <h3>Автор</h3>
+                    <p>Дипломна робота студентки групи ІТ-41 РКЕПК</p>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-accent" onclick="перейтиДо('генератор')">Почати роботу</button>
+                    <button class="btn btn-outline" onclick="перейтиДо('головна')">На головну</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== МОДАЛЬНЕ ВІКНО НАЛАШТУВАНЬ ==================== -->
+    <div id="модальне-налаштування" class="modal-bg" style="display:none;">
+        <div class="modal-box">
+            <h3>Налаштування профілю</h3>
+            <p class="hint">Збережені дані автоматично підставляються у форму генератора.</p>
+
+            <div class="form-group">
+                <label>ПІБ студента</label>
+                <input type="text" id="проф-піб" placeholder="Овдійчук М. С.">
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Група</label>
+                    <input type="text" id="проф-група" placeholder="ІТ-41">
+                </div>
+                <div class="form-group">
+                    <label>Курс</label>
+                    <input type="text" id="проф-курс" placeholder="2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Навчальний заклад</label>
+                <input type="text" id="проф-заклад" placeholder="Рівненський коледж економіки, підприємництва та комп'ютерних технологій">
+            </div>
+            <div class="form-group">
+                <label>Спеціальність</label>
+                <input type="text" id="проф-спец" placeholder="121 Інженерія програмного забезпечення">
+            </div>
+
+            <div class="modal-btns">
+                <button class="btn btn-accent" onclick="зберегтиПрофіль()">Зберегти</button>
+                <button class="btn btn-outline" onclick="закритиНалаштування()">Закрити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Бібліотеки для генерації Word -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.min.js"></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
