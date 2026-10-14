@@ -1619,9 +1619,43 @@ function показатиГідСтору(платформа) {
     modal.style.display = "flex";
 }
 
-function закритиГідСтору() {
-    var modal = document.getElementById("модальне-стор");
+function відкритиДонат() {
+    var modal = document.getElementById("модальне-донат");
+    if (modal) modal.style.display = "flex";
+}
+
+function закритиДонат() {
+    var modal = document.getElementById("модальне-донат");
     if (modal) modal.style.display = "none";
+}
+
+function скопіюватиКартку() {
+    var номер = "4874070012229983";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(номер).then(function() {
+            показатиСповіщення("Номер картки 4874 0700 1222 9983 скопійовано!", "успіх");
+        }).catch(function() {
+            старийКопіювати(номер);
+        });
+    } else {
+        старийКопіювати(номер);
+    }
+}
+
+function старийКопіювати(текст) {
+    var ta = document.createElement("textarea");
+    ta.value = текст;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        document.execCommand("copy");
+        показатиСповіщення("Номер картки 4874 0700 1222 9983 скопійовано!", "успіх");
+    } catch(e) {
+        prompt("Скопіюйте номер картки вручну:", текст);
+    }
+    document.body.removeChild(ta);
 }
 
 // Реєстрація Service Worker для підтримки PWA офлайн (тільки для http/https)

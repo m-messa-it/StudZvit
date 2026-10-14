@@ -70,6 +70,7 @@
             </nav>
 
             <div class="nav-actions">
+                <button class="btn btn-sm btn-coffee" onclick="відкритиДонат()" title="Підтримати розробника на каву">☕ Підтримати</button>
                 <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                 <button class="btn-profile" onclick="відкритиПрофіль()">
                     <span>Мій профіль</span>
@@ -106,6 +107,22 @@
                     <p>Заповнюйте будь-яку кількість даних, додавайте власні розділи та поля, завантажуйте готові документи Word або PDF стільки разів, скільки потрібно. Без реклами, платних підписок та ліміту на сторінки.</p>
                 </div>
                 <div class="guarantee-badge">Безкоштовно назавжди</div>
+            </div>
+
+            <!-- Блок підтримки розробника (Донат на каву) -->
+            <div class="donation-card">
+                <div class="donation-badge">☕ Кава для автора</div>
+                <div class="donation-body">
+                    <div class="donation-icon">☕</div>
+                    <div class="donation-text">
+                        <h3>Сайт врятував перед здачею роботи?</h3>
+                        <p>StudZvit створений з турботою про студентів — 100% безкоштовно, безкоштовне скачування та без нав'язливої реклами. Якщо сервіс допоміг вам швидко підготувати титулку чи звіт та зекономив час, підтримайте розробника донатом на каву (20–100 грн)!</p>
+                        <div class="card-copy-box">
+                            <span class="card-number" id="card-num-text">4874 0700 1222 9983</span>
+                            <button class="btn btn-sm btn-primary" onclick="скопіюватиКартку()">📋 Скопіювати номер картки</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Сітка можливостей -->
@@ -837,6 +854,42 @@
         </section>
 
     </main>
+
+    <!-- ==================== МОДАЛЬНЕ ВІКНО ДОНАТУ ТА ПІДТРИМКИ ==================== -->
+    <div id="модальне-донат" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="modal-title">☕ Підтримати проєкт StudZvit</span>
+                <button class="modal-close-btn" onclick="закритиДонат()">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align:center; padding:24px 16px;">
+                <div style="font-size:48px; margin-bottom:10px;">☕</div>
+                <h3 style="font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:8px;">
+                    Дякуємо за вашу підтримку!
+                </h3>
+                <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; max-width:440px; margin:0 auto 20px;">
+                    StudZvit створений з душею для студентів та викладачів — повністю безкоштовний, безлімітний і без реклами. Якщо наш генератор допоміг вам швидко здати лабораторну, курсову чи звіт, ви можете віддячити розробнику донатом на каву (20–100 грн)!
+                </p>
+                <div style="background:#f8fafc; border:2px dashed #f59e0b; border-radius:12px; padding:16px; margin-bottom:18px;">
+                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:6px;">
+                        Номер банківської картки:
+                    </div>
+                    <div style="font-family:monospace; font-size:22px; font-weight:800; color:#1e293b; letter-spacing:1.5px; margin-bottom:12px;" id="modal-card-num">
+                        4874 0700 1222 9983
+                    </div>
+                    <button class="btn btn-primary" style="width:100%; font-size:14px; font-weight:700;" onclick="скопіюватиКартку()">
+                        📋 Скопіювати номер картки
+                    </button>
+                </div>
+                <div style="font-size:12px; color:var(--text-muted);">
+                    Дякуємо кожному, хто підтримує українські освітні проєкти! 💙💛
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content:center;">
+                <button class="btn btn-secondary" onclick="закритиДонат()">Закрити</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== МОДАЛЬНЕ ВІКНО ПРОФІЛЮ ==================== -->
     <div id="модальне-профіль" class="modal-overlay" style="display:none;">

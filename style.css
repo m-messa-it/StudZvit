@@ -1483,39 +1483,199 @@ textarea.form-control {
     resize: vertical;
 }
 
-/* Адаптивність для мобільних телефонів */
+/* Кнопка та блок донату на каву */
+.btn-coffee {
+    background: #f59e0b;
+    color: #ffffff !important;
+    border: none;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    transition: all 0.2s ease;
+}
+.btn-coffee:hover {
+    background: #d97706;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
+}
+
+.donation-card {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border: 1px solid #fde68a;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 28px 0;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);
+}
+.donation-badge {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: #f59e0b;
+    color: #ffffff;
+    padding: 3px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.donation-body {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.donation-icon {
+    font-size: 42px;
+    flex-shrink: 0;
+}
+.donation-text {
+    flex: 1;
+}
+.donation-text h3 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #92400e;
+    margin-bottom: 6px;
+}
+.donation-text p {
+    font-size: 14px;
+    color: #78350f;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+.card-copy-box {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1.5px dashed #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 6px 14px;
+    gap: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.card-number {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: 1px;
+}
+
+/* Адаптивність для мобільних телефонів (iOS та Android) */
 @media (max-width: 768px) {
     .nav-container {
-        height: auto;
-        padding: 10px 12px;
+        flex-wrap: wrap !important;
+        height: auto !important;
+        padding: 8px 10px !important;
+        gap: 8px !important;
+    }
+    .brand-wrap {
+        gap: 6px;
+    }
+    .brand-logo {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+    .brand-name {
+        font-size: 17px;
+    }
+    .nav-history-arrows {
+        margin-left: 6px;
+        gap: 3px;
+    }
+    .nav-arrow-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+    }
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
     .nav-links {
-        width: 100%;
-        order: 3;
-        overflow-x: auto;
-        padding: 6px 0;
+        width: 100% !important;
+        order: 3 !important;
+        display: flex !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 6px !important;
+        padding: 6px 0 !important;
+        scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+    .nav-tab {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        font-size: 12.5px !important;
+        padding: 6px 11px !important;
+        border-radius: var(--radius-full) !important;
     }
     .hero-title {
-        font-size: 26px;
+        font-size: 23px !important;
+        line-height: 1.25 !important;
     }
     .hero-card {
-        padding: 30px 18px;
+        padding: 22px 14px !important;
+    }
+    .hero-desc {
+        font-size: 13.5px !important;
+    }
+    .hero-buttons {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+    }
+    .hero-buttons .btn {
+        width: 100% !important;
     }
     .guarantee-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 12px;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 12px !important;
+        padding: 16px !important;
+    }
+    .donation-body {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 12px !important;
+    }
+    .card-copy-box {
+        flex-direction: column !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .card-copy-box .btn {
+        width: 100% !important;
     }
     .a4-viewport {
-        padding: 10px;
+        padding: 8px !important;
+        max-height: 55vh !important;
     }
     .a4-paper {
-        width: 100%;
-        min-height: auto;
-        padding: 15px;
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 12px !important;
     }
     .grid-2 {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+    }
+    .page-nav-bar {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    .page-nav-btn {
+        width: 100% !important;
     }
 }
 
