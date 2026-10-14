@@ -169,7 +169,7 @@ function перемалюватиВласніПоляТитулки() {
 // ============================================================
 
 function оновитиПрев() {
-    var тип = (document.getElementById("тип-роботи").value || "РОБОТА").toUpperCase();
+    var тип = (document.getElementById("тип-роботи").value || "").toUpperCase();
     var номер = document.getElementById("номер-роботи").value.trim();
     var дисципліна = document.getElementById("дисципліна").value.trim();
     var тема = document.getElementById("тема-роботи").value.trim();
@@ -183,41 +183,108 @@ function оновитиПрев() {
     var викладач = document.getElementById("викладач-піб").value.trim();
     var викладачПосада = document.getElementById("викладач-посада").value.trim();
     var варіант = document.getElementById("варіант").value.trim();
-    var місто = document.getElementById("місто").value.trim() || "Київ";
-    var рік = document.getElementById("рік").value.trim() || String(new Date().getFullYear());
+    var місто = document.getElementById("місто").value.trim();
+    var рік = document.getElementById("рік").value.trim();
 
     // Заклад та підрозділи
-    document.getElementById("прев-заклад").textContent = заклад ? заклад.toUpperCase() : "НАЗВА НАВЧАЛЬНОГО ЗАКЛАДУ";
+    var elЗаклад = document.getElementById("прев-заклад");
+    if (заклад) {
+        elЗаклад.textContent = заклад.toUpperCase();
+        elЗаклад.style.display = "block";
+    } else {
+        elЗаклад.textContent = "";
+        elЗаклад.style.display = "none";
+    }
     
     var subOrg = "";
     if (відділення) subOrg += відділення;
     if (кафедра) subOrg += (subOrg ? " • " : "") + кафедра;
-    document.getElementById("прев-відділення-кафедра").textContent = subOrg;
+    var elSubOrg = document.getElementById("прев-відділення-кафедра");
+    if (subOrg) {
+        elSubOrg.textContent = subOrg;
+        elSubOrg.style.display = "block";
+    } else {
+        elSubOrg.textContent = "";
+        elSubOrg.style.display = "none";
+    }
 
     // Тип і номер
-    var текстТипу = тип;
-    if (номер) текстТипу += " № " + номер;
-    document.getElementById("прев-тип").textContent = текстТипу;
+    var elТип = document.getElementById("прев-тип");
+    if (тип) {
+        var текстТипу = тип;
+        if (номер) текстТипу += " № " + номер;
+        elТип.textContent = текстТипу;
+        elТип.style.display = "block";
+    } else {
+        elТип.style.display = "none";
+    }
 
     // Дисципліна, тема, варіант
-    document.getElementById("прев-дисципліна").textContent = дисципліна ? "з дисципліни «" + дисципліна + "»" : "";
-    document.getElementById("прев-тема").textContent = тема ? "Тема: " + тема : "";
-    document.getElementById("прев-варіант").textContent = варіант ? "Варіант № " + варіант : "";
+    var elДисципліна = document.getElementById("прев-дисципліна");
+    if (дисципліна) {
+        elДисципліна.textContent = "з дисципліни «" + дисципліна + "»";
+        elДисципліна.style.display = "block";
+    } else {
+        elДисципліна.style.display = "none";
+    }
 
-    // Мета-дані (студент, група, керівник)
-    document.getElementById("прев-студент").innerHTML = "<strong>Виконав(ла):</strong> " + (студент || "студент(ка)");
+    var elТема = document.getElementById("прев-тема");
+    if (тема) {
+        elТема.textContent = "Тема: " + тема;
+        elТема.style.display = "block";
+    } else {
+        elТема.style.display = "none";
+    }
+
+    var elВаріант = document.getElementById("прев-варіант");
+    if (варіант) {
+        elВаріант.textContent = "Варіант № " + варіант;
+        elВаріант.style.display = "block";
+    } else {
+        elВаріант.style.display = "none";
+    }
+
+    // Мета-дані: студент
+    var elСтудент = document.getElementById("прев-студент");
+    if (студент) {
+        elСтудент.innerHTML = "<strong>Виконав(ла):</strong> " + студент;
+        elСтудент.style.display = "block";
+    } else {
+        elСтудент.style.display = "none";
+    }
     
+    // Група та курс
     var рядГрупи = "";
     if (група) рядГрупи += "групи " + група;
     if (курс) рядГрупи += (рядГрупи ? ", " : "") + курс + " курсу";
-    document.getElementById("прев-група").textContent = рядГрупи;
+    var elГрупа = document.getElementById("прев-група");
+    if (рядГрупи) {
+        elГрупа.textContent = рядГрупи;
+        elГрупа.style.display = "block";
+    } else {
+        elГрупа.style.display = "none";
+    }
 
-    document.getElementById("прев-спец").textContent = спеціальність ? "спеціальності " + спеціальність : "";
+    // Спеціальність
+    var elСпец = document.getElementById("прев-спец");
+    if (спеціальність) {
+        elСпец.textContent = "спеціальності " + спеціальність;
+        elСпец.style.display = "block";
+    } else {
+        elСпец.style.display = "none";
+    }
     
-    var виклТекст = "<strong>Перевірив(ла):</strong> ";
-    if (викладачПосада) виклТекст += викладачПосада + " ";
-    виклТекст += (викладач || "викладач");
-    document.getElementById("прев-викладач").innerHTML = виклТекст;
+    // Викладач / керівник
+    var elВикладач = document.getElementById("прев-викладач");
+    if (викладач) {
+        var виклТекст = "<strong>Перевірив(ла):</strong> ";
+        if (викладачПосада) виклТекст += викладачПосада + " ";
+        виклТекст += викладач;
+        elВикладач.innerHTML = виклТекст;
+        elВикладач.style.display = "block";
+    } else {
+        elВикладач.style.display = "none";
+    }
 
     // Власні довільні поля
     var превВласні = document.getElementById("прев-власні-поля");
@@ -232,10 +299,28 @@ function оновитиПрев() {
     });
 
     // Місто та рік
-    document.getElementById("прев-місто").textContent = місто;
-    document.getElementById("прев-рік").textContent = рік;
+    var elНиз = document.getElementById("прев-місто-рік");
+    if (elНиз) {
+        var рядокНиз = "";
+        if (місто && рік) рядокНиз = місто + " — " + рік;
+        else if (місто) рядокНиз = місто;
+        else if (рік) рядокНиз = рік;
+        elНиз.textContent = рядокНиз;
+        elНиз.style.display = рядокНиз ? "block" : "none";
+    }
 
     оновитиЧекліст();
+}
+
+function очиститиФормуТитулки() {
+    ["номер-роботи", "варіант", "дисципліна", "тема-роботи", "заклад", "відділення", "кафедра", "студент-піб", "група", "спеціальність", "курс", "викладач-піб", "викладач-посада", "місто", "рік"].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = "";
+    });
+    власніПоляТитулки = [];
+    перемалюватиВласніПоляТитулки();
+    оновитиПрев();
+    показатиСповіщення("Форму очищено! Відображатимуться лише введені вами поля.", "інфо");
 }
 
 function масштабуватиПрев(множник) {
@@ -275,8 +360,8 @@ function завантажитиТитулку() {
     var викладач = document.getElementById("викладач-піб").value.trim();
     var викладачПосада = document.getElementById("викладач-посада").value.trim();
     var варіант = document.getElementById("варіант").value.trim();
-    var місто = document.getElementById("місто").value.trim() || "Київ";
-    var рік = document.getElementById("рік").value.trim() || String(new Date().getFullYear());
+    var місто = document.getElementById("місто").value.trim();
+    var рік = document.getElementById("рік").value.trim();
 
     var шрифтОсновний = { font: "Times New Roman", size: 28 }; // 14pt
     var шрифтМалий = { font: "Times New Roman", size: 24 }; // 12pt
@@ -285,7 +370,7 @@ function завантажитиТитулку() {
 
     var абзаци = [];
 
-    // Заклад
+    // Заклад (якщо є)
     if (заклад) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: заклад.toUpperCase(), ...шрифтОсновний })],
@@ -344,12 +429,14 @@ function завантажитиТитулку() {
         абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
     }
 
-    // Блок студента
-    абзаци.push(new D.Paragraph({
-        children: [new D.TextRun({ text: "Виконав(ла): " + (студент || "студент(ка)"), ...шрифтОсновний })],
-        alignment: D.AlignmentType.RIGHT,
-        spacing: { after: 60 }
-    }));
+    // Блок студента (тільки якщо введено студента)
+    if (студент) {
+        абзаци.push(new D.Paragraph({
+            children: [new D.TextRun({ text: "Виконав(ла): " + студент, ...шрифтОсновний })],
+            alignment: D.AlignmentType.RIGHT,
+            spacing: { after: 60 }
+        }));
+    }
 
     var рядокГрупи = "";
     if (група) рядокГрупи += "групи " + група;
@@ -370,14 +457,44 @@ function завантажитиТитулку() {
         }));
     }
 
-    var виклWord = "Перевірив(ла): ";
-    if (викладачПосада) виклWord += викладачПосада + " ";
-    виклWord += (викладач || "викладач");
-    абзаци.push(new D.Paragraph({
-        children: [new D.TextRun({ text: виклWord, ...шрифтОсновний })],
-        alignment: D.AlignmentType.RIGHT,
-        spacing: { after: 60 }
-    }));
+    // Викладач (тільки якщо введено викладача)
+    if (викладач) {
+        var виклWord = "Перевірив(ла): ";
+        if (викладачПосада) виклWord += викладачПосада + " ";
+        виклWord += викладач;
+        абзаци.push(new D.Paragraph({
+            children: [new D.TextRun({ text: виклWord, ...шрифтОсновний })],
+            alignment: D.AlignmentType.RIGHT,
+            spacing: { after: 60 }
+        }));
+    }
+
+    // Власні додані поля
+    власніПоляТитулки.forEach(function(item) {
+        if (item.назва || item.значення) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: item.назва + ": " + item.значення, ...шрифтОсновний })],
+                alignment: D.AlignmentType.RIGHT,
+                spacing: { after: 60 }
+            }));
+        }
+    });
+
+    // Місто та рік (тільки якщо вказано хоча б одне)
+    var рядокНиз = "";
+    if (місто && рік) рядокНиз = місто + " — " + рік;
+    else if (місто) рядокНиз = місто;
+    else if (рік) рядокНиз = рік;
+
+    if (рядокНиз) {
+        for (var k = 0; k < 4; k++) {
+            абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
+        }
+        абзаци.push(new D.Paragraph({
+            children: [new D.TextRun({ text: рядокНиз, ...шрифтОсновний })],
+            alignment: D.AlignmentType.CENTER
+        }));
+    }
 
     // Власні додані поля
     власніПоляТитулки.forEach(function(item) {

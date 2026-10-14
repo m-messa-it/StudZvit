@@ -127,9 +127,12 @@
             <div class="page-header">
                 <div>
                     <h2 class="page-title">Генератор титульної сторінки</h2>
-                    <p class="page-subtitle">Заповнюйте як стандартні, так і власні поля. Макет А4 оновлюється на льоту.</p>
+                    <p class="page-subtitle">Заповнюйте лише ті поля, які вам потрібні. Усе порожнє не з'являється на бланку.</p>
                 </div>
-                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Заповнити зразок</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="очиститиФормуТитулки()">🧹 Очистити форму</button>
+                </div>
             </div>
 
             <div class="generator-grid">
@@ -290,7 +293,7 @@
                             </div>
 
                             <div class="a4-bottom-section">
-                                <span id="прев-місто">Київ</span> — <span id="прев-рік">2026</span>
+                                <span id="прев-місто-рік"></span>
                             </div>
                         </div>
                     </div>
