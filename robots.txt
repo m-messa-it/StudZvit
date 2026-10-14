@@ -1,3 +1,4 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
-Sitemap: https://movdiichukit2007-netizen.github.io/StudZvit/sitemap.xml
+Sitemap: https://m-messa-it.github.io/StudZvit/sitemap.xml
+
