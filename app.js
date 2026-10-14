@@ -1,16 +1,18 @@
 // ============================================================
 // StudDoc — Логіка веб-сервісу автоматизованого формування
 // студентської документації та нормоконтролю
-// Без обмежень, без обов'язкових блокувань
+// Без обмежень, з підтримкою довільних користувацьких розділів
 // ============================================================
 
 // Змінні стану
 let поточнийМасштаб = 1;
 let контрольніЗапитання = [];
 let списокДжерел = [];
+let власніПоляТитулки = []; // [{ назва: "Рецензент", значення: "проф. Коваль В. І." }]
+let власніРозділиЗвіту = []; // [{ назва: "Вступ", текст: "..." }]
 
 // ============================================================
-// 1. СИСТЕМА СПОВІЩЕНЬ (TOAST ЗАМІСТЬ ALERT)
+// 1. СИСТЕМА СПОВІЩЕНЬ (TOAST)
 // ============================================================
 
 function показатиСповіщення(повідомлення, тип) {
@@ -60,7 +62,7 @@ function перейтиДо(ідСторінки) {
 }
 
 // ============================================================
-// 3. ПРОФІЛЬ СТУДЕНТА (НЕ БЛОКУЄ, МОЖНА ОЧИСТИТИ)
+// 3. ПРОФІЛЬ СТУДЕНТА (LOCALSTORAGE)
 // ============================================================
 
 function завантажитиПрофіль() {
@@ -70,7 +72,6 @@ function завантажитиПрофіль() {
     try {
         var дані = JSON.parse(збережене);
 
-        // Поля титулки
         if (дані.піб) document.getElementById("студент-піб").value = дані.піб;
         if (дані.група) document.getElementById("група").value = дані.група;
         if (дані.курс) document.getElementById("курс").value = дані.курс;
@@ -78,16 +79,13 @@ function завантажитиПрофіль() {
         if (дані.спеціальність) document.getElementById("спеціальність").value = дані.спеціальність;
         if (дані.викладач) document.getElementById("викладач-піб").value = дані.викладач;
 
-        // Поля модалки
         if (дані.піб) document.getElementById("проф-піб").value = дані.піб;
         if (дані.група) document.getElementById("проф-група").value = дані.група;
         if (дані.курс) document.getElementById("проф-курс").value = дані.курс;
         if (дані.заклад) document.getElementById("проф-заклад").value = дані.заклад;
         if (дані.спеціальність) document.getElementById("проф-спец").value = дані.спеціальність;
         if (дані.викладач) document.getElementById("проф-викладач").value = дані.викладач;
-    } catch (e) {
-        // ігноруємо помилки читання
-    }
+    } catch (e) {}
 }
 
 function зберегтиПрофіль() {
@@ -125,8 +123,49 @@ function закритиПрофіль() {
 }
 
 // ============================================================
-// 4. ОНОВЛЕННЯ ПОПЕРЕДНЬОГО ПЕРЕГЛЯДУ А4 В РЕАЛЬНОМУ ЧАСІ
-// (Працює навіть якщо заповнено лише одне будь-яке поле)
+// 4. ВЛАСНІ ДОДАТКОВІ ПОЛЯ ТИТУЛЬНОЇ СТОРІНКИ
+// ============================================================
+
+function додатиВласнеПолеТитулки(назваЗамовч, значЗамовч) {
+    власніПоляТитулки.push({
+        назва: назваЗамовч || "Посада / Статус",
+        значення: значЗамовч || ""
+    });
+    перемалюватиВласніПоляТитулки();
+    оновитиПрев();
+}
+
+function видалитиВласнеПолеТитулки(idx) {
+    власніПоляТитулки.splice(idx, 1);
+    перемалюватиВласніПоляТитулки();
+    оновитиПрев();
+}
+
+function оновитиЗначенняВласногоПоля(idx, поле, вал) {
+    if (власніПоляТитулки[idx]) {
+        власніПоляТитулки[idx][поле] = вал;
+        оновитиПрев();
+    }
+}
+
+function перемалюватиВласніПоляТитулки() {
+    var конт = document.getElementById("список-власних-полів-титулки");
+    if (!конт) return;
+    конт.innerHTML = "";
+
+    власніПоляТитулки.forEach(function(item, idx) {
+        var row = document.createElement("div");
+        row.className = "custom-field-row";
+        row.innerHTML = 
+            "<input type='text' class='form-control' style='flex:1;' placeholder='Назва (напр. Рецензент)' value='" + escapeHtml(item.назва) + "' oninput='оновитиЗначенняВласногоПоля(" + idx + ", \"назва\", this.value)'>" +
+            "<input type='text' class='form-control' style='flex:1.5;' placeholder='Значення (напр. доц. Коваль І. В.)' value='" + escapeHtml(item.значення) + "' oninput='оновитиЗначенняВласногоПоля(" + idx + ", \"значення\", this.value)'>" +
+            "<button class='qa-del-btn' style='position:static;' onclick='видалитиВласнеПолеТитулки(" + idx + ")'>&times;</button>";
+        конт.appendChild(row);
+    });
+}
+
+// ============================================================
+// 5. ОНОВЛЕННЯ ПОПЕРЕДНЬОГО ПЕРЕГЛЯДУ А4
 // ============================================================
 
 function оновитиПрев() {
@@ -135,33 +174,37 @@ function оновитиПрев() {
     var дисципліна = document.getElementById("дисципліна").value.trim();
     var тема = document.getElementById("тема-роботи").value.trim();
     var заклад = document.getElementById("заклад").value.trim();
+    var відділення = document.getElementById("відділення").value.trim();
+    var кафедра = document.getElementById("кафедра").value.trim();
     var студент = document.getElementById("студент-піб").value.trim();
     var група = document.getElementById("група").value.trim();
     var спеціальність = document.getElementById("спеціальність").value.trim();
     var курс = document.getElementById("курс").value.trim();
     var викладач = document.getElementById("викладач-піб").value.trim();
+    var викладачПосада = document.getElementById("викладач-посада").value.trim();
     var варіант = document.getElementById("варіант").value.trim();
     var місто = document.getElementById("місто").value.trim() || "Київ";
     var рік = document.getElementById("рік").value.trim() || String(new Date().getFullYear());
 
-    // Заклад
+    // Заклад та підрозділи
     document.getElementById("прев-заклад").textContent = заклад ? заклад.toUpperCase() : "НАЗВА НАВЧАЛЬНОГО ЗАКЛАДУ";
+    
+    var subOrg = "";
+    if (відділення) subOrg += відділення;
+    if (кафедра) subOrg += (subOrg ? " • " : "") + кафедра;
+    document.getElementById("прев-відділення-кафедра").textContent = subOrg;
 
     // Тип і номер
     var текстТипу = тип;
     if (номер) текстТипу += " № " + номер;
     document.getElementById("прев-тип").textContent = текстТипу;
 
-    // Дисципліна
+    // Дисципліна, тема, варіант
     document.getElementById("прев-дисципліна").textContent = дисципліна ? "з дисципліни «" + дисципліна + "»" : "";
-
-    // Тема
     document.getElementById("прев-тема").textContent = тема ? "Тема: " + тема : "";
-
-    // Варіант
     document.getElementById("прев-варіант").textContent = варіант ? "Варіант № " + варіант : "";
 
-    // Мета-дані (студент, група, викладач)
+    // Мета-дані (студент, група, керівник)
     document.getElementById("прев-студент").innerHTML = "<strong>Виконав(ла):</strong> " + (студент || "студент(ка)");
     
     var рядГрупи = "";
@@ -170,16 +213,31 @@ function оновитиПрев() {
     document.getElementById("прев-група").textContent = рядГрупи;
 
     document.getElementById("прев-спец").textContent = спеціальність ? "спеціальності " + спеціальність : "";
-    document.getElementById("прев-викладач").innerHTML = "<strong>Перевірив(ла):</strong> " + (викладач || "викладач");
+    
+    var виклТекст = "<strong>Перевірив(ла):</strong> ";
+    if (викладачПосада) виклТекст += викладачПосада + " ";
+    виклТекст += (викладач || "викладач");
+    document.getElementById("прев-викладач").innerHTML = виклТекст;
 
-    // Футер
+    // Власні довільні поля
+    var превВласні = document.getElementById("прев-власні-поля");
+    превВласні.innerHTML = "";
+    власніПоляТитулки.forEach(function(item) {
+        if (item.назва || item.значення) {
+            var row = document.createElement("div");
+            row.className = "a4-meta-line";
+            row.innerHTML = "<strong>" + escapeHtml(item.назва) + ":</strong> " + escapeHtml(item.значення);
+            превВласні.appendChild(row);
+        }
+    });
+
+    // Місто та рік
     document.getElementById("прев-місто").textContent = місто;
     document.getElementById("прев-рік").textContent = рік;
 
     оновитиЧекліст();
 }
 
-// Масштаб бланка
 function масштабуватиПрев(множник) {
     if (множник === 1) {
         поточнийМасштаб = 1;
@@ -193,8 +251,7 @@ function масштабуватиПрев(множник) {
 }
 
 // ============================================================
-// 5. ГЕНЕРАЦІЯ WORD (.DOCX) ДЛЯ ТИТУЛКИ
-// (ЖОДНИХ БЛОКУВАНЬ — СКАЧУЄ ЗАВЖДИ!)
+// 6. ГЕНЕРАЦІЯ WORD (.DOCX) ДЛЯ ТИТУЛКИ
 // ============================================================
 
 function завантажитиТитулку() {
@@ -209,16 +266,20 @@ function завантажитиТитулку() {
     var дисципліна = document.getElementById("дисципліна").value.trim();
     var тема = document.getElementById("тема-роботи").value.trim();
     var заклад = document.getElementById("заклад").value.trim();
+    var відділення = document.getElementById("відділення").value.trim();
+    var кафедра = document.getElementById("кафедра").value.trim();
     var студент = document.getElementById("студент-піб").value.trim();
     var група = document.getElementById("група").value.trim();
     var спеціальність = document.getElementById("спеціальність").value.trim();
     var курс = document.getElementById("курс").value.trim();
     var викладач = document.getElementById("викладач-піб").value.trim();
+    var викладачПосада = document.getElementById("викладач-посада").value.trim();
     var варіант = document.getElementById("варіант").value.trim();
     var місто = document.getElementById("місто").value.trim() || "Київ";
     var рік = document.getElementById("рік").value.trim() || String(new Date().getFullYear());
 
     var шрифтОсновний = { font: "Times New Roman", size: 28 }; // 14pt
+    var шрифтМалий = { font: "Times New Roman", size: 24 }; // 12pt
     var шрифтЖирний = { font: "Times New Roman", size: 28, bold: true };
     var шрифтЗаголовок = { font: "Times New Roman", size: 32, bold: true }; // 16pt
 
@@ -229,12 +290,20 @@ function завантажитиТитулку() {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: заклад.toUpperCase(), ...шрифтОсновний })],
             alignment: D.AlignmentType.CENTER,
-            spacing: { after: 200 }
+            spacing: { after: 80 }
         }));
     }
 
-    // Пропуски
-    for (var i = 0; i < 7; i++) {
+    if (відділення || кафедра) {
+        var sub = (відділення ? відділення : "") + (відділення && кафедра ? " • " : "") + (кафедра ? кафедра : "");
+        абзаци.push(new D.Paragraph({
+            children: [new D.TextRun({ text: sub, ...шрифтМалий })],
+            alignment: D.AlignmentType.CENTER,
+            spacing: { after: 140 }
+        }));
+    }
+
+    for (var i = 0; i < 6; i++) {
         абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
     }
 
@@ -247,7 +316,6 @@ function завантажитиТитулку() {
         spacing: { after: 120 }
     }));
 
-    // Дисципліна
     if (дисципліна) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: "з дисципліни «" + дисципліна + "»", ...шрифтОсновний })],
@@ -256,7 +324,6 @@ function завантажитиТитулку() {
         }));
     }
 
-    // Тема
     if (тема) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: "Тема: " + тема, ...шрифтЖирний, italics: true })],
@@ -265,12 +332,11 @@ function завантажитиТитулку() {
         }));
     }
 
-    // Варіант
     if (варіант) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: "Варіант " + варіант, ...шрифтОсновний })],
             alignment: D.AlignmentType.CENTER,
-            spacing: { after: 200 }
+            spacing: { after: 160 }
         }));
     }
 
@@ -304,11 +370,25 @@ function завантажитиТитулку() {
         }));
     }
 
+    var виклWord = "Перевірив(ла): ";
+    if (викладачПосада) виклWord += викладачПосада + " ";
+    виклWord += (викладач || "викладач");
     абзаци.push(new D.Paragraph({
-        children: [new D.TextRun({ text: "Перевірив(ла): " + (викладач || "викладач"), ...шрифтОсновний })],
+        children: [new D.TextRun({ text: виклWord, ...шрифтОсновний })],
         alignment: D.AlignmentType.RIGHT,
-        spacing: { after: 200 }
+        spacing: { after: 60 }
     }));
+
+    // Власні додані поля
+    власніПоляТитулки.forEach(function(item) {
+        if (item.назва || item.значення) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: item.назва + ": " + item.значення, ...шрифтОсновний })],
+                alignment: D.AlignmentType.RIGHT,
+                spacing: { after: 60 }
+            }));
+        }
+    });
 
     for (var k = 0; k < 4; k++) {
         абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
@@ -344,8 +424,6 @@ function завантажитиТитулку() {
         saveAs(blob, назваФайлу);
         оновитиЛічильникДокументів();
         показатиСповіщення("Титульну сторінку завантажено: " + назваФайлу, "успіх");
-    }).catch(function(err) {
-        показатиСповіщення("Помилка генерації документа Word", "інфо");
     });
 }
 
@@ -354,7 +432,7 @@ function друкуватиТитулку() {
 }
 
 // ============================================================
-// 6. КОНСТРУКТОР ЗВІТУ
+// 7. КОНСТРУКТОР ЗВІТУ (З ВЛАСНИМИ РОЗДІЛАМИ)
 // ============================================================
 
 function переключитиРозділ(кнопка) {
@@ -369,7 +447,62 @@ function переключитиРозділ(кнопка) {
     }
 }
 
-// Сформувати висновок за метою
+// Додавання власного довільного розділу звіту
+function додатиВласнийРозділЗвіту() {
+    var назва = prompt("Введіть назву нового розділу:", "Вступ");
+    if (!назва || !назва.trim()) return;
+
+    var новийІндекс = власніРозділиЗвіту.length;
+    власніРозділиЗвіту.push({
+        назва: назва.trim(),
+        текст: ""
+    });
+
+    перемалюватиВласніРозділиЗвіту();
+    показатиСповіщення("Розділ «" + назва + "» успішно додано!", "успіх");
+    оновитиЧекліст();
+}
+
+function видалитиВласнийРозділЗвіту(idx) {
+    власніРозділиЗвіту.splice(idx, 1);
+    перемалюватиВласніРозділиЗвіту();
+    оновитиЧекліст();
+}
+
+function оновитиТекстВласногоРозділу(idx, val) {
+    if (власніРозділиЗвіту[idx]) {
+        власніРозділиЗвіту[idx].текст = val;
+        оновитиЧекліст();
+    }
+}
+
+function перемалюватиВласніРозділиЗвіту() {
+    var конт = document.getElementById("користувацькі-розділи-список");
+    if (!конт) return;
+    конт.innerHTML = "";
+
+    власніРозділиЗвіту.forEach(function(item, idx) {
+        var card = document.createElement("div");
+        card.className = "accordion-section";
+        card.innerHTML = 
+            "<div style='display:flex; justify-content:space-between; align-items:center; background:#ffffff;'>" +
+            "  <button class='accordion-trigger' style='flex:1;' onclick='переключитиРозділ(this)'>" +
+            "    <div class='acc-title-left'>" +
+            "      <span class='acc-index' style='background:#ecfdf5; color:#059669;'>" + (8 + idx) + "</span>" +
+            "      <span class='acc-name'>" + escapeHtml(item.назва) + "</span>" +
+            "      <span class='acc-badge'>Власний розділ</span>" +
+            "    </div>" +
+            "    <span class='acc-toggle-icon'>&plus;</span>" +
+            "  </button>" +
+            "  <button class='qa-del-btn' style='position:static; margin-right:16px;' onclick='видалитиВласнийРозділЗвіту(" + idx + ")' title='Видалити цей розділ'>&times;</button>" +
+            "</div>" +
+            "<div class='accordion-content' style='display:none; padding-top:16px;'>" +
+            "  <textarea class='form-control' rows='5' placeholder='Введіть зміст розділу «" + escapeHtml(item.назва) + "»...' oninput='оновитиТекстВласногоРозділу(" + idx + ", this.value)'>" + escapeHtml(item.текст) + "</textarea>" +
+            "</div>";
+        конт.appendChild(card);
+    });
+}
+
 function згенеруватиВисновокЗаМетою() {
     var мета = document.getElementById("мета-роботи").value.trim();
     var тема = document.getElementById("тема-роботи").value.trim();
@@ -393,7 +526,6 @@ function згенеруватиВисновокЗаМетою() {
     оновитиЧекліст();
 }
 
-// Контрольні запитання
 function додатиЗапитання() {
     var п = document.getElementById("нове-запитання").value.trim();
     var в = document.getElementById("нова-відповідь").value.trim();
@@ -442,8 +574,9 @@ function попереднійПерегляд(input) {
                 var img = document.createElement("img");
                 img.src = e.target.result;
                 img.style.maxHeight = "90px";
-                img.style.borderRadius = "6px";
+                img.style.borderRadius = "8px";
                 img.style.border = "1px solid #cbd5e1";
+                img.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
                 прев.appendChild(img);
             };
             reader.readAsDataURL(file);
@@ -452,7 +585,7 @@ function попереднійПерегляд(input) {
     }
 }
 
-// Експорт повного звіту у Word
+// Експорт повного звіту у Word (.docx)
 function завантажитиЗвіт() {
     var D = window.docx;
     if (!D) {
@@ -563,9 +696,17 @@ function завантажитиЗвіт() {
         });
     }
 
-    // 7. Список використаних джерел (ДСТУ 8302:2015)
+    // 7. Власні користувацькі розділи
+    власніРозділиЗвіту.forEach(function(r, i) {
+        if (r.назва && r.текст) {
+            додатиЗаголовок((7 + i) + ". " + r.назва.toUpperCase());
+            додатиТекст(r.текст);
+        }
+    });
+
+    // 8. Список джерел (ДСТУ)
     if (списокДжерел.length > 0) {
-        додатиЗаголовок("7. СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ");
+        додатиЗаголовок("СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ");
         списокДжерел.forEach(function(item, idx) {
             абзаци.push(new D.Paragraph({
                 children: [new D.TextRun({ text: (idx + 1) + ". " + item, ...шрифт })],
@@ -576,7 +717,6 @@ function завантажитиЗвіт() {
         });
     }
 
-    // Якщо все порожнє — все одно даємо зберегти заготовку
     if (абзаци.length === 0) {
         додатиЗаголовок("ЗВІТ З НАВЧАЛЬНОЇ РОБОТИ");
         додатиТекст("Шаблон сформовано за стандартами ДСТУ 3008:2015.");
@@ -614,7 +754,8 @@ function зберегтиЧернетку() {
         код: document.getElementById("код-програми").value,
         результати: document.getElementById("результати").value,
         висновки: document.getElementById("висновки").value,
-        запитання: контрольніЗапитання
+        запитання: контрольніЗапитання,
+        власніРозділи: власніРозділиЗвіту
     };
     localStorage.setItem("studdoc_draft", JSON.stringify(чернетка));
     показатиСповіщення("Чернетку збережено локально!", "успіх");
@@ -635,6 +776,10 @@ function завантажитиЧернетку() {
             контрольніЗапитання = d.запитання;
             перемалюватиЗапитання();
         }
+        if (d.власніРозділи) {
+            власніРозділиЗвіту = d.власніРозділи;
+            перемалюватиВласніРозділиЗвіту();
+        }
     } catch (e) {}
 }
 
@@ -644,14 +789,16 @@ function очиститиЗвіт() {
         if (el) el.value = "";
     });
     контрольніЗапитання = [];
+    власніРозділиЗвіту = [];
     перемалюватиЗапитання();
+    перемалюватиВласніРозділиЗвіту();
     localStorage.removeItem("studdoc_draft");
     показатиСповіщення("Поля звіту очищено", "інфо");
     оновитиЧекліст();
 }
 
 // ============================================================
-// 7. НОРМОКОНТРОЛЬ ТЕКСТУ
+// 8. НОРМОКОНТРОЛЬ ТЕКСТУ
 // ============================================================
 
 function виконатиНормоконтроль() {
@@ -678,7 +825,7 @@ function виконатиНормоконтроль() {
         результат = безПодвійних;
     }
 
-    // 3. Пробіли перед знаками пунктцації
+    // 3. Пробіли перед знаками пунктуації
     var безПробілівПеред = результат.replace(/ +([,.:;?!])/g, "$1");
     if (безПробілівПеред !== результат) {
         виправлення.push("Виправлено пробіли перед знаками пунктуації");
@@ -699,7 +846,7 @@ function виконатиНормоконтроль() {
         результат = зЯлинками;
     }
 
-    // 6. Тире між словами (довге тире замість дефісу)
+    // 6. Тире між словами
     var зТире = результат.replace(/ - /g, " — ");
     if (зТире !== результат) {
         виправлення.push("Замінено дефіси між словами на довге тире (—)");
@@ -715,7 +862,6 @@ function виконатиНормоконтроль() {
 
     document.getElementById("вихідний-текст").value = результат;
 
-    // Звіт виправлень
     var звітБлок = document.getElementById("звіт-перевірки");
     var списокТегів = document.getElementById("список-виправлень");
     списокТегів.innerHTML = "";
@@ -732,9 +878,8 @@ function виконатиНормоконтроль() {
     }
     звітБлок.style.display = "block";
 
-    // Оновлення лічильника слів
     var кстьСлів = (результат.match(/\S+/g) || []).length;
-    var поточніСлова = parseInt(localStorage.getItem("studdoc_words") || "0") + кстьСлів;
+    var поточніСлова = parseInt(localStorage.getItem("studdoc_words") || "340") + кстьСлів;
     localStorage.setItem("studdoc_words", String(поточніСлова));
     document.getElementById("stat-words").textContent = поточніСлова;
 
@@ -772,7 +917,7 @@ function вставитиПрикладПомилок() {
 }
 
 // ============================================================
-// 8. ГЕНЕРАТОР СПИСКУ ДЖЕРЕЛ (ДСТУ 8302:2015)
+// 9. СПИСОК ДЖЕРЕЛ (ДСТУ 8302:2015)
 // ============================================================
 
 function перемкнутиПоляДжерела() {
@@ -817,7 +962,6 @@ function додатиДжерелоВСписок() {
 
     списокДжерел.push(запис.trim());
 
-    // Очищення полів вводу
     document.getElementById("джерело-назва").value = "";
     document.getElementById("джерело-автор").value = "";
     document.getElementById("джерело-url").value = "";
@@ -874,7 +1018,7 @@ function перенестиДжерелаУЗвіт() {
 }
 
 // ============================================================
-// 9. АНАЛІТИКА ТА ЧЕК-ЛІСТ ДСТУ
+// 10. АНАЛІТИКА, ПРОГРЕС ТА ЧЕК-ЛІСТ
 // ============================================================
 
 function оновитиЧекліст() {
@@ -888,8 +1032,24 @@ function оновитиЧекліст() {
     встановитиСтатусЧек("chk-body", !!хід);
     встановитиСтатусЧек("chk-conc", !!висн);
 
+    // Розрахунок відсотка прогресу
+    var балів = 0;
+    if (ст) балів += 25;
+    if (мета) балів += 25;
+    if (хід) балів += 25;
+    if (висн) балів += 25;
+
+    var elPercent = document.getElementById("progress-percent");
+    var elFill = document.getElementById("progress-fill");
+    if (elPercent) elPercent.textContent = балів + "%";
+    if (elFill) elFill.style.width = балів + "%";
+
     // Підрахунок обсягу
     var повнийТекст = (мета + " " + хід + " " + висн).trim();
+    власніРозділиЗвіту.forEach(function(r) {
+        if (r.текст) повнийТекст += " " + r.текст;
+    });
+
     var кстьЗнаків = повнийТекст.length;
     var сторінок = кстьЗнаків > 0 ? (кстьЗнаків / 1800).toFixed(1) : "0";
 
@@ -910,7 +1070,7 @@ function встановитиСтатусЧек(id, виконано) {
 }
 
 // ============================================================
-// 10. ЗАПОВНЕННЯ ДЕМО-ПРИКЛАДОМ В ОДИН КЛІК
+// 11. ЗАПОВНЕННЯ ЗРАЗКА (ДЕМО)
 // ============================================================
 
 function заповнитиДемо() {
@@ -918,15 +1078,25 @@ function заповнитиДемо() {
     document.getElementById("номер-роботи").value = "4";
     document.getElementById("варіант").value = "3";
     document.getElementById("дисципліна").value = "Об'єктно-орієнтоване програмування";
-    document.getElementById("тема-роботи").value = "Побудова трирівневої архітектури інформаційної системи";
+    document.getElementById("тема-роботи").value = "Побудова трирівневої архітектури програмного комплексу";
     document.getElementById("заклад").value = "Відокремлений структурний підрозділ «Фаховий коледж»";
+    document.getElementById("відділення").value = "Відділення комп'ютерних технологій";
+    document.getElementById("кафедра").value = "Циклова комісія інженерії ПЗ";
     document.getElementById("студент-піб").value = "Шевченко Т. Г.";
     document.getElementById("група").value = "ІПЗ-21";
     document.getElementById("спеціальність").value = "121 Інженерія програмного забезпечення";
     document.getElementById("курс").value = "3";
-    document.getElementById("викладач-піб").value = "доц. Петренко П. П.";
+    document.getElementById("викладач-піб").value = "Петренко П. П.";
+    document.getElementById("викладач-посада").value = "доцент, к.т.н.";
     document.getElementById("місто").value = "Київ";
     document.getElementById("рік").value = "2026";
+
+    // Додаємо зразок власного поля титулки
+    власніПоляТитулки = [
+        { назва: "Рецензент", значення: "проф. Коваль В. І." },
+        { назва: "Оцінка", значення: "«Зараховано»" }
+    ];
+    перемалюватиВласніПоляТитулки();
 
     // Дані для конструктора
     document.getElementById("мета-роботи").value = 
@@ -940,26 +1110,29 @@ function заповнитиДемо() {
     document.getElementById("висновки").value = 
         "У ході виконання роботи було успішно освоєно принципи побудови багатошарових додатків. Розроблено діючий прототип системи та протестовано основні модулі.";
 
+    // Додаємо зразок власного розділу звіту
+    власніРозділиЗвіту = [
+        { назва: "Вступ", текст: "Сучасна розробка програмного забезпечення вимагає чіткого структурування коду та дотримання стандартів інженерії." }
+    ];
+    перемалюватиВласніРозділиЗвіту();
+
     оновитиПрев();
     показатиСповіщення("Зразок даних завантажено!", "успіх");
 }
 
 function оновитиЛічильникДокументів() {
-    var п = parseInt(localStorage.getItem("studdoc_docs") || "0") + 1;
+    var п = parseInt(localStorage.getItem("studdoc_docs") || "1") + 1;
     localStorage.setItem("studdoc_docs", String(п));
     var el = document.getElementById("stat-docs");
     if (el) el.textContent = п;
 }
 
-// Допоміжні функції
 function escapeHtml(str) {
     if (!str) return "";
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-// Ініціалізація при завантаженні сторінки
 window.addEventListener("DOMContentLoaded", function() {
-    // Лічильники
     var docs = localStorage.getItem("studdoc_docs") || "1";
     var words = localStorage.getItem("studdoc_words") || "340";
     if (document.getElementById("stat-docs")) document.getElementById("stat-docs").textContent = docs;

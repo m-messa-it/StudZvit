@@ -8,10 +8,10 @@
 </head>
 <body>
 
-    <!-- Верхній інформаційний банер гарантії безкоштовності -->
+    <!-- Жвавий верхній інформаційний банер -->
     <div class="top-banner">
-        <span class="badge">Безкоштовно</span>
-        <span>StudDoc — 100% безкоштовний відкритий студентський сервіс • Повний безліміт на генерацію документів та сторінок</span>
+        <span class="badge">100% Безкоштовно</span>
+        <span>StudDoc — Відкритий студентський сервіс без обмежень • Безлімітна генерація документів, сторінок та перевірок</span>
     </div>
 
     <!-- Головна навігаційна панель -->
@@ -32,7 +32,7 @@
             </nav>
 
             <div class="nav-actions">
-                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">Зразок</button>
+                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                 <button class="btn-profile" onclick="відкритиПрофіль()">
                     <span>Мій профіль</span>
                 </button>
@@ -46,75 +46,78 @@
         <!-- ==================== 1. ГОЛОВНА СТОРІНКА ==================== -->
         <section id="головна" class="page-view">
             <div class="hero-card">
-                <div class="hero-pill">Академічний стандарт ДСТУ 3008:2015</div>
-                <h1 class="hero-title">Автоматизоване створення студентської звітності</h1>
+                <div class="hero-pill">
+                    <span class="pulse-dot"></span>
+                    <span>Академічний стандарт ДСТУ 3008:2015 • Безлімітний режим</span>
+                </div>
+                <h1 class="hero-title">Розумний генератор студентської документації</h1>
                 <p class="hero-desc">
-                    Генеруйте титульні сторінки за секунду, складайте структуровані звіти з лабораторних та практичних робіт, перевіряйте текст на типографічні норми та експортуйте готовий результат у Microsoft Word (.docx) або PDF.
+                    Повна свобода заповнення: створюйте титульні сторінки з будь-якими власними полями, збирайте індивідуальні звіти з довільними розділами, виконуйте автоматичний нормоконтроль та завантажуйте файл Word (.docx) в один клік без обмежень.
                 </p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="перейтиДо('титулка')">Створити титульну сторінку</button>
-                    <button class="btn btn-secondary" onclick="перейтиДо('конструктор')">Зібрати повний звіт</button>
-                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">Перевірити нормоконтроль</button>
+                    <button class="btn btn-primary" onclick="перейтиДо('титулка')">✨ Створити титульну сторінку</button>
+                    <button class="btn btn-secondary" onclick="перейтиДо('конструктор')">📝 Скласти звіт</button>
+                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Нормоконтроль тексту</button>
                 </div>
             </div>
 
             <!-- Банер відсутності обмежень -->
             <div class="guarantee-card">
                 <div class="guarantee-content">
-                    <h3>100% Безкоштовний сервіс без лімітів та підписок</h3>
-                    <p>На відміну від комерційних сайтів, у StudDoc немає плати за скачування, водяних знаків чи ліміту на кількість сторінок. Генеруйте стільки документів, скільки потрібно для навчання.</p>
+                    <h3>Повний безліміт назавжди: 0 ₴ та жодних обмежень</h3>
+                    <p>Заповнюйте будь-яку кількість даних, додавайте власні розділи та поля, завантажуйте готові документи Word або PDF стільки разів, скільки потрібно. Без реклами, платних підписок та ліміту на сторінки.</p>
                 </div>
-                <div class="guarantee-badge">Безліміт назавжди</div>
+                <div class="guarantee-badge">Безкоштовно назавжди</div>
             </div>
 
             <!-- Сітка можливостей -->
             <div class="features-grid">
                 <div class="feature-box" onclick="перейтиДо('титулка')">
-                    <div class="feature-icon-badge">1</div>
-                    <h3>Генератор титульних сторінок</h3>
-                    <p>Миттєве формування титулки за офіційними вимогами коледжів та університетів. Інтерактивний попередній перегляд аркуша А4 у реальному часі.</p>
-                    <span class="feature-link">Відкрити генератор &rarr;</span>
+                    <div class="feature-icon-badge">📄</div>
+                    <h3>Гнучкий генератор титульних</h3>
+                    <p>Формування титулки під будь-який заклад. Можливість додавати власні поля: кафедра, відділення, рецензент, комісія тощо. Інтерактивний бланк А4.</p>
+                    <span class="feature-link">Перейти до генератора &rarr;</span>
                 </div>
 
                 <div class="feature-box" onclick="перейтиДо('конструктор')">
-                    <div class="feature-icon-badge">2</div>
-                    <h3>Конструктор повного звіту</h3>
-                    <p>Покроковий збір звіту: тема, мета, хід виконання, таблиці, блоки з кодом програм, скріншоти результатів та висновки.</p>
-                    <span class="feature-link">Скласти звіт &rarr;</span>
+                    <div class="feature-icon-badge">🛠️</div>
+                    <h3>Конструктор довільних звітів</h3>
+                    <p>Додавайте будь-які власні розділи звіту («Вступ», «Аналіз», «Додатки»). Підтримка лістингу коду, скріншотів, відповідей на запитання та висновків.</p>
+                    <span class="feature-link">Скласти структуру &rarr;</span>
                 </div>
 
                 <div class="feature-box" onclick="перейтиДо('нормоконтроль')">
-                    <div class="feature-icon-badge">3</div>
+                    <div class="feature-icon-badge">✨</div>
                     <h3>Автоматичний нормоконтроль</h3>
-                    <p>Виправлення типових помилок: лапки-«ялинки», тире замість дефісів, правильні українські апострофи, видалення подвійних пробілів.</p>
-                    <span class="feature-link">Запустити перевірку &rarr;</span>
+                    <p>Миттєве виправлення типографіки: лапки «ялинки», тире замість дефісів, українські апострофи ’, прибирання подвійних пробілів.</p>
+                    <span class="feature-link">Перевірити текст &rarr;</span>
                 </div>
 
                 <div class="feature-box" onclick="перейтиДо('джерела')">
-                    <div class="feature-icon-badge">4</div>
+                    <div class="feature-icon-badge">📚</div>
                     <h3>Бібліографія за ДСТУ 8302</h3>
-                    <p>Формування бібліографічного опису джерел (книги, статті, веб-ресурси, нормативні акти) згідно з чинним стандартом України.</p>
-                    <span class="feature-link">Сформувати джерела &rarr;</span>
+                    <p>Швидке додавання книг, статей, електронних ресурсів та автоматичний експорт у фінальний список літератури вашого звіту.</p>
+                    <span class="feature-link">Оформити джерела &rarr;</span>
                 </div>
             </div>
 
             <!-- Смуга статистики -->
             <div class="stats-strip">
                 <div class="stat-item">
-                    <strong id="stat-docs">0</strong>
-                    <span>Сформовано документів</span>
+                    <strong id="stat-docs" style="color:var(--accent-primary);">1</strong>
+                    <span>Документів сформовано</span>
                 </div>
                 <div class="stat-item">
-                    <strong id="stat-words">0</strong>
-                    <span>Слів перевірено нормоконтролем</span>
+                    <strong id="stat-words" style="color:var(--accent-emerald);">340</strong>
+                    <span>Слів перевірено</span>
                 </div>
                 <div class="stat-item">
-                    <strong style="color: var(--accent-success);">Повний безліміт</strong>
-                    <span>Тариф: 0 ₴ без обмежень</span>
+                    <strong style="color: var(--accent-emerald);">🟢 Активний</strong>
+                    <span>Режим: 100% Безліміт</span>
                 </div>
                 <div class="stat-item">
                     <strong>ДСТУ 3008:2015</strong>
-                    <span>Стандарт оформлення звітів</span>
+                    <span>Стандарт оформлення</span>
                 </div>
             </div>
         </section>
@@ -122,16 +125,19 @@
         <!-- ==================== 2. ГЕНЕРАТОР ТИТУЛЬНОЇ ==================== -->
         <section id="титулка" class="page-view" style="display:none;">
             <div class="page-header">
-                <h2 class="page-title">Генератор титульної сторінки</h2>
-                <p class="page-subtitle">Введіть параметри роботи. Праворуч формується макет аркуша А4, готовий до завантаження у Word або друку в PDF.</p>
+                <div>
+                    <h2 class="page-title">Генератор титульної сторінки</h2>
+                    <p class="page-subtitle">Заповнюйте як стандартні, так і власні поля. Макет А4 оновлюється на льоту.</p>
+                </div>
+                <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Заповнити зразок</button>
             </div>
 
             <div class="generator-grid">
                 <!-- Ліва колонка: Форма -->
                 <div class="panel-card">
                     <div class="panel-top-bar">
-                        <span class="panel-top-title">Параметри титульної сторінки</span>
-                        <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">Приклад</button>
+                        <span class="panel-top-title">Основні відомості</span>
+                        <span style="font-size:12px; color:var(--text-muted);">Можна заповнювати частково</span>
                     </div>
 
                     <div class="form-group">
@@ -144,6 +150,7 @@
                             <option value="Контрольна робота">Контрольна робота</option>
                             <option value="Реферат">Реферат</option>
                             <option value="Дипломний проєкт">Дипломний проєкт</option>
+                            <option value="Самостійна робота">Самостійна робота</option>
                         </select>
                     </div>
 
@@ -154,75 +161,103 @@
                         </div>
                         <div class="form-group">
                             <label>Варіант (необов'язково)</label>
-                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 12" oninput="оновитиПрев()">
+                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 3" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Навчальна дисципліна</label>
-                        <input type="text" id="дисципліна" class="form-control" placeholder="Наприклад: Об'єктно-орієнтоване програмування" oninput="оновитиПрев()">
+                        <input type="text" id="дисципліна" class="form-control" placeholder="Введіть назву предмета..." oninput="оновитиПрев()">
                     </div>
 
                     <div class="form-group">
                         <label>Тема роботи</label>
-                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Наприклад: Реалізація клієнт-серверної архітектури для обліку даних" oninput="оновитиПрев()"></textarea>
+                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Введіть тему роботи..." oninput="оновитиПрев()"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Повна назва навчального закладу</label>
-                        <input type="text" id="заклад" class="form-control" placeholder="ВСП «Фаховий коледж...»" oninput="оновитиПрев()">
+                        <label>Навчальний заклад</label>
+                        <input type="text" id="заклад" class="form-control" placeholder="Введіть заклад освіти..." oninput="оновитиПрев()">
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Факультет / Відділення (необов'язково)</label>
+                            <input type="text" id="відділення" class="form-control" placeholder="Відділення програмування..." oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Кафедра / Комісія (необов'язково)</label>
+                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія комп'ютерних наук..." oninput="оновитиПрев()">
+                        </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
                             <label>ПІБ студента</label>
-                            <input type="text" id="студент-піб" class="form-control" placeholder="Шевченко Т. Г." oninput="оновитиПрев()">
+                            <input type="text" id="студент-піб" class="form-control" placeholder="Введіть ПІБ студента..." oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Академічна група</label>
-                            <input type="text" id="група" class="form-control" placeholder="ІПЗ-21" oninput="оновитиПрев()">
+                            <label>Група</label>
+                            <input type="text" id="група" class="form-control" placeholder="Наприклад: ІПЗ-21" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
                             <label>Спеціальність</label>
-                            <input type="text" id="спеціальність" class="form-control" placeholder="121 Інженерія програмного забезпечення" oninput="оновитиПрев()">
+                            <input type="text" id="спеціальність" class="form-control" placeholder="Наприклад: 121 Інженерія ПЗ" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
                             <label>Курс</label>
-                            <input type="text" id="курс" class="form-control" placeholder="2" oninput="оновитиПрев()">
+                            <input type="text" id="курс" class="form-control" placeholder="Наприклад: 2" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
                             <label>ПІБ викладача / керівника</label>
-                            <input type="text" id="викладач-піб" class="form-control" placeholder="доц. Петренко П. П." oninput="оновитиПрев()">
+                            <input type="text" id="викладач-піб" class="form-control" placeholder="Введіть ПІБ керівника..." oninput="оновитиПрев()">
                         </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Місто</label>
-                                <input type="text" id="місто" class="form-control" placeholder="Київ" oninput="оновитиПрев()">
-                            </div>
-                            <div class="form-group">
-                                <label>Рік</label>
-                                <input type="text" id="рік" class="form-control" placeholder="2026" oninput="оновитиПрев()">
-                            </div>
+                        <div class="form-group">
+                            <label>Посада / звання керівника</label>
+                            <input type="text" id="викладач-посада" class="form-control" placeholder="викладач / доцент / професор" oninput="оновитиПрев()">
                         </div>
                     </div>
 
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Місто</label>
+                            <input type="text" id="місто" class="form-control" placeholder="Київ" oninput="оновитиПрев()">
+                        </div>
+                        <div class="form-group">
+                            <label>Рік</label>
+                            <input type="text" id="рік" class="form-control" placeholder="2026" oninput="оновитиПрев()">
+                        </div>
+                    </div>
+
+                    <!-- Блок додаткових власних полів -->
+                    <div class="custom-fields-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <label style="font-size:13px; font-weight:700; color:var(--text-primary);">+ Власні довільні поля титулки</label>
+                            <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнеПолеТитулки()">+ Додати поле</button>
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">
+                            Потрібно додати рецензента, оцінку чи консультанта? Додайте будь-який рядок:
+                        </p>
+                        <div id="список-власних-полів-титулки"></div>
+                    </div>
+
                     <div class="btn-group-actions">
-                        <button class="btn btn-primary" onclick="завантажитиТитулку()">Завантажити .docx (Word)</button>
-                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">Друк / PDF</button>
-                        <button class="btn btn-outline-primary" onclick="зберегтиПрофіль()">Зберегти в профіль</button>
+                        <button class="btn btn-primary" onclick="завантажитиТитулку()">📄 Завантажити .docx (Word)</button>
+                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк / PDF</button>
+                        <button class="btn btn-outline-primary" onclick="зберегтиПрофіль()">💾 Зберегти профіль</button>
                     </div>
                 </div>
 
                 <!-- Права колонка: Інтерактивний бланк А4 -->
                 <div class="preview-container">
                     <div class="preview-toolbar">
-                        <span class="preview-title-badge">Попередній перегляд (Формат А4 за ДСТУ)</span>
+                        <span class="preview-title-badge">Живий бланк А4 (ДСТУ 3008:2015)</span>
                         <div class="preview-zoom-btns">
                             <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(0.9)">-</button>
                             <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(1)">100%</button>
@@ -234,21 +269,23 @@
                         <div class="a4-paper" id="прев-титулка">
                             <div class="a4-top-section">
                                 <div class="a4-org" id="прев-заклад">НАЗВА НАВЧАЛЬНОГО ЗАКЛАДУ</div>
+                                <div class="a4-suborg" id="прев-відділення-кафедра"></div>
                             </div>
 
                             <div class="a4-middle-section">
                                 <div class="a4-doc-title" id="прев-тип">ПРАКТИЧНА РОБОТА</div>
-                                <div class="a4-doc-disc" id="прев-дисципліна">з дисципліни «Назва дисципліни»</div>
-                                <div class="a4-doc-topic" id="прев-тема">Тема: Назва теми навчальної роботи</div>
+                                <div class="a4-doc-disc" id="прев-дисципліна"></div>
+                                <div class="a4-doc-topic" id="прев-тема"></div>
                                 <div class="a4-doc-variant" id="прев-варіант"></div>
                             </div>
 
                             <div class="a4-meta-section">
                                 <div class="a4-meta-block">
                                     <div class="a4-meta-line" id="прев-студент"><strong>Виконав(ла):</strong> студент(ка)</div>
-                                    <div class="a4-meta-line" id="прев-група">групи ІПЗ-21</div>
-                                    <div class="a4-meta-line" id="прев-спец">спеціальності 121</div>
+                                    <div class="a4-meta-line" id="прев-група"></div>
+                                    <div class="a4-meta-line" id="прев-спец"></div>
                                     <div class="a4-meta-line" id="прев-викладач" style="margin-top: 10px;"><strong>Перевірив(ла):</strong> викладач</div>
+                                    <div id="прев-власні-поля" class="a4-custom-rows"></div>
                                 </div>
                             </div>
 
@@ -264,8 +301,14 @@
         <!-- ==================== 3. КОНСТРУКТОР ЗВІТУ ==================== -->
         <section id="конструктор" class="page-view" style="display:none;">
             <div class="page-header">
-                <h2 class="page-title">Конструктор повного звіту</h2>
-                <p class="page-subtitle">Складіть структуру навчального звіту. Кожен розділ відповідає загальноприйнятим стандартам вищих та фахових навчальних закладів.</p>
+                <div>
+                    <h2 class="page-title">Конструктор повного звіту</h2>
+                    <p class="page-subtitle">Будуйте структуру звіту: заповнюйте стандартні розділи або створюйте власні довільні блоки.</p>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнийРозділЗвіту()">+ Додати власний розділ</button>
+                    <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Заповнити зразок</button>
+                </div>
             </div>
 
             <div class="builder-layout">
@@ -284,7 +327,7 @@
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
                             <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
-                                Дані для титульної сторінки автоматично беруться з вкладки «Титульна сторінка». Ви можете відредагувати їх у будь-який момент.
+                                Дані для титульної сторінки беруться з вкладки «Титульна сторінка». Усе, що ви там вказали, буде автоматично додано до звіту.
                             </p>
                             <button class="btn btn-sm btn-outline-primary" onclick="перейтиДо('титулка')">Налаштувати титульну сторінку</button>
                         </div>
@@ -300,7 +343,7 @@
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
-                            <textarea id="мета-роботи" class="form-control" rows="4" placeholder="Опишіть мету роботи. Наприклад: Засвоїти практичні навички проектування та розробки архітектури додатків..."></textarea>
+                            <textarea id="мета-роботи" class="form-control" rows="4" placeholder="Опишіть мету та завдання роботи..." oninput="оновитиЧекліст()"></textarea>
                         </div>
                     </div>
 
@@ -315,7 +358,7 @@
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
-                            <textarea id="теорія" class="form-control" rows="5" placeholder="Основні теоретичні поняття, терміни, алгоритми або математичні моделі..."></textarea>
+                            <textarea id="теорія" class="form-control" rows="5" placeholder="Основні теоретичні поняття, формули чи визначення..."></textarea>
                         </div>
                     </div>
 
@@ -329,15 +372,15 @@
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
-                            <label style="font-size:13px; font-weight:600; margin-bottom:6px; display:block;">Опис послідовності виконання:</label>
-                            <textarea id="хід-роботи" class="form-control" rows="6" placeholder="1. Ознайомлення з завданням...&#10;2. Створення проекту...&#10;3. Реалізація базової логіки..."></textarea>
+                            <label style="font-size:13px; font-weight:700; margin-bottom:6px; display:block;">Опис послідовності виконання:</label>
+                            <textarea id="хід-роботи" class="form-control" rows="6" placeholder="Опишіть покроковий хід виконання..." oninput="оновитиЧекліст()"></textarea>
 
                             <div style="margin-top:16px;">
-                                <label style="font-size:13px; font-weight:600; margin-bottom:6px; display:block;">Вставка коду програми (моноширинний шрифт у Word):</label>
+                                <label style="font-size:13px; font-weight:700; margin-bottom:6px; display:block;">Лістинг програми (моноширинний шрифт у Word):</label>
                                 <textarea id="код-програми" class="form-control" rows="6" style="font-family: Consolas, monospace; background: #0f172a; color: #f8fafc;" placeholder="// Вставте фрагмент коду програми..."></textarea>
                                 <div class="grid-2" style="margin-top:8px;">
                                     <input type="text" id="мова-коду" class="form-control" placeholder="Мова (C#, JS, Python...)" value="C#">
-                                    <input type="text" id="назва-файлу" class="form-control" placeholder="Назва файлу (наприклад: App.cs)">
+                                    <input type="text" id="назва-файлу" class="form-control" placeholder="Назва файлу (Program.cs)">
                                 </div>
                             </div>
                         </div>
@@ -353,9 +396,9 @@
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
-                            <textarea id="результати" class="form-control" rows="3" placeholder="Опишіть успішне функціонування створеного програмного забезпечення..."></textarea>
+                            <textarea id="результати" class="form-control" rows="3" placeholder="Опишіть отримані результати тестування чи розробки..."></textarea>
                             <div style="margin-top:12px;">
-                                <label style="font-size:13px; font-weight:600; margin-bottom:6px; display:block;">Скріншоти виконання програми:</label>
+                                <label style="font-size:13px; font-weight:700; margin-bottom:6px; display:block;">Скріншоти виконання програми:</label>
                                 <input type="file" id="скріншоти" accept="image/*" multiple class="form-control" onchange="попереднійПерегляд(this)">
                                 <div id="превю-скріншотів" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
                             </div>
@@ -373,10 +416,10 @@
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <label style="font-size:13px; font-weight:600;">Формулювання висновків:</label>
-                                <button class="btn btn-sm btn-outline-primary" onclick="згенеруватиВисновокЗаМетою()">Сформувати за метою</button>
+                                <label style="font-size:13px; font-weight:700;">Текст висновку:</label>
+                                <button class="btn btn-sm btn-outline-primary" onclick="згенеруватиВисновокЗаМетою()">⚡ Сформувати за метою</button>
                             </div>
-                            <textarea id="висновки" class="form-control" rows="4" placeholder="У ході виконання роботи було успішно освоєно..."></textarea>
+                            <textarea id="висновки" class="form-control" rows="4" placeholder="Сформулюйте висновки за результатами роботи..." oninput="оновитиЧекліст()"></textarea>
                         </div>
                     </div>
 
@@ -395,16 +438,19 @@
                                 <input type="text" id="нове-запитання" class="form-control" placeholder="Контрольне запитання...">
                                 <textarea id="нова-відповідь" class="form-control" rows="2" placeholder="Відповідь на запитання..."></textarea>
                                 <div>
-                                    <button class="btn btn-sm btn-primary" onclick="додатиЗапитання()">Додати запитання</button>
+                                    <button class="btn btn-sm btn-primary" onclick="додатиЗапитання()">+ Додати запитання</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Контейнер для власних додаткових розділів -->
+                    <div id="користувацькі-розділи-список"></div>
+
                     <!-- Кнопки експорту звіту -->
                     <div class="btn-group-actions" style="margin-top:24px;">
-                        <button class="btn btn-primary" onclick="завантажитиЗвіт()">Завантажити повний звіт .docx</button>
-                        <button class="btn btn-secondary" onclick="зберегтиЧернетку()">Зберегти чернетку</button>
+                        <button class="btn btn-primary" onclick="завантажитиЗвіт()">📄 Завантажити повний звіт .docx</button>
+                        <button class="btn btn-secondary" onclick="зберегтиЧернетку()">💾 Зберегти чернетку</button>
                         <button class="btn btn-outline-primary" onclick="очиститиЗвіт()">Очистити поля</button>
                     </div>
                 </div>
@@ -414,12 +460,15 @@
                     <div class="checklist-box">
                         <div class="checklist-title">
                             <span>Готовність до здачі</span>
+                            <span id="progress-percent" style="font-size:13px; color:var(--accent-primary);">0%</span>
+                        </div>
+                        <div class="progress-wrap">
+                            <div id="progress-fill" class="progress-bar-fill"></div>
                         </div>
                         <div class="check-item" id="chk-title"><span class="check-circle">&check;</span> Титульну заповнено</div>
                         <div class="check-item" id="chk-goal"><span class="check-circle">&check;</span> Мету сформульовано</div>
                         <div class="check-item" id="chk-body"><span class="check-circle">&check;</span> Хід роботи описано</div>
                         <div class="check-item" id="chk-conc"><span class="check-circle">&check;</span> Висновки підготовлено</div>
-                        <div class="check-item" id="chk-norm"><span class="check-circle">&check;</span> Нормоконтроль пройдено</div>
                     </div>
 
                     <div class="checklist-box">
@@ -427,9 +476,9 @@
                             <span>Обсяг документа</span>
                         </div>
                         <div style="font-size:13px; color:var(--text-secondary); line-height:1.7;">
-                            <div>Орієнтовно сторінок: <strong id="calc-pages" style="color:var(--text-primary);">0</strong></div>
+                            <div>Орієнтовно сторінок А4: <strong id="calc-pages" style="color:var(--text-primary); font-size:15px;">0</strong></div>
                             <div>Кількість символів: <strong id="calc-chars" style="color:var(--text-primary);">0</strong></div>
-                            <div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">(З розрахунку 1800 знаків за ДСТУ)</div>
+                            <div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">(Стандарт ДСТУ: 1800 знаків = 1 друкований аркуш)</div>
                         </div>
                     </div>
                 </div>
@@ -439,44 +488,46 @@
         <!-- ==================== 4. НОРМОКОНТРОЛЬ ==================== -->
         <section id="нормоконтроль" class="page-view" style="display:none;">
             <div class="page-header">
-                <h2 class="page-title">Модуль автоматичного нормоконтролю</h2>
-                <p class="page-subtitle">Вставте текст вашого звіту. Сервіс знайде та виправить типові помилки друкарського набору згідно з нормами українського правопису та ДСТУ.</p>
+                <div>
+                    <h2 class="page-title">Модуль автоматичного нормоконтролю</h2>
+                    <p class="page-subtitle">Вставте текст вашого звіту. Сервіс знайде та виправить типові помилки друкарського набору згідно з нормами українського правопису та ДСТУ.</p>
+                </div>
             </div>
 
             <div class="nc-grid">
                 <div class="nc-box">
                     <div class="nc-box-header">
                         <span class="nc-box-title">Вхідний текст</span>
-                        <button class="btn btn-sm btn-secondary" onclick="вставитиПрикладПомилок()">Вставити приклад</button>
+                        <button class="btn btn-sm btn-secondary" onclick="вставитиПрикладПомилок()">⚡ Приклад з помилками</button>
                     </div>
                     <textarea id="вхідний-текст" class="nc-textarea" placeholder="Вставте текст для перевірки..."></textarea>
                     <div style="margin-top:12px;">
-                        <button class="btn btn-primary" style="width:100%;" onclick="виконатиНормоконтроль()">Перевірити та виправити текст</button>
+                        <button class="btn btn-primary" style="width:100%;" onclick="виконатиНормоконтроль()">✨ Перевірити та виправити текст</button>
                     </div>
                 </div>
 
                 <div class="nc-box">
                     <div class="nc-box-header">
                         <span class="nc-box-title">Виправлений текст за стандартом ДСТУ</span>
-                        <span class="brand-tag">Готово до копіювання</span>
+                        <span style="font-size:12px; color:var(--accent-emerald); font-weight:700;">Готово до копіювання</span>
                     </div>
                     <textarea id="вихідний-текст" class="nc-textarea" readonly placeholder="Тут з'явиться виправлений текст..."></textarea>
                     <div style="display:flex; gap:10px; margin-top:12px;">
-                        <button class="btn btn-success" style="flex:1;" onclick="скопіюватиРезультат()">Скопіювати текст</button>
-                        <button class="btn btn-secondary" style="flex:1;" onclick="перенестиУЗвіт()">Перенести у хід роботи</button>
+                        <button class="btn btn-success" style="flex:1;" onclick="скопіюватиРезультат()">📋 Скопіювати текст</button>
+                        <button class="btn btn-secondary" style="flex:1;" onclick="перенестиУЗвіт()">➡️ Перенести у звіт</button>
                     </div>
                 </div>
             </div>
 
             <!-- Звіт перевірки -->
             <div id="звіт-перевірки" class="nc-summary-card" style="display:none;">
-                <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Виконані коригування:</h3>
+                <h3 style="font-size:15px; font-weight:800; margin-bottom:8px;">Виконані коригування:</h3>
                 <div id="список-виправлень" class="nc-tags-list"></div>
             </div>
 
             <!-- Довідник правил -->
             <div class="panel-card" style="margin-top:20px;">
-                <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Які правила автоматично застосовуються:</h3>
+                <h3 style="font-size:15px; font-weight:800; margin-bottom:12px;">Які правила автоматично застосовуються:</h3>
                 <ul style="margin-left:20px; font-size:13.5px; color:var(--text-secondary); line-height:1.7;">
                     <li><strong>Друкарські лапки:</strong> заміна лапок "лапки" на українські типографічні «ялинки».</li>
                     <li><strong>Тире замість дефісів:</strong> заміна звичайних рисочок (-) між словами на довге тире (—) з пробілами.</li>
@@ -491,8 +542,10 @@
         <!-- ==================== 5. СПИСОК ДЖЕРЕЛ (ДСТУ 8302) ==================== -->
         <section id="джерела" class="page-view" style="display:none;">
             <div class="page-header">
-                <h2 class="page-title">Генератор списку використаних джерел (ДСТУ 8302:2015)</h2>
-                <p class="page-subtitle">Швидке складання бібліографічного опису книг, статей та сайтів за офіційним національним стандартом України.</p>
+                <div>
+                    <h2 class="page-title">Генератор списку використаних джерел (ДСТУ 8302:2015)</h2>
+                    <p class="page-subtitle">Швидке складання бібліографічного опису книг, статей та сайтів за офіційним національним стандартом України.</p>
+                </div>
             </div>
 
             <div class="panel-card" style="margin-bottom:24px;">
@@ -529,7 +582,7 @@
                     <div class="grid-2">
                         <div class="form-group">
                             <label>Рік видання</label>
-                            <input type="text" id="джерело-рік" class="form-control" placeholder="2023">
+                            <input type="text" id="джерело-рік" class="form-control" placeholder="2024">
                         </div>
                         <div class="form-group">
                             <label>Кількість сторінок</label>
@@ -544,7 +597,7 @@
                 </div>
 
                 <div style="margin-top:12px;">
-                    <button class="btn btn-primary" onclick="додатиДжерелоВСписок()">Додати джерело за ДСТУ</button>
+                    <button class="btn btn-primary" onclick="додатиДжерелоВСписок()">+ Додати джерело за ДСТУ</button>
                 </div>
             </div>
 
@@ -553,12 +606,12 @@
                 <div class="panel-top-bar">
                     <span class="panel-top-title">Сформований список джерел</span>
                     <div style="display:flex; gap:8px;">
-                        <button class="btn btn-sm btn-outline-primary" onclick="перенестиДжерелаУЗвіт()">Перенести у звіт</button>
-                        <button class="btn btn-sm btn-secondary" onclick="скопіюватиСписокДжерел()">Скопіювати весь список</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="перенестиДжерелаУЗвіт()">➡️ Перенести у звіт</button>
+                        <button class="btn btn-sm btn-secondary" onclick="скопіюватиСписокДжерел()">📋 Скопіювати весь список</button>
                     </div>
                 </div>
                 <div id="список-джерел-результат">
-                    <p style="font-size:13.5px; color:var(--text-muted);">Джерела ще не додані. Заповніть форму вище або скористайтеся шаблонами.</p>
+                    <p style="font-size:13.5px; color:var(--text-muted);">Джерела ще не додані. Заповніть форму вище.</p>
                 </div>
             </div>
         </section>
@@ -568,12 +621,13 @@
             <div class="about-box">
                 <h2 style="font-size:24px; font-weight:800; color:var(--text-primary); margin-bottom:12px;">Про сервіс StudDoc</h2>
                 <p>
-                    <strong>StudDoc</strong> — це сучасний веб-інструмент автоматизованого формування та нормоконтролю студентської звітної документації. Застосунок розроблено як дипломний проєкт для полегшення рутинної підготовки навчальних робіт студентів відповідно до вимог Міністерства освіти і науки України та стандартів ДСТУ.
+                    <strong>StudDoc</strong> — це сучасний веб-інструмент автоматизованого формування та нормоконтролю студентської звітної документації. Застосунок розроблено як зразковий дипломний проєкт для полегшення рутинної підготовки навчальних робіт студентів відповідно до вимог Міністерства освіти і науки України та стандартів ДСТУ.
                 </p>
 
                 <h3>Принципи роботи сервісу</h3>
                 <ul>
                     <li><strong>100% Безкоштовно та відкрито:</strong> у додатку повністю відсутні платні тарифи, приховані підписки або штучні обмеження на кількість сформованих файлів чи сторінок.</li>
+                    <li><strong>Повна гнучкість заповнення:</strong> студент не обмежений фіксованими шаблонами — можна додавати довільні власні поля титульної сторінки та створювати власні розділи звіту.</li>
                     <li><strong>Конфіденційність та безпека:</strong> усі дані зберігаються виключно на пристрої користувача за допомогою технології <code>localStorage</code>. Жодні ваші документи чи особисті відомості не передаються на сторонні сервери.</li>
                     <li><strong>Клієнтська генерація документів:</strong> файли Microsoft Word (.docx) створюються прямо у веб-браузері за допомогою нативного JavaScript без потреби у сторонньому серверному програмному забезпеченні.</li>
                 </ul>
@@ -634,7 +688,7 @@
 
                 <div class="form-group">
                     <label>ПІБ студента</label>
-                    <input type="text" id="проф-піб" class="form-control" placeholder="Шевченко Т. Г.">
+                    <input type="text" id="проф-піб" class="form-control" placeholder="Введіть ПІБ...">
                 </div>
 
                 <div class="grid-2">
