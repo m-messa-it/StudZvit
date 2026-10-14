@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Тип навчальної роботи</label>
+                        <label><input type="checkbox" id="чек-тип" checked onchange="перемкнутиПоле('тип-роботи', this.checked)"> Тип навчальної роботи</label>
                         <select id="тип-роботи" class="form-control" onchange="оновитиПрев()">
                             <option value="Практична робота" selected>Практична робота</option>
                             <option value="Лабораторна робота">Лабораторна робота</option>
@@ -159,81 +159,81 @@
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Номер роботи</label>
+                            <label><input type="checkbox" id="чек-номер" checked onchange="перемкнутиПоле('номер-роботи', this.checked)"> Номер роботи</label>
                             <input type="text" id="номер-роботи" class="form-control" placeholder="Наприклад: 4" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Варіант (необов'язково)</label>
+                            <label><input type="checkbox" id="чек-варіант" checked onchange="перемкнутиПоле('варіант', this.checked)"> Варіант</label>
                             <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 3" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Навчальна дисципліна</label>
+                        <label><input type="checkbox" id="чек-дисципліна" checked onchange="перемкнутиПоле('дисципліна', this.checked)"> Навчальна дисципліна</label>
                         <input type="text" id="дисципліна" class="form-control" placeholder="Введіть назву предмета..." oninput="оновитиПрев()">
                     </div>
 
                     <div class="form-group">
-                        <label>Тема роботи</label>
+                        <label><input type="checkbox" id="чек-тема" checked onchange="перемкнутиПоле('тема-роботи', this.checked)"> Тема роботи</label>
                         <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Введіть тему роботи..." oninput="оновитиПрев()"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Навчальний заклад</label>
+                        <label><input type="checkbox" id="чек-заклад" checked onchange="перемкнутиПоле('заклад', this.checked)"> Навчальний заклад</label>
                         <input type="text" id="заклад" class="form-control" placeholder="Введіть заклад освіти..." oninput="оновитиПрев()">
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Факультет / Відділення (необов'язково)</label>
+                            <label><input type="checkbox" id="чек-відділення" checked onchange="перемкнутиПоле('відділення', this.checked)"> Відділення / Факультет</label>
                             <input type="text" id="відділення" class="form-control" placeholder="Відділення програмування..." oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Кафедра / Комісія (необов'язково)</label>
-                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія комп'ютерних наук..." oninput="оновитиПрев()">
+                            <label><input type="checkbox" id="чек-кафедра" checked onchange="перемкнутиПоле('кафедра', this.checked)"> Кафедра / Комісія</label>
+                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія..." oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>ПІБ студента</label>
+                            <label><input type="checkbox" id="чек-студент" checked onchange="перемкнутиПоле('студент-піб', this.checked)"> ПІБ студента</label>
                             <input type="text" id="студент-піб" class="form-control" placeholder="Введіть ПІБ студента..." oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Група</label>
+                            <label><input type="checkbox" id="чек-група" checked onchange="перемкнутиПоле('група', this.checked)"> Група</label>
                             <input type="text" id="група" class="form-control" placeholder="Наприклад: ІПЗ-21" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Спеціальність</label>
+                            <label><input type="checkbox" id="чек-спец" checked onchange="перемкнутиПоле('спеціальність', this.checked)"> Спеціальність</label>
                             <input type="text" id="спеціальність" class="form-control" placeholder="Наприклад: 121 Інженерія ПЗ" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Курс</label>
+                            <label><input type="checkbox" id="чек-курс" checked onchange="перемкнутиПоле('курс', this.checked)"> Курс</label>
                             <input type="text" id="курс" class="form-control" placeholder="Наприклад: 2" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>ПІБ викладача / керівника</label>
+                            <label><input type="checkbox" id="чек-викладач" checked onchange="перемкнутиПоле('викладач-піб', this.checked)"> ПІБ викладача</label>
                             <input type="text" id="викладач-піб" class="form-control" placeholder="Введіть ПІБ керівника..." oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Посада / звання керівника</label>
+                            <label><input type="checkbox" id="чек-посада" checked onchange="перемкнутиПоле('викладач-посада', this.checked)"> Посада керівника</label>
                             <input type="text" id="викладач-посада" class="form-control" placeholder="викладач / доцент / професор" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Місто</label>
+                            <label><input type="checkbox" id="чек-місто" checked onchange="перемкнутиПоле('місто', this.checked)"> Місто</label>
                             <input type="text" id="місто" class="form-control" placeholder="Київ" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label>Рік</label>
+                            <label><input type="checkbox" id="чек-рік" checked onchange="перемкнутиПоле('рік', this.checked)"> Рік</label>
                             <input type="text" id="рік" class="form-control" placeholder="2026" oninput="оновитиПрев()">
                         </div>
                     </div>
@@ -452,9 +452,11 @@
 
                     <!-- Кнопки експорту звіту -->
                     <div class="btn-group-actions" style="margin-top:24px;">
-                        <button class="btn btn-primary" onclick="завантажитиЗвіт()">📄 Завантажити повний звіт .docx</button>
-                        <button class="btn btn-secondary" onclick="зберегтиЧернетку()">💾 Зберегти чернетку</button>
+                        <button class="btn btn-primary" onclick="завантажитиЗвіт()">📄 Завантажити звіт у Word (.docx)</button>
+                        <button class="btn btn-secondary" onclick="зберегтиЧернеткуФайлом()">💾 Завантажити чернетку у файл</button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('файл-чернетки').click()">📂 Відкрити чернетку з файлу</button>
                         <button class="btn btn-outline-primary" onclick="очиститиЗвіт()">Очистити поля</button>
+                        <input type="file" id="файл-чернетки" style="display:none;" accept=".json,.txt" onchange="завантажитиЧернеткуЗФайлу(this)">
                     </div>
                 </div>
 

@@ -168,23 +168,42 @@ function перемалюватиВласніПоляТитулки() {
 // 5. ОНОВЛЕННЯ ПОПЕРЕДНЬОГО ПЕРЕГЛЯДУ А4
 // ============================================================
 
+function чиУвімкнено(idЧекбокса) {
+    var chk = document.getElementById(idЧекбокса);
+    return chk ? chk.checked : true;
+}
+
+function перемкнутиПоле(idПоля, увімк) {
+    var el = document.getElementById(idПоля);
+    if (el) {
+        if (!увімк) {
+            el.classList.add("input-disabled");
+            el.disabled = true;
+        } else {
+            el.classList.remove("input-disabled");
+            el.disabled = false;
+        }
+    }
+    оновитиПрев();
+}
+
 function оновитиПрев() {
-    var тип = (document.getElementById("тип-роботи").value || "").toUpperCase();
-    var номер = document.getElementById("номер-роботи").value.trim();
-    var дисципліна = document.getElementById("дисципліна").value.trim();
-    var тема = document.getElementById("тема-роботи").value.trim();
-    var заклад = document.getElementById("заклад").value.trim();
-    var відділення = document.getElementById("відділення").value.trim();
-    var кафедра = document.getElementById("кафедра").value.trim();
-    var студент = document.getElementById("студент-піб").value.trim();
-    var група = document.getElementById("група").value.trim();
-    var спеціальність = document.getElementById("спеціальність").value.trim();
-    var курс = document.getElementById("курс").value.trim();
-    var викладач = document.getElementById("викладач-піб").value.trim();
-    var викладачПосада = document.getElementById("викладач-посада").value.trim();
-    var варіант = document.getElementById("варіант").value.trim();
-    var місто = document.getElementById("місто").value.trim();
-    var рік = document.getElementById("рік").value.trim();
+    var тип = (чиУвімкнено("чек-тип") ? (document.getElementById("тип-роботи").value || "") : "").toUpperCase();
+    var номер = чиУвімкнено("чек-номер") ? document.getElementById("номер-роботи").value.trim() : "";
+    var дисципліна = чиУвімкнено("чек-дисципліна") ? document.getElementById("дисципліна").value.trim() : "";
+    var тема = чиУвімкнено("чек-тема") ? document.getElementById("тема-роботи").value.trim() : "";
+    var заклад = чиУвімкнено("чек-заклад") ? document.getElementById("заклад").value.trim() : "";
+    var відділення = чиУвімкнено("чек-відділення") ? document.getElementById("відділення").value.trim() : "";
+    var кафедра = чиУвімкнено("чек-кафедра") ? document.getElementById("кафедра").value.trim() : "";
+    var студент = чиУвімкнено("чек-студент") ? document.getElementById("студент-піб").value.trim() : "";
+    var група = чиУвімкнено("чек-група") ? document.getElementById("група").value.trim() : "";
+    var спеціальність = чиУвімкнено("чек-спец") ? document.getElementById("спеціальність").value.trim() : "";
+    var курс = чиУвімкнено("чек-курс") ? document.getElementById("курс").value.trim() : "";
+    var викладач = чиУвімкнено("чек-викладач") ? document.getElementById("викладач-піб").value.trim() : "";
+    var викладачПосада = чиУвімкнено("чек-посада") ? document.getElementById("викладач-посада").value.trim() : "";
+    var варіант = чиУвімкнено("чек-варіант") ? document.getElementById("варіант").value.trim() : "";
+    var місто = чиУвімкнено("чек-місто") ? document.getElementById("місто").value.trim() : "";
+    var рік = чиУвімкнено("чек-рік") ? document.getElementById("рік").value.trim() : "";
 
     // Заклад та підрозділи
     var elЗаклад = document.getElementById("прев-заклад");
@@ -320,7 +339,7 @@ function очиститиФормуТитулки() {
     власніПоляТитулки = [];
     перемалюватиВласніПоляТитулки();
     оновитиПрев();
-    показатиСповіщення("Форму очищено! Відображатимуться лише введені вами поля.", "інфо");
+    показатиСповіщення("Форму очищено! Відображатимуться лише обрані вами поля.", "інфо");
 }
 
 function масштабуватиПрев(множник) {
@@ -346,22 +365,22 @@ function завантажитиТитулку() {
         return;
     }
 
-    var тип = (document.getElementById("тип-роботи").value || "Практична робота").toUpperCase();
-    var номер = document.getElementById("номер-роботи").value.trim();
-    var дисципліна = document.getElementById("дисципліна").value.trim();
-    var тема = document.getElementById("тема-роботи").value.trim();
-    var заклад = document.getElementById("заклад").value.trim();
-    var відділення = document.getElementById("відділення").value.trim();
-    var кафедра = document.getElementById("кафедра").value.trim();
-    var студент = document.getElementById("студент-піб").value.trim();
-    var група = document.getElementById("група").value.trim();
-    var спеціальність = document.getElementById("спеціальність").value.trim();
-    var курс = document.getElementById("курс").value.trim();
-    var викладач = document.getElementById("викладач-піб").value.trim();
-    var викладачПосада = document.getElementById("викладач-посада").value.trim();
-    var варіант = document.getElementById("варіант").value.trim();
-    var місто = document.getElementById("місто").value.trim();
-    var рік = document.getElementById("рік").value.trim();
+    var тип = (чиУвімкнено("чек-тип") ? (document.getElementById("тип-роботи").value || "Практична робота") : "").toUpperCase();
+    var номер = чиУвімкнено("чек-номер") ? document.getElementById("номер-роботи").value.trim() : "";
+    var дисципліна = чиУвімкнено("чек-дисципліна") ? document.getElementById("дисципліна").value.trim() : "";
+    var тема = чиУвімкнено("чек-тема") ? document.getElementById("тема-роботи").value.trim() : "";
+    var заклад = чиУвімкнено("чек-заклад") ? document.getElementById("заклад").value.trim() : "";
+    var відділення = чиУвімкнено("чек-відділення") ? document.getElementById("відділення").value.trim() : "";
+    var кафедра = чиУвімкнено("чек-кафедра") ? document.getElementById("кафедра").value.trim() : "";
+    var студент = чиУвімкнено("чек-студент") ? document.getElementById("студент-піб").value.trim() : "";
+    var група = чиУвімкнено("чек-група") ? document.getElementById("група").value.trim() : "";
+    var спеціальність = чиУвімкнено("чек-спец") ? document.getElementById("спеціальність").value.trim() : "";
+    var курс = чиУвімкнено("чек-курс") ? document.getElementById("курс").value.trim() : "";
+    var викладач = чиУвімкнено("чек-викладач") ? document.getElementById("викладач-піб").value.trim() : "";
+    var викладачПосада = чиУвімкнено("чек-посада") ? document.getElementById("викладач-посада").value.trim() : "";
+    var варіант = чиУвімкнено("чек-варіант") ? document.getElementById("варіант").value.trim() : "";
+    var місто = чиУвімкнено("чек-місто") ? document.getElementById("місто").value.trim() : "";
+    var рік = чиУвімкнено("чек-рік") ? document.getElementById("рік").value.trim() : "";
 
     var шрифтОсновний = { font: "Times New Roman", size: 28 }; // 14pt
     var шрифтМалий = { font: "Times New Roman", size: 24 }; // 12pt
@@ -370,7 +389,7 @@ function завантажитиТитулку() {
 
     var абзаци = [];
 
-    // Заклад (якщо є)
+    // Заклад (якщо увімкнено і є)
     if (заклад) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: заклад.toUpperCase(), ...шрифтОсновний })],
@@ -393,13 +412,15 @@ function завантажитиТитулку() {
     }
 
     // Тип роботи
-    var назваТипу = тип;
-    if (номер) назваТипу += " № " + номер;
-    абзаци.push(new D.Paragraph({
-        children: [new D.TextRun({ text: назваТипу, ...шрифтЗаголовок })],
-        alignment: D.AlignmentType.CENTER,
-        spacing: { after: 120 }
-    }));
+    if (тип) {
+        var назваТипу = тип;
+        if (номер) назваТипу += " № " + номер;
+        абзаци.push(new D.Paragraph({
+            children: [new D.TextRun({ text: назваТипу, ...шрифтЗаголовок })],
+            alignment: D.AlignmentType.CENTER,
+            spacing: { after: 120 }
+        }));
+    }
 
     if (дисципліна) {
         абзаци.push(new D.Paragraph({
@@ -429,7 +450,7 @@ function завантажитиТитулку() {
         абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
     }
 
-    // Блок студента (тільки якщо введено студента)
+    // Блок студента (тільки якщо увімкнено і введено)
     if (студент) {
         абзаци.push(new D.Paragraph({
             children: [new D.TextRun({ text: "Виконав(ла): " + студент, ...шрифтОсновний })],
@@ -457,7 +478,7 @@ function завантажитиТитулку() {
         }));
     }
 
-    // Викладач (тільки якщо введено викладача)
+    // Викладач (тільки якщо увімкнено і введено)
     if (викладач) {
         var виклWord = "Перевірив(ла): ";
         if (викладачПосада) виклWord += викладачПосада + " ";
@@ -480,7 +501,7 @@ function завантажитиТитулку() {
         }
     });
 
-    // Місто та рік (тільки якщо вказано хоча б одне)
+    // Місто та рік
     var рядокНиз = "";
     if (місто && рік) рядокНиз = місто + " — " + рік;
     else if (місто) рядокНиз = місто;
@@ -863,7 +884,7 @@ function завантажитиЗвіт() {
     });
 }
 
-function зберегтиЧернетку() {
+function зберегтиЧернеткуФайлом() {
     var чернетка = {
         мета: document.getElementById("мета-роботи").value,
         теорія: document.getElementById("теорія").value,
@@ -872,10 +893,59 @@ function зберегтиЧернетку() {
         результати: document.getElementById("результати").value,
         висновки: document.getElementById("висновки").value,
         запитання: контрольніЗапитання,
-        власніРозділи: власніРозділиЗвіту
+        власніРозділи: власніРозділиЗвіту,
+        джерела: списокДжерел,
+        дата: new Date().toISOString()
     };
+    
+    // Зберігаємо також у браузері
     localStorage.setItem("studdoc_draft", JSON.stringify(чернетка));
-    показатиСповіщення("Чернетку збережено локально!", "успіх");
+    
+    // Одразу віддаємо справжній файл для завантаження на комп'ютер!
+    var jsonStr = JSON.stringify(чернетка, null, 2);
+    var blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+    saveAs(blob, "Чернетка_звіту_StudDoc.json");
+    
+    показатиСповіщення("Файл чернетки успішно завантажено на ваш пристрій!", "успіх");
+}
+
+function зберегтиЧернетку() {
+    зберегтиЧернеткуФайлом();
+}
+
+function завантажитиЧернеткуЗФайлу(input) {
+    if (!input.files || input.files.length === 0) return;
+    var file = input.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            var d = JSON.parse(e.target.result);
+            if (d.мета !== undefined) document.getElementById("мета-роботи").value = d.мета;
+            if (d.теорія !== undefined) document.getElementById("теорія").value = d.теорія;
+            if (d.хід !== undefined) document.getElementById("хід-роботи").value = d.хід;
+            if (d.код !== undefined) document.getElementById("код-програми").value = d.код;
+            if (d.результати !== undefined) document.getElementById("результати").value = d.результати;
+            if (d.висновки !== undefined) document.getElementById("висновки").value = d.висновки;
+            if (d.запитання) {
+                контрольніЗапитання = d.запитання;
+                перемалюватиЗапитання();
+            }
+            if (d.власніРозділи) {
+                власніРозділиЗвіту = d.власніРозділи;
+                перемалюватиВласніРозділиЗвіту();
+            }
+            if (d.джерела) {
+                списокДжерел = d.джерела;
+                перемалюватиДжерела();
+            }
+            оновитиЧекліст();
+            показатиСповіщення("Чернетку з файлу «" + file.name + "» успішно відновлено!", "успіх");
+        } catch (err) {
+            показатиСповіщення("Не вдалося прочитати файл чернетки", "інфо");
+        }
+    };
+    reader.readAsText(file);
+    input.value = "";
 }
 
 function завантажитиЧернетку() {

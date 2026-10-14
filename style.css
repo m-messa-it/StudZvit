@@ -572,11 +572,26 @@ body {
     margin-bottom: 15px;
 }
 .form-group label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 13px;
     font-weight: 600;
     color: var(--text-secondary);
     margin-bottom: 6px;
+    cursor: pointer;
+    user-select: none;
+}
+.form-group label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--accent-primary);
+    cursor: pointer;
+}
+.input-disabled {
+    opacity: 0.45;
+    background-color: #f1f5f9 !important;
+    pointer-events: none;
 }
 
 .form-control {
