@@ -1378,15 +1378,11 @@ textarea.form-control {
     cursor: pointer;
     transition: var(--transition);
 }
-.nav-arrow-btn:hover:not(:disabled) {
+.nav-arrow-btn:hover {
     background: var(--accent-light);
     color: var(--accent-primary);
     border-color: var(--accent-primary);
     transform: translateY(-1px);
-}
-.nav-arrow-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
 }
 
 /* Нижня панель переходу між кроками/сторінками */
@@ -1677,6 +1673,27 @@ textarea.form-control {
     .page-nav-btn {
         width: 100% !important;
     }
+}
+
+/* Приховати вотермарки сторонніх хостингів (ship.page та подібні) */
+ship-badge,
+[class*="ship"], 
+[id*="ship"], 
+a[href*="ship.page"], 
+a[href*="ship"], 
+iframe[src*="ship"], 
+div[style*="z-index: 2147483647"], 
+div[class*="drop-badge"],
+[id*="ship-drop"],
+div:has(> a[href*="ship"]),
+div:has(> * a[href*="ship"]) {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 /* ===== ДРУК (Print CSS) ===== */

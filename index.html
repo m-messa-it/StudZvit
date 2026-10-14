@@ -47,16 +47,14 @@
     <!-- Головна навігаційна панель -->
     <header class="navbar">
         <div class="nav-container">
-            <div style="display:flex; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px;">
                 <div class="brand-wrap" onclick="перейтиДо('головна')">
                     <div class="brand-logo">SZ</div>
                     <span class="brand-name">StudZvit</span>
                 </div>
-
-                <!-- Стрілочки навігації (Назад / Вперед) -->
-                <div class="nav-history-arrows">
-                    <button class="nav-arrow-btn" id="btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад (⬅️)">&larr;</button>
-                    <button class="nav-arrow-btn" id="btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед (➡️)">&rarr;</button>
+                <div class="nav-history-arrows" style="display:inline-flex; gap:4px; margin-left:4px;">
+                    <button class="nav-arrow-btn btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592;</button>
+                    <button class="nav-arrow-btn btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">&#8594;</button>
                 </div>
             </div>
 
@@ -111,16 +109,13 @@
 
             <!-- Блок підтримки розробника (Донат на каву) -->
             <div class="donation-card">
-                <div class="donation-badge">☕ Кава для автора</div>
+                <div class="donation-badge">☕ Підтримка проєкту</div>
                 <div class="donation-body">
                     <div class="donation-icon">☕</div>
                     <div class="donation-text">
                         <h3>Сайт врятував перед здачею роботи?</h3>
-                        <p>StudZvit створений з турботою про студентів — 100% безкоштовно, безкоштовне скачування та без нав'язливої реклами. Якщо сервіс допоміг вам швидко підготувати титулку чи звіт та зекономив час, підтримайте розробника донатом на каву (20–100 грн)!</p>
-                        <div class="card-copy-box">
-                            <span class="card-number" id="card-num-text">4874 0700 1222 9983</span>
-                            <button class="btn btn-sm btn-primary" onclick="скопіюватиКартку()">📋 Скопіювати номер картки</button>
-                        </div>
+                        <p>StudZvit створений з турботою про студентів — 100% безкоштовно та без реклами. Якщо сервіс допоміг вам швидко підготувати титулку чи звіт та зекономив час, підтримайте розробника донатом на каву!</p>
+                        <button class="btn btn-primary" onclick="відкритиДонат()" style="font-weight:700;">☕ Підтримати автора (на каву)</button>
                     </div>
                 </div>
             </div>
@@ -192,7 +187,9 @@
                     <h2 class="page-title">Генератор титульної сторінки</h2>
                     <p class="page-subtitle">Заповнюйте лише ті поля, які вам потрібні. Усе порожнє не з'являється на бланку.</p>
                 </div>
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
+                    <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
                     <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
                     <button class="btn btn-sm btn-outline-primary" onclick="очиститиФормуТитулки()">🧹 Очистити форму</button>
                 </div>
@@ -339,8 +336,9 @@
                     </div>
 
                     <div class="btn-group-actions">
-                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('титулка')">👁️ Переглянути та завантажити .docx</button>
-                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк / PDF</button>
+                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('титулка')">📥 Скачати Word (.docx)</button>
+                        <button class="btn btn-secondary" onclick="завантажитиТитулкуPDF()" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; font-weight:700;">📄 Скачати PDF (.pdf)</button>
+                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк</button>
                         <button class="btn btn-outline-primary" onclick="зберегтиПрофіль()">💾 Зберегти профіль</button>
                     </div>
                 </div>
@@ -390,10 +388,10 @@
 
             <!-- Нижня навігація між вкладками (стрілочки) -->
             <div class="page-nav-bar">
-                <button class="page-nav-btn" onclick="перейтиДо('головна')">&larr; На головну</button>
-                <div style="display:flex; gap:10px;">
+                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="page-nav-btn" onclick="переглянутиПередЗавантаженням('титулка')">👁️ Перевірити документ</button>
-                    <button class="page-nav-btn primary" onclick="перейтиДо('конструктор')">До конструктора звіту &rarr;</button>
+                    <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
                 </div>
             </div>
         </section>
@@ -405,7 +403,9 @@
                     <h2 class="page-title">Конструктор повного звіту</h2>
                     <p class="page-subtitle">Будуйте структуру звіту: заповнюйте стандартні розділи або створюйте власні довільні блоки.</p>
                 </div>
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
+                    <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
                     <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнийРозділЗвіту()">+ Додати власний розділ</button>
                     <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Заповнити зразок</button>
                 </div>
@@ -601,7 +601,8 @@
 
                     <!-- Кнопки експорту звіту -->
                     <div class="btn-group-actions" style="margin-top:24px;">
-                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('звіт')">👁️ Переглянути та завантажити звіт (.docx)</button>
+                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('звіт')">📥 Скачати Word (.docx)</button>
+                        <button class="btn btn-secondary" onclick="завантажитиЗвітPDF()" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; font-weight:700;">📄 Скачати PDF (.pdf)</button>
                         <button class="btn btn-secondary" onclick="зберегтиЧернеткуФайлом()">💾 Завантажити чернетку у файл</button>
                         <button class="btn btn-secondary" onclick="document.getElementById('файл-чернетки').click()">📂 Відкрити чернетку з файлу</button>
                         <button class="btn btn-outline-primary" onclick="очиститиЗвіт()">Очистити поля</button>
@@ -640,10 +641,10 @@
 
             <!-- Нижня навігація між вкладками (стрілочки) -->
             <div class="page-nav-bar">
-                <button class="page-nav-btn" onclick="перейтиДо('титулка')">&larr; До титульної сторінки</button>
-                <div style="display:flex; gap:10px;">
+                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="page-nav-btn" onclick="переглянутиПередЗавантаженням('звіт')">👁️ Перевірити звіт</button>
-                    <button class="page-nav-btn primary" onclick="перейтиДо('нормоконтроль')">До нормоконтролю тексту &rarr;</button>
+                    <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
                 </div>
             </div>
         </section>
@@ -654,6 +655,10 @@
                 <div>
                     <h2 class="page-title">Модуль автоматичного нормоконтролю</h2>
                     <p class="page-subtitle">Вставте текст вашого звіту. Сервіс знайде та виправить типові помилки друкарського набору згідно з нормами українського правопису та ДСТУ.</p>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
+                    <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
                 </div>
             </div>
 
@@ -703,8 +708,8 @@
 
             <!-- Нижня навігація (стрілочки Назад / Вперед) -->
             <div class="page-nav-bar">
-                <button class="page-nav-btn" onclick="перейтиДо('конструктор')">&larr; До конструктора звіту</button>
-                <button class="page-nav-btn primary" onclick="перейтиДо('джерела')">До списку джерел &rarr;</button>
+                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
+                <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
             </div>
         </section>
 
@@ -714,6 +719,10 @@
                 <div>
                     <h2 class="page-title">Генератор списку використаних джерел (ДСТУ 8302:2015)</h2>
                     <p class="page-subtitle">Швидке складання бібліографічного опису книг, статей та сайтів за офіційним національним стандартом України.</p>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
+                    <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
                 </div>
             </div>
 
@@ -786,15 +795,21 @@
 
             <!-- Нижня навігація (стрілочки Назад / Вперед) -->
             <div class="page-nav-bar">
-                <button class="page-nav-btn" onclick="перейтиДо('нормоконтроль')">&larr; До нормоконтролю</button>
-                <button class="page-nav-btn primary" onclick="перейтиДо('про-сервіс')">Про сервіс &rarr;</button>
+                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
+                <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
             </div>
         </section>
 
         <!-- ==================== 6. ПРО СЕРВІС ==================== -->
         <section id="про-сервіс" class="page-view" style="display:none;">
             <div class="about-box">
-                <h2 style="font-size:24px; font-weight:800; color:var(--text-primary); margin-bottom:12px;">Про сервіс StudZvit</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                    <h2 style="font-size:24px; font-weight:800; color:var(--text-primary); margin:0;">Про сервіс StudZvit</h2>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
+                        <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
+                    </div>
+                </div>
                 <p>
                     <strong>StudZvit</strong> — це сучасний веб-інструмент автоматизованого формування та нормоконтролю студентської звітної документації. Застосунок розроблено як зразковий дипломний проєкт для полегшення рутинної підготовки навчальних робіт студентів відповідно до вимог Міністерства освіти і науки України та стандартів ДСТУ.
                 </p>
@@ -848,8 +863,8 @@
 
             <!-- Нижня навігація (стрілочки Назад / Вперед) -->
             <div class="page-nav-bar">
-                <button class="page-nav-btn" onclick="перейтиДо('джерела')">&larr; До списку джерел</button>
-                <button class="page-nav-btn primary" onclick="перейтиДо('головна')">На головну &rarr;</button>
+                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
+                <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
             </div>
         </section>
 
@@ -865,19 +880,19 @@
             <div class="modal-body" style="text-align:center; padding:24px 16px;">
                 <div style="font-size:48px; margin-bottom:10px;">☕</div>
                 <h3 style="font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:8px;">
-                    Дякуємо за вашу підтримку!
+                    Підтримати проєкт StudZvit
                 </h3>
                 <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; max-width:440px; margin:0 auto 20px;">
-                    StudZvit створений з душею для студентів та викладачів — повністю безкоштовний, безлімітний і без реклами. Якщо наш генератор допоміг вам швидко здати лабораторну, курсову чи звіт, ви можете віддячити розробнику донатом на каву (20–100 грн)!
+                    StudZvit створений з турботою про студентів та викладачів — повністю безкоштовний, безлімітний і без реклами. Якщо наш сервіс допоміг вам швидко підготувати титулку чи звіт, ви можете підтримати розробника донатом на каву!
                 </p>
-                <div style="background:#f8fafc; border:2px dashed #f59e0b; border-radius:12px; padding:16px; margin-bottom:18px;">
-                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:6px;">
-                        Номер банківської картки:
+                <div style="background:#f8fafc; border:1.5px solid #f59e0b; border-radius:12px; padding:18px 20px; margin-bottom:18px; text-align:center;">
+                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:8px;">
+                        Реквізити банківської картки (номер рахунку):
                     </div>
-                    <div style="font-family:monospace; font-size:22px; font-weight:800; color:#1e293b; letter-spacing:1.5px; margin-bottom:12px;" id="modal-card-num">
+                    <div style="font-family:monospace; font-size:21px; font-weight:800; color:#1e293b; letter-spacing:2px; margin-bottom:14px; background:#ffffff; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1; display:inline-block; width:100%; box-sizing:border-box;">
                         4874 0700 1222 9983
                     </div>
-                    <button class="btn btn-primary" style="width:100%; font-size:14px; font-weight:700;" onclick="скопіюватиКартку()">
+                    <button id="btn-copy-card" class="btn btn-primary" style="width:100%; font-size:15px; font-weight:700; padding:12px;" onclick="скопіюватиКартку()">
                         📋 Скопіювати номер картки
                     </button>
                 </div>
@@ -963,13 +978,18 @@
                     <span>Ви можете повернутися стрілочкою «Назад» і внести будь-які зміни, або завантажити документ зараз.</span>
                 </div>
             </div>
-            <div class="modal-footer" style="justify-content:space-between;">
+            <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:10px;">
                 <button class="btn btn-secondary" onclick="закритиПереглядПередЗавантаженням()">
                     &larr; Внести зміни
                 </button>
-                <button class="btn btn-primary" id="btn-підтвердити-скачування" onclick="підтвердитиЗавантаження()">
-                    📥 Все вірно, скачати Word (.docx) &rarr;
-                </button>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-secondary" onclick="підтвердитиЗавантаженняPDF()" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; font-weight:700;">
+                        📄 Скачати PDF (.pdf)
+                    </button>
+                    <button class="btn btn-primary" id="btn-підтвердити-скачування" onclick="підтвердитиЗавантаження()">
+                        📥 Скачати Word (.docx) &rarr;
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -978,15 +998,19 @@
     <!-- Контейнер сповіщень -->
     <div id="toast-box" class="toast-container"></div>
 
-    <!-- Бібліотеки для генерації Word (.docx) на клієнті -->
+    <!-- Бібліотеки для генерації Word (.docx) та PDF (.pdf) на клієнті -->
     <script src="docx.umd.js"></script>
     <script src="FileSaver.min.js"></script>
+    <script src="html2pdf.bundle.min.js"></script>
     <script>
         if (!window.docx) {
             document.write('<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"><\/script>');
         }
         if (!window.saveAs) {
             document.write('<script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"><\/script>');
+        }
+        if (!window.html2pdf) {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
         }
     </script>
     <script src="app.js"></script>

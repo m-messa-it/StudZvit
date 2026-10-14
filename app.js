@@ -42,19 +42,57 @@ var історіяНавігації = ["головна"];
 var індексІсторії = 0;
 var списокСторінок = ["головна", "титулка", "конструктор", "нормоконтроль", "джерела", "про-сервіс"];
 
-function оновитиСтрілочкиНавігації() {
-    var btnBack = document.getElementById("btn-nav-back");
-    var btnForward = document.getElementById("btn-nav-forward");
-    if (btnBack) {
-        btnBack.disabled = (індексІсторії <= 0);
-    }
-    if (btnForward) {
-        btnForward.disabled = (індексІсторії >= історіяНавігації.length - 1);
-    }
+function назваСторінки(ід) {
+    var names = {
+        "головна": "Головна",
+        "титулка": "Титульна сторінка",
+        "конструктор": "Конструктор звіту",
+        "нормоконтроль": "Нормоконтроль",
+        "джерела": "Список джерел",
+        "про-сервіс": "Про сервіс"
+    };
+    return names[ід] || ід;
 }
 
-function перейтиДо(ідСторінки, безДодаванняВІсторію) {
-    if (!безДодаванняВІсторію) {
+function оновитиСтрілочкиНавігації() {
+    var canGoBack = (індексІсторії > 0);
+    var canGoForward = (індексІсторії < історіяНавігації.length - 1);
+
+    document.querySelectorAll(".btn-nav-back").forEach(function(btn) {
+        if (canGoBack) {
+            var prev = історіяНавігації[індексІсторії - 1];
+            btn.title = "Повернутися назад: " + назваСторінки(prev);
+        } else {
+            var поточна = історіяНавігації[індексІсторії] || "головна";
+            var idx = списокСторінок.indexOf(поточна);
+            if (idx > 0) {
+                btn.title = "До попереднього розділу: " + назваСторінки(списокСторінок[idx - 1]);
+            } else {
+                btn.title = "Головна сторінка";
+            }
+        }
+    });
+
+    document.querySelectorAll(".btn-nav-forward").forEach(function(btn) {
+        if (canGoForward) {
+            var next = історіяНавігації[індексІсторії + 1];
+            btn.title = "Перейти вперед: " + назваСторінки(next);
+        } else {
+            var поточна = історіяНавігації[індексІсторії] || "головна";
+            var idx = списокСторінок.indexOf(поточна);
+            if (idx >= 0 && idx < списокСторінок.length - 1) {
+                btn.title = "До наступного розділу: " + назваСторінки(списокСторінок[idx + 1]);
+            } else {
+                btn.title = "Кінець розділів";
+            }
+        }
+    });
+}
+
+function перейтиДо(ідСторінки, безІсторії) {
+    if (!ідСторінки) ідСторінки = "головна";
+
+    if (!безІсторії) {
         if (індексІсторії < історіяНавігації.length - 1) {
             історіяНавігації = історіяНавігації.slice(0, індексІсторії + 1);
         }
@@ -62,7 +100,13 @@ function перейтиДо(ідСторінки, безДодаванняВІс
             історіяНавігації.push(ідСторінки);
             індексІсторії = історіяНавігації.length - 1;
         }
+        try {
+            if (window.location.hash !== "#" + ідСторінки) {
+                history.pushState({ page: ідСторінки, idx: індексІсторії }, "", "#" + ідСторінки);
+            }
+        } catch(e) {}
     }
+
     оновитиСтрілочкиНавігації();
 
     document.querySelectorAll(".page-view").forEach(function(el) {
@@ -86,15 +130,39 @@ function перейтиДо(ідСторінки, безДодаванняВІс
     оновитиЧекліст();
 }
 
+window.addEventListener("popstate", function(e) {
+    if (e.state && e.state.page) {
+        if (typeof e.state.idx === "number") індексІсторії = e.state.idx;
+        перейтиДо(e.state.page, true);
+        показатиСповіщення("⬅️ Перейшли до: " + назваСторінки(e.state.page), "інфо");
+    } else {
+        var hashPage = window.location.hash.replace("#", "");
+        if (hashPage && document.getElementById(hashPage)) {
+            перейтиДо(hashPage, true);
+        } else {
+            навігаціяНазад();
+        }
+    }
+});
+
 function навігаціяНазад() {
     if (індексІсторії > 0) {
         індексІсторії--;
-        перейтиДо(історіяНавігації[індексІсторії], true);
+        var targetPage = історіяНавігації[індексІсторії];
+        перейтиДо(targetPage, true);
+        try { history.replaceState({ page: targetPage, idx: індексІсторії }, "", "#" + targetPage); } catch(e) {}
+        показатиСповіщення("⬅️ Повернулися: " + назваСторінки(targetPage), "інфо");
     } else {
-        var поточна = історіяНавігації[індексІсторії];
+        var поточна = історіяНавігації[індексІсторії] || "головна";
         var idx = списокСторінок.indexOf(поточна);
         if (idx > 0) {
-            перейтиДо(списокСторінок[idx - 1]);
+            var target = списокСторінок[idx - 1];
+            історіяНавігації.unshift(target);
+            перейтиДо(target, true);
+            try { history.replaceState({ page: target, idx: 0 }, "", "#" + target); } catch(e) {}
+            показатиСповіщення("⬅️ Перейшли до: " + назваСторінки(target), "інфо");
+        } else {
+            показатиСповіщення("Ви на головній сторінці", "інфо");
         }
     }
 }
@@ -102,12 +170,22 @@ function навігаціяНазад() {
 function навігаціяВперед() {
     if (індексІсторії < історіяНавігації.length - 1) {
         індексІсторії++;
-        перейтиДо(історіяНавігації[індексІсторії], true);
+        var targetPage = історіяНавігації[індексІсторії];
+        перейтиДо(targetPage, true);
+        try { history.replaceState({ page: targetPage, idx: індексІсторії }, "", "#" + targetPage); } catch(e) {}
+        показатиСповіщення("➡️ Перейшли вперед: " + назваСторінки(targetPage), "інфо");
     } else {
-        var поточна = історіяНавігації[індексІсторії];
+        var поточна = історіяНавігації[індексІсторії] || "головна";
         var idx = списокСторінок.indexOf(поточна);
         if (idx >= 0 && idx < списокСторінок.length - 1) {
-            перейтиДо(списокСторінок[idx + 1]);
+            var target = списокСторінок[idx + 1];
+            історіяНавігації.push(target);
+            індексІсторії = історіяНавігації.length - 1;
+            перейтиДо(target, true);
+            try { history.replaceState({ page: target, idx: індексІсторії }, "", "#" + target); } catch(e) {}
+            показатиСповіщення("➡️ Перейшли до: " + назваСторінки(target), "інфо");
+        } else {
+            показатиСповіщення("Останній розділ сервісу", "інфо");
         }
     }
 }
@@ -1544,6 +1622,172 @@ function підтвердитиЗавантаження() {
     }
 }
 
+function підтвердитиЗавантаженняPDF() {
+    закритиПереглядПередЗавантаженням();
+    if (поточнийТипЗавантаження === "титулка") {
+        завантажитиТитулкуPDF();
+    } else {
+        завантажитиЗвітPDF();
+    }
+}
+
+function завантажитиТитулкуPDF() {
+    var element = document.getElementById("бланк-а4");
+    if (!element) {
+        показатиСповіщення("Не знайдено бланка титульної сторінки", "інфо");
+        return;
+    }
+
+    показатиСповіщення("⏳ Формування файлу PDF...", "інфо");
+
+    var назва = "Титульна_сторінка";
+    var студ = document.getElementById("студент") ? document.getElementById("студент").value.trim() : "";
+    var тема = document.getElementById("тема-роботи") ? document.getElementById("тема-роботи").value.trim() : "";
+    if (тема) назва += "_" + тема.slice(0, 20).replace(/[^a-zA-Zа-яА-Я0-9]/g, "_");
+    else if (студ) назва += "_" + студ.split(" ")[0];
+    назва += ".pdf";
+
+    var клон = element.cloneNode(true);
+    клон.style.margin = "0";
+    клон.style.boxShadow = "none";
+    клон.style.width = "210mm";
+    клон.style.minHeight = "297mm";
+    клон.style.boxSizing = "border-box";
+    клон.style.background = "#ffffff";
+    клон.style.position = "fixed";
+    клон.style.left = "-9999px";
+    клон.style.top = "0";
+    document.body.appendChild(клон);
+
+    if (window.html2pdf) {
+        var opt = {
+            margin:       [0, 0, 0, 0],
+            filename:     назва,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        window.html2pdf().set(opt).from(клон).save().then(function() {
+            if (клон.parentNode) клон.parentNode.removeChild(клон);
+            показатиСповіщення("✅ Файл PDF успішно завантажено!", "успіх");
+            var п = parseInt(localStorage.getItem("studdoc_docs") || "1") + 1;
+            localStorage.setItem("studdoc_docs", String(п));
+            if (document.getElementById("stat-docs")) document.getElementById("stat-docs").textContent = п;
+        }).catch(function() {
+            if (клон.parentNode) клон.parentNode.removeChild(клон);
+            window.print();
+        });
+    } else {
+        if (клон.parentNode) клон.parentNode.removeChild(клон);
+        window.print();
+    }
+}
+
+function завантажитиЗвітPDF() {
+    показатиСповіщення("⏳ Формування PDF-звіту...", "інфо");
+
+    var container = document.createElement("div");
+    container.style.width = "210mm";
+    container.style.padding = "20mm 10mm 20mm 30mm";
+    container.style.background = "#ffffff";
+    container.style.color = "#000000";
+    container.style.fontFamily = "'Times New Roman', Times, serif";
+    container.style.fontSize = "14pt";
+    container.style.lineHeight = "1.5";
+    container.style.boxSizing = "border-box";
+    container.style.position = "fixed";
+    container.style.left = "-9999px";
+    container.style.top = "0";
+
+    var html = "";
+
+    var incTitulka = document.getElementById("включити-титулку") ? document.getElementById("включити-титулку").checked : true;
+    if (incTitulka) {
+        var blank = document.getElementById("бланк-а4");
+        if (blank) {
+            html += "<div style='page-break-after: always; padding: 0; margin-bottom: 20mm;'>" + blank.innerHTML + "</div>";
+        }
+    }
+
+    function додатиРозділPDF(заголовок, вміст) {
+        if (!вміст) return "";
+        var res = "<div style='margin-bottom: 22px;'>";
+        res += "<h3 style='text-align: center; font-size: 15pt; font-weight: bold; margin: 18px 0 10px; text-transform: uppercase;'>" + заголовок + "</h3>";
+        var paragraphs = вміст.split("\n");
+        paragraphs.forEach(function(p) {
+            var t = p.trim();
+            if (t) {
+                res += "<p style='text-align: justify; text-indent: 12.5mm; margin: 0 0 8px;'>" + escapeHtml(t) + "</p>";
+            }
+        });
+        res += "</div>";
+        return res;
+    }
+
+    var мета = document.getElementById("мета-роботи") ? document.getElementById("мета-роботи").value.trim() : "";
+    html += додатиРозділPDF("1. МЕТА РОБОТИ ТА ЗАВДАННЯ", мета);
+
+    var теорія = document.getElementById("теорія") ? document.getElementById("теорія").value.trim() : "";
+    html += додатиРозділPDF("2. КОРОТКІ ТЕОРЕТИЧНІ ВІДОМОСТІ", теорія);
+
+    var хід = document.getElementById("хід-роботи") ? document.getElementById("хід-роботи").value.trim() : "";
+    html += додатиРозділPDF("3. ХІД ВИКОНАННЯ РОБОТИ", хід);
+
+    var код = document.getElementById("код-програми") ? document.getElementById("код-програми").value.trim() : "";
+    if (код) {
+        html += "<div style='margin-bottom: 22px;'>";
+        html += "<h3 style='text-align: center; font-size: 15pt; font-weight: bold; margin: 18px 0 10px;'>4. ЛІСТИНГ ПРОГРАМНОГО КОДУ</h3>";
+        html += "<pre style='background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; font-family: Consolas, monospace; font-size: 10.5pt; line-height: 1.4; border-radius: 6px; white-space: pre-wrap;'>" + escapeHtml(код) + "</pre>";
+        html += "</div>";
+    }
+
+    if (typeof власніРозділиЗвіту !== "undefined" && власніРозділиЗвіту.length > 0) {
+        власніРозділиЗвіту.forEach(function(sec, i) {
+            html += додатиРозділPDF((5 + i) + ". " + sec.назва.toUpperCase(), sec.текст);
+        });
+    }
+
+    var висновки = document.getElementById("висновки") ? document.getElementById("висновки").value.trim() : "";
+    html += додатиРозділPDF("ВИСНОВКИ", висновки);
+
+    if (typeof списокДжерел !== "undefined" && списокДжерел.length > 0) {
+        html += "<div style='margin-bottom: 22px; page-break-before: always;'>";
+        html += "<h3 style='text-align: center; font-size: 15pt; font-weight: bold; margin: 18px 0 10px;'>СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ</h3>";
+        html += "<ol style='padding-left: 25px; text-align: justify;'>";
+        списокДжерел.forEach(function(d) {
+            html += "<li style='margin-bottom: 8px;'>" + escapeHtml(d) + "</li>";
+        });
+        html += "</ol></div>";
+    }
+
+    container.innerHTML = html;
+    document.body.appendChild(container);
+
+    var opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     'Звіт_роботи_StudZvit.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    if (window.html2pdf) {
+        window.html2pdf().set(opt).from(container).save().then(function() {
+            if (container.parentNode) container.parentNode.removeChild(container);
+            показатиСповіщення("✅ Звіт PDF успішно завантажено!", "успіх");
+            var п = parseInt(localStorage.getItem("studdoc_docs") || "1") + 1;
+            localStorage.setItem("studdoc_docs", String(п));
+            if (document.getElementById("stat-docs")) document.getElementById("stat-docs").textContent = п;
+        }).catch(function() {
+            if (container.parentNode) container.parentNode.removeChild(container);
+            window.print();
+        });
+    } else {
+        if (container.parentNode) container.parentNode.removeChild(container);
+        window.print();
+    }
+}
+
 // ============================================================
 // 14. МОБІЛЬНИЙ ДОДАТОК (PWA) ТА СТОР-ГІДИ
 // ============================================================
@@ -1561,7 +1805,7 @@ function встановитиДодаток() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function(choiceResult) {
             if (choiceResult.outcome === "accepted") {
-                показатиСповіщення("StudDoc встановлено на пристрій!", "успіх");
+                показатиСповіщення("StudZvit встановлено на пристрій!", "успіх");
             }
             deferredPrompt = null;
         });
@@ -1579,9 +1823,9 @@ function показатиГідСтору(платформа) {
     if (платформа === "apple") {
         title.innerHTML = "🍏 Встановлення на iPhone та iPad (Apple)";
         body.innerHTML = 
-            "<p><strong>Як зберегти StudDoc як додаток iOS (працює як з App Store):</strong></p>" +
+            "<p><strong>Як зберегти StudZvit як додаток iOS (працює як з App Store):</strong></p>" +
             "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
-                "<li>Відкрийте StudDoc у стандартному браузері <strong>Safari</strong>.</li>" +
+                "<li>Відкрийте StudZvit у стандартному браузері <strong>Safari</strong>.</li>" +
                 "<li>Натисніть кнопку <strong>«Поділитися»</strong> (іконка квадрата зі стрілкою вгору внизу екрана).</li>" +
                 "<li>Прокрутіть меню та оберіть <strong>«На початковий екран» (Add to Home Screen)</strong>.</li>" +
                 "<li>Натисніть <strong>«Додати»</strong>. Додаток з'явиться на робочому столі з фірмовою іконкою!</li>" +
@@ -1589,26 +1833,26 @@ function показатиГідСтору(платформа) {
     } else if (платформа === "google") {
         title.innerHTML = "🤖 Встановлення на Android (Google Play / PWA)";
         body.innerHTML = 
-            "<p><strong>Як встановити StudDoc на телефон Android:</strong></p>" +
+            "<p><strong>Як встановити StudZvit на телефон Android:</strong></p>" +
             "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
-                "<li>Відкрийте StudDoc у браузері <strong>Google Chrome</strong>.</li>" +
+                "<li>Відкрийте StudZvit у браузері <strong>Google Chrome</strong>.</li>" +
                 "<li>Натисніть на три крапки в правому верхньому кутку браузера.</li>" +
                 "<li>Оберіть пункт <strong>«Встановити додаток»</strong> або <strong>«Додати на головний екран»</strong>.</li>" +
-                "<li>StudDoc працюватиме як повноцінний автономний мобільний додаток!</li>" +
+                "<li>StudZvit працюватиме як повноцінний автономний мобільний додаток!</li>" +
             "</ol>";
     } else if (платформа === "microsoft") {
         title.innerHTML = "💻 Встановлення на комп'ютер Windows (ПК / Ноутбук)";
         body.innerHTML = 
             "<p><strong>Як встановити додаток на Windows 10/11:</strong></p>" +
             "<ol style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
-                "<li>Відкрийте StudDoc у браузері <strong>Microsoft Edge</strong> або <strong>Google Chrome</strong>.</li>" +
-                "<li>В адресному рядку праворуч натисніть значок <strong>«Встановити додаток StudDoc»</strong>.</li>" +
+                "<li>Відкрийте StudZvit у браузері <strong>Microsoft Edge</strong> або <strong>Google Chrome</strong>.</li>" +
+                "<li>В адресному рядку праворуч натисніть значок <strong>«Встановити додаток StudZvit»</strong>.</li>" +
                 "<li>Додаток додасться у меню Пуск Windows та працюватиме офлайн!</li>" +
             "</ol>";
     } else {
-        title.innerHTML = "📲 Встановлення додатку StudDoc";
+        title.innerHTML = "📲 Встановлення додатку StudZvit";
         body.innerHTML = 
-            "<p>StudDoc працює на всіх смартфонах та ПК безкоштовно та без лімітів:</p>" +
+            "<p>StudZvit працює на всіх смартфонах та ПК безкоштовно та без лімітів:</p>" +
             "<ul style='margin-left:20px; margin-top:8px; line-height:1.7;'>" +
                 "<li><strong>iPhone / iPad:</strong> Safari ➔ «Поділитися» ➔ «На початковий екран».</li>" +
                 "<li><strong>Android:</strong> Chrome ➔ Меню ➔ «Встановити додаток».</li>" +
@@ -1631,9 +1875,14 @@ function закритиДонат() {
 
 function скопіюватиКартку() {
     var номер = "4874070012229983";
+    var btn = document.getElementById("btn-copy-card");
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(номер).then(function() {
-            показатиСповіщення("Номер картки 4874 0700 1222 9983 скопійовано!", "успіх");
+            if (btn) btn.textContent = "✅ Скопійовано! Дякуємо!";
+            показатиСповіщення("✅ Номер картки скопійовано в буфер обміну!", "успіх");
+            setTimeout(function() {
+                if (btn) btn.textContent = "📋 Скопіювати номер картки";
+            }, 3000);
         }).catch(function() {
             старийКопіювати(номер);
         });
@@ -1649,11 +1898,16 @@ function старийКопіювати(текст) {
     ta.style.opacity = "0";
     document.body.appendChild(ta);
     ta.select();
+    var btn = document.getElementById("btn-copy-card");
     try {
         document.execCommand("copy");
-        показатиСповіщення("Номер картки 4874 0700 1222 9983 скопійовано!", "успіх");
+        if (btn) btn.textContent = "✅ Скопійовано! Дякуємо!";
+        показатиСповіщення("✅ Номер картки скопійовано в буфер обміну!", "успіх");
+        setTimeout(function() {
+            if (btn) btn.textContent = "📋 Скопіювати номер картки";
+        }, 3000);
     } catch(e) {
-        prompt("Скопіюйте номер картки вручну:", текст);
+        показатиСповіщення("Не вдалося скопіювати автоматично", "інфо");
     }
     document.body.removeChild(ta);
 }
@@ -1682,6 +1936,53 @@ window.addEventListener("DOMContentLoaded", function() {
 
     завантажитиПрофіль();
     завантажитиЧернетку();
-    оновитиПрев();
-    оновитиСтрілочкиНавігації();
+
+    var hash = window.location.hash.replace("#", "");
+    if (hash && document.getElementById(hash) && hash !== "головна") {
+        історіяНавігації = ["головна", hash];
+        індексІсторії = 1;
+        перейтиДо(hash, true);
+    } else {
+        оновитиПрев();
+        оновитиСтрілочкиНавігації();
+    }
 });
+
+// Автоматичне приховування сторонніх водяних плашок хостингу (ship.page)
+function видалитиПлашкуХостингу() {
+    try {
+        var all = document.querySelectorAll("*");
+        for (var i = 0; i < all.length; i++) {
+            var el = all[i];
+            if (!el) continue;
+            var tag = (el.tagName || "").toLowerCase();
+            if (tag.indexOf("ship") !== -1 || (el.id && el.id.indexOf("ship") !== -1) || (el.className && typeof el.className === "string" && el.className.indexOf("ship") !== -1)) {
+                el.style.display = "none !important";
+                el.remove();
+                continue;
+            }
+            if (el.shadowRoot) {
+                var sText = el.shadowRoot.textContent || "";
+                if (sText.indexOf("ship.page") !== -1 || sText.indexOf("Hide this") !== -1 || sText.indexOf("Hosted on") !== -1) {
+                    el.style.display = "none !important";
+                    el.remove();
+                    continue;
+                }
+            }
+            var text = el.textContent || "";
+            if (text.indexOf("Hosted on ship.page") !== -1 || text.indexOf("Hide this on my drops") !== -1) {
+                var target = el;
+                while (target.parentElement && target.parentElement !== document.body && target.parentElement !== document.documentElement) {
+                    target = target.parentElement;
+                }
+                if (target && target !== document.body && target !== document.documentElement) {
+                    target.style.display = "none !important";
+                    target.remove();
+                }
+            }
+        }
+    } catch(e) {}
+}
+setInterval(видалитиПлашкуХостингу, 150);
+window.addEventListener("load", видалитиПлашкуХостингу);
+document.addEventListener("DOMContentLoaded", видалитиПлашкуХостингу);

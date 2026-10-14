@@ -1,5 +1,4 @@
-// StudDoc Service Worker (PWA Offline Support)
-const CACHE_NAME = "studdoc-v1";
+const CACHE_NAME = "studzvit-v3";
 const ASSETS = [
     "./",
     "./index.html",
