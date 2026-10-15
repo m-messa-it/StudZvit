@@ -74,11 +74,12 @@
 
             <nav class="nav-links">
                 <button class="nav-tab active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
+                <button class="nav-tab" data-page="практика" onclick="перейтиДо('практика')">📘 Звіт з практики (ДСТУ)</button>
                 <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">Титульна сторінка</button>
                 <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">Конструктор звіту</button>
                 <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Нормоконтроль</button>
                 <button class="nav-tab" data-page="джерела" onclick="перейтиДо('джерела')">Список джерел</button>
-                <button class="nav-tab" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">Про сервіс</button>
+                <button class="nav-tab" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">Вимоги та ТЗ</button>
             </nav>
 
             <div class="nav-actions">
@@ -106,8 +107,8 @@
                     Повна свобода заповнення: створюйте титульні сторінки з будь-якими власними полями, збирайте індивідуальні звіти з довільними розділами, виконуйте автоматичний нормоконтроль та завантажуйте файл Word (.docx) в один клік без обмежень.
                 </p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="перейтиДо('титулка')">✨ Створити титульну сторінку</button>
-                    <button class="btn btn-secondary" onclick="перейтиДо('конструктор')">📝 Скласти звіт</button>
+                    <button class="btn btn-primary" onclick="перейтиДо('практика')">📘 Звіт з практики за шаблоном Word</button>
+                    <button class="btn btn-secondary" onclick="перейтиДо('титулка')">✨ Титульна сторінка (ДСТУ)</button>
                     <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Нормоконтроль тексту</button>
                 </div>
             </div>
@@ -194,6 +195,123 @@
             </div>
         </section>
 
+        <!-- ==================== НОВИЙ РОЗДІЛ: ЗВІТ З ТЕХНОЛОГІЧНОЇ ПРАКТИКИ (ЗА ШАБЛОНОМ ТА ПАМ'ЯТКОЮ) ==================== -->
+        <section id="практика" class="page-view" style="display:none;">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">📘 Звіт з технологічної практики коледжу</h2>
+                    <p class="page-subtitle">Формування стандартизованого звіту у форматі Word (.docx) за стилями та пам'яткою студента</p>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-secondary" onclick="заповнитиДемоПрактики()">⚡ Заповнити зразок ІПЗ</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="перейтиДо('про-сервіс')">📋 Переглянути ТЗ і вимоги</button>
+                </div>
+            </div>
+
+            <!-- Інформаційний банер про архітектурний підхід викладача -->
+            <div class="guarantee-card" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-color: #93c5fd;">
+                <div class="guarantee-content">
+                    <h3 style="color:#1e40af;">🚀 Підхід на основі Word-шаблону та вимог практики</h3>
+                    <p style="color:#1e3a8a;">Замість ручного набору десятків полів сервіс генерує готовий файл Word (.docx), де вже налаштовані корпоративні стилі коледжу (Times New Roman 14pt, 1.5 інтервал, абзац 1.25 см) та розміщена повна структура документа за пам'яткою студента.</p>
+                </div>
+                <div class="guarantee-badge" style="background:#2563eb;">Стандарт коледжу</div>
+            </div>
+
+            <!-- Візуальна схема структури звіту (діаграма) -->
+            <div class="panel-card" style="margin-bottom:24px;">
+                <h3 style="font-size:16px; font-weight:800; margin-bottom:14px; color:var(--text-primary);">📊 Обов'язкова структура звіту за пам'яткою студента:</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #4f46e5; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#4f46e5;">1. Титульний аркуш</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Відділення, циклова комісія, база практики</span>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #2563eb; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#2563eb;">2. Індивідуальне завдання</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Тема та календарний графік проходження</span>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #0891b2; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#0891b2;">3. Щоденник практики</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Таблиця виконаних робіт по днях</span>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #059669; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#059669;">4. Вступ та Характеристика</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Мета, завдання та опис підприємства/бази</span>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #d97706; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#d97706;">5. Технологічна частина</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Опис розробки, архітектури та коду</span>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #dc2626; padding:12px; border-radius:8px;">
+                        <strong style="display:block; font-size:13px; color:#dc2626;">6. Охорона праці</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">БЖД та ергономіка на робочому місці</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Форма швидких параметрів для генерації повного звіту -->
+            <div class="panel-card">
+                <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; color:var(--text-primary);">⚙️ Вхідні параметри для генератора звіту (.docx):</h3>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Спеціальність</label>
+                        <input type="text" id="практ-спец" class="form-control" value="121 «Інженерія програмного забезпечення»">
+                    </div>
+                    <div class="form-group">
+                        <label>Група та курс</label>
+                        <input type="text" id="практ-група" class="form-control" value="ІТ-32, 3 курс">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Відділення коледжу</label>
+                        <input type="text" id="практ-відділення" class="form-control" value="Відділення комп'ютерних технологій">
+                    </div>
+                    <div class="form-group">
+                        <label>Циклова комісія</label>
+                        <input type="text" id="практ-комісія" class="form-control" value="Циклова комісія інженерії програмного забезпечення">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>ПІБ студента</label>
+                        <input type="text" id="практ-студент" class="form-control" placeholder="Введіть ваше ПІБ">
+                    </div>
+                    <div class="form-group">
+                        <label>Керівник практики від коледжу</label>
+                        <input type="text" id="практ-керівник" class="form-control" placeholder="ПІБ викладача-керівника">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Тема індивідуального завдання практики</label>
+                    <input type="text" id="практ-тема" class="form-control" value="Розробка та тестування модулів клієнтської частини веб-сервісу">
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>База практики (підприємство / відділ)</label>
+                        <input type="text" id="практ-база" class="form-control" value="ТОВ «ТехХаб Солюшнз»">
+                    </div>
+                    <div class="form-group">
+                        <label>Керівник практики від підприємства</label>
+                        <input type="text" id="практ-керівник-бази" class="form-control" value="провідний розробник Петренко О. В.">
+                    </div>
+                </div>
+
+                <div class="btn-group-actions" style="margin-top:20px;">
+                    <button class="btn btn-primary" onclick="згенеруватиЗвітПрактикиDocx()" style="font-size:14px; padding:12px 24px;">
+                        📘 Сформувати повний звіт у Word (.docx)
+                    </button>
+                    <button class="btn btn-secondary" onclick="завантажитиЧистийШаблонDocx()">
+                        📄 Завантажити чистий шаблон зі стилями (.docx)
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <!-- ==================== 2. ГЕНЕРАТОР ТИТУЛЬНОЇ ==================== -->
         <section id="титулка" class="page-view" style="display:none;">
             <div class="page-header">
@@ -245,51 +363,51 @@
                     <div class="form-group">
                         <label><input type="checkbox" id="чек-тип" checked onchange="перемкнутиПоле('тип-роботи', this.checked)"> Тип навчальної роботи</label>
                         <select id="тип-роботи" class="form-control" onchange="оновитиПрев()">
-                            <option value="Практична робота" selected>Практична робота</option>
-                            <option value="Лабораторна робота">Лабораторна робота</option>
-                            <option value="Курсова робота">Курсова робота</option>
+                            <option value="Звіт з технологічної практики" selected>Звіт з технологічної практики</option>
+                            <option value="Звіт з виробничої практики">Звіт з переддипломної / виробничої практики</option>
                             <option value="Курсовий проєкт">Курсовий проєкт</option>
+                            <option value="Курсова робота">Курсова робота</option>
+                            <option value="Практична робота">Практична робота</option>
+                            <option value="Лабораторна робота">Лабораторна робота</option>
                             <option value="Контрольна робота">Контрольна робота</option>
-                            <option value="Реферат">Реферат</option>
                             <option value="Дипломний проєкт">Дипломний проєкт</option>
-                            <option value="Самостійна робота">Самостійна робота</option>
                         </select>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label><input type="checkbox" id="чек-номер" checked onchange="перемкнутиПоле('номер-роботи', this.checked)"> Номер роботи</label>
-                            <input type="text" id="номер-роботи" class="form-control" placeholder="Наприклад: 4" oninput="оновитиПрев()">
+                            <label><input type="checkbox" id="чек-номер" checked onchange="перемкнутиПоле('номер-роботи', this.checked)"> Номер / Варіант</label>
+                            <input type="text" id="номер-роботи" class="form-control" placeholder="Наприклад: 1" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label><input type="checkbox" id="чек-варіант" checked onchange="перемкнутиПоле('варіант', this.checked)"> Варіант</label>
-                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 3" oninput="оновитиПрев()">
+                            <label><input type="checkbox" id="чек-варіант" checked onchange="перемкнутиПоле('варіант', this.checked)"> База практики / Підприємство</label>
+                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: ТОВ «АйТі Сервіс»" oninput="оновитиПрев()">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label><input type="checkbox" id="чек-дисципліна" checked onchange="перемкнутиПоле('дисципліна', this.checked)"> Навчальна дисципліна</label>
-                        <input type="text" id="дисципліна" class="form-control" placeholder="Введіть назву предмета..." oninput="оновитиПрев()">
+                        <label><input type="checkbox" id="чек-дисципліна" checked onchange="перемкнутиПоле('дисципліна', this.checked)"> Спеціальність / Програма</label>
+                        <input type="text" id="дисципліна" class="form-control" placeholder="121 Інженерія програмного забезпечення" oninput="оновитиПрев()">
                     </div>
 
                     <div class="form-group">
-                        <label><input type="checkbox" id="чек-тема" checked onchange="перемкнутиПоле('тема-роботи', this.checked)"> Тема роботи</label>
-                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Введіть тему роботи..." oninput="оновитиПрев()"></textarea>
+                        <label><input type="checkbox" id="чек-тема" checked onchange="перемкнутиПоле('тема-роботи', this.checked)"> Індивідуальне завдання / Тема</label>
+                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Розробка модулів програмної системи..." oninput="оновитиПрев()"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label><input type="checkbox" id="чек-заклад" checked onchange="перемкнутиПоле('заклад', this.checked)"> Навчальний заклад</label>
-                        <input type="text" id="заклад" class="form-control" placeholder="Введіть заклад освіти..." oninput="оновитиПрев()">
+                        <label><input type="checkbox" id="чек-заклад" checked onchange="перемкнутиПоле('заклад', this.checked)"> Заклад освіти (Коледж)</label>
+                        <input type="text" id="заклад" class="form-control" placeholder="ВСП «Фаховий коледж...»" oninput="оновитиПрев()">
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label><input type="checkbox" id="чек-відділення" checked onchange="перемкнутиПоле('відділення', this.checked)"> Відділення / Факультет</label>
-                            <input type="text" id="відділення" class="form-control" placeholder="Відділення програмування..." oninput="оновитиПрев()">
+                            <label><input type="checkbox" id="чек-відділення" checked onchange="перемкнутиПоле('відділення', this.checked)"> Відділення</label>
+                            <input type="text" id="відділення" class="form-control" placeholder="Відділення комп'ютерних технологій" oninput="оновитиПрев()">
                         </div>
                         <div class="form-group">
-                            <label><input type="checkbox" id="чек-кафедра" checked onchange="перемкнутиПоле('кафедра', this.checked)"> Кафедра / Комісія</label>
-                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія..." oninput="оновитиПрев()">
+                            <label><input type="checkbox" id="чек-кафедра" checked onchange="перемкнутиПоле('кафедра', this.checked)"> Циклова комісія</label>
+                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія комп'ютерної інженерії та програмування" oninput="оновитиПрев()">
                         </div>
                     </div>
 
@@ -835,6 +953,27 @@
                     <li><strong>Конфіденційність та безпека:</strong> усі дані зберігаються виключно на пристрої користувача. Жодні ваші документи чи особисті відомості не передаються на сторонні сервери.</li>
                     <li><strong>Клієнтська генерація документів:</strong> файли Microsoft Word (.docx) створюються прямо у веб-браузері за допомогою нативного JavaScript без потреби у сторонньому серверному програмному забезпеченні.</li>
                 </ul>
+
+                <div style="margin:24px 0; padding:18px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px;">
+                    <h3 style="color:#1e40af; margin-top:0;">📋 Архітектура та технічні вимоги до розробки</h3>
+                    <p style="color:#1e3a8a; font-size:13.5px; margin-bottom:12px;">
+                        Розробка сервісу базується на принципах інженерного проектування (SRS IEEE 830) з розділенням на рівень представлення (View), шаблонний генератор (.docx Engine) та бізнес-правила нормативного контролю ДСТУ.
+                    </p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
+                        <div style="background:#ffffff; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                            <strong style="color:#0f172a; font-size:13.5px;">1. Рівень даних (Data Layer)</strong>
+                            <p style="font-size:12.5px; color:#475569; margin:4px 0 0;">Корпоративні шаблони Word коледжу із зашитими стилями Times New Roman 14pt, індивідуальні завдання та локальний кеш профілю.</p>
+                        </div>
+                        <div style="background:#ffffff; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                            <strong style="color:#0f172a; font-size:13.5px;">2. Логіка генерації (Docx Engine)</strong>
+                            <p style="font-size:12.5px; color:#475569; margin:4px 0 0;">Клієнтський компілятор XML-структури docx, що забезпечує автоматичне складання титулки, календарного графіка та розділів практики.</p>
+                        </div>
+                        <div style="background:#ffffff; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                            <strong style="color:#0f172a; font-size:13.5px;">3. Модуль Нормоконтролю</strong>
+                            <p style="font-size:12.5px; color:#475569; margin:4px 0 0;">Автоматична перевірка типографіки: корекція дефісів на тире (—), апострофів, лапок-ялинок (« ») та абзацних відступів 1.25 см.</p>
+                        </div>
+                    </div>
+                </div>
 
                 <h3>Технічні стандарти ДСТУ 3008:2015, закладені в систему</h3>
                 <table class="dstu-table">
