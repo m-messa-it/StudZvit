@@ -74,7 +74,7 @@
 
             <nav class="nav-links">
                 <button class="nav-tab active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
-                <button class="nav-tab" data-page="практика" onclick="перейтиДо('практика')">📘 Звіт з практики (ДСТУ)</button>
+                <button class="nav-tab" data-page="практика" onclick="перейтиДо('практика')">📘 Генератор звіту (Word .docx)</button>
                 <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">Титульна сторінка</button>
                 <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">Конструктор звіту</button>
                 <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Нормоконтроль</button>
@@ -195,12 +195,12 @@
             </div>
         </section>
 
-        <!-- ==================== НОВИЙ РОЗДІЛ: ЗВІТ З ТЕХНОЛОГІЧНОЇ ПРАКТИКИ (ЗА ШАБЛОНОМ ТА ПАМ'ЯТКОЮ) ==================== -->
+        <!-- ==================== РОЗДІЛ: ГЕНЕРАТОР ЗВІТУ КОЛЕДЖУ (WORD .DOCX) ==================== -->
         <section id="практика" class="page-view" style="display:none;">
             <div class="page-header">
                 <div>
-                    <h2 class="page-title">📘 Звіт з технологічної практики коледжу</h2>
-                    <p class="page-subtitle">Формування стандартизованого звіту у форматі Word (.docx) за стилями та пам'яткою студента</p>
+                    <h2 class="page-title">📘 Генератор навчального звіту коледжу (Word .docx)</h2>
+                    <p class="page-subtitle">Формування звіту з практичної, лабораторної або курсової роботи зі закріпленими стилями ДСТУ</p>
                 </div>
                 <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                     <button class="btn btn-sm btn-secondary" onclick="заповнитиДемоПрактики()">⚡ Заповнити зразок ІПЗ</button>
@@ -223,27 +223,23 @@
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #4f46e5; padding:12px; border-radius:8px;">
                         <strong style="display:block; font-size:13px; color:#4f46e5;">1. Титульний аркуш</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">Відділення, циклова комісія, база практики</span>
+                        <span style="font-size:12px; color:var(--text-muted);">Відділення, циклова комісія, студент, викладач</span>
                     </div>
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #2563eb; padding:12px; border-radius:8px;">
-                        <strong style="display:block; font-size:13px; color:#2563eb;">2. Індивідуальне завдання</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">Тема та календарний графік проходження</span>
-                    </div>
-                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #0891b2; padding:12px; border-radius:8px;">
-                        <strong style="display:block; font-size:13px; color:#0891b2;">3. Щоденник практики</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">Таблиця виконаних робіт по днях</span>
+                        <strong style="display:block; font-size:13px; color:#2563eb;">2. Завдання та Щоденник</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Тема та календарний графік робіт</span>
                     </div>
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #059669; padding:12px; border-radius:8px;">
-                        <strong style="display:block; font-size:13px; color:#059669;">4. Вступ та Характеристика</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">Мета, завдання та опис підприємства/бази</span>
+                        <strong style="display:block; font-size:13px; color:#059669;">3. Вступ</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Мета та виробничі завдання практики</span>
                     </div>
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #d97706; padding:12px; border-radius:8px;">
-                        <strong style="display:block; font-size:13px; color:#d97706;">5. Технологічна частина</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">Опис розробки, архітектури та коду</span>
+                        <strong style="display:block; font-size:13px; color:#d97706;">4. Технологічна частина</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">Основна частина: виконання завдання, код</span>
                     </div>
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #dc2626; padding:12px; border-radius:8px;">
-                        <strong style="display:block; font-size:13px; color:#dc2626;">6. Охорона праці</strong>
-                        <span style="font-size:12px; color:var(--text-muted);">БЖД та ергономіка на робочому місці</span>
+                        <strong style="display:block; font-size:13px; color:#dc2626;">5. Охорона праці та Висновки</strong>
+                        <span style="font-size:12px; color:var(--text-muted);">БЖД за комп'ютером, підсумки та джерела</span>
                     </div>
                 </div>
             </div>
