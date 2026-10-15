@@ -40,17 +40,16 @@ function показатиСповіщення(повідомлення, тип) 
 
 var історіяНавігації = ["головна"];
 var індексІсторії = 0;
-var списокСторінок = ["головна", "практика", "титулка", "конструктор", "нормоконтроль", "джерела", "про-сервіс"];
+var списокСторінок = ["головна", "титулка", "конструктор", "нормоконтроль", "джерела", "про-сервіс"];
 
 function назваСторінки(ід) {
     var names = {
         "головна": "Головна",
-        "практика": "Генератор звіту",
         "титулка": "Титульна сторінка",
         "конструктор": "Конструктор звіту",
         "нормоконтроль": "Нормоконтроль",
         "джерела": "Список джерел",
-        "про-сервіс": "Вимоги та ТЗ"
+        "про-сервіс": "Про сервіс"
     };
     return names[ід] || ід;
 }
@@ -1411,17 +1410,17 @@ function заповнитиДемо() {
     document.getElementById("номер-роботи").value = "4";
     document.getElementById("варіант").value = "3";
     document.getElementById("дисципліна").value = "Об'єктно-орієнтоване програмування";
-    document.getElementById("тема-роботи").value = "Побудова трирівневої архітектури програмного комплексу";
-    document.getElementById("заклад").value = "Відокремлений структурний підрозділ «Фаховий коледж»";
+    document.getElementById("тема-роботи").value = "Побудова трьохрівневої архітектури програмного комплексу";
+    document.getElementById("заклад").value = "Рівненський кооперативний економіко-правовий фаховий коледж";
     document.getElementById("відділення").value = "Відділення комп'ютерних технологій";
-    document.getElementById("кафедра").value = "Циклова комісія інженерії ПЗ";
-    document.getElementById("студент-піб").value = "Шевченко Т. Г.";
-    document.getElementById("група").value = "ІПЗ-21";
+    document.getElementById("кафедра").value = "Циклова комісія інженерії програмного забезпечення";
+    document.getElementById("студент-піб").value = "Месса А.";
+    document.getElementById("група").value = "ІТ-32";
     document.getElementById("спеціальність").value = "121 Інженерія програмного забезпечення";
     document.getElementById("курс").value = "3";
-    document.getElementById("викладач-піб").value = "Петренко П. П.";
-    document.getElementById("викладач-посада").value = "доцент, к.т.н.";
-    document.getElementById("місто").value = "Київ";
+    document.getElementById("викладач-піб").value = "Ковальчук В. Б.";
+    document.getElementById("викладач-посада").value = "викладач";
+    document.getElementById("місто").value = "Рівне";
     document.getElementById("рік").value = "2026";
 
     // Додаємо зразок власного поля титулки
@@ -1862,281 +1861,6 @@ function показатиГідСтору(платформа) {
     }
 
     modal.style.display = "flex";
-}
-
-// ============================================================
-// 12. ГЕНЕРАТОР ЗВІТУ З ТЕХНОЛОГІЧНОЇ ПРАКТИКИ ЗА ПАМ'ЯТКОЮ (.DOCX)
-// ============================================================
-
-function заповнитиДемоПрактики() {
-    if (document.getElementById("практ-спец")) document.getElementById("практ-спец").value = "121 «Інженерія програмного забезпечення»";
-    if (document.getElementById("практ-група")) document.getElementById("практ-група").value = "ІТ-32, 3 курс";
-    if (document.getElementById("практ-відділення")) document.getElementById("практ-відділення").value = "Відділення комп'ютерних технологій";
-    if (document.getElementById("практ-комісія")) document.getElementById("практ-комісія").value = "Циклова комісія інженерії програмного забезпечення";
-    if (document.getElementById("практ-студент")) document.getElementById("практ-студент").value = "Месса А. В.";
-    if (document.getElementById("практ-керівник")) document.getElementById("практ-керівник").value = "викл. Ковальчук В. Б.";
-    if (document.getElementById("практ-тема")) document.getElementById("практ-тема").value = "Розробка та архітектурне проектування компонентів сервісу звітності";
-    if (document.getElementById("практ-база")) document.getElementById("практ-база").value = "ТОВ «ТехХаб Солюшнз»";
-    if (document.getElementById("практ-керівник-бази")) document.getElementById("практ-керівник-бази").value = "старший розробник Петренко О. В.";
-    показатиСповіщення("✅ Зразок даних для звіту з практики заповнено!", "успіх");
-}
-
-function завантажитиЧистийШаблонDocx() {
-    var D = window.docx;
-    if (!D) {
-        показатиСповіщення("Завантаження бібліотеки Word...", "інфо");
-        return;
-    }
-
-    var fontMain = { font: "Times New Roman", size: 28 };
-    var fontHeading = { font: "Times New Roman", size: 32, bold: true };
-
-    var doc = new D.Document({
-        sections: [{
-            properties: {
-                page: {
-                    margin: { top: 1134, right: 567, bottom: 1134, left: 1701 } // 20-10-20-30 мм
-                }
-            },
-            children: [
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ", ...fontMain, bold: true })],
-                    alignment: D.AlignmentType.CENTER,
-                    spacing: { after: 120 }
-                }),
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "ВІДОКРЕМЛЕНИЙ СТРУКТУРНИЙ ПІДРОЗДІЛ «ФАХОВИЙ КОЛЕДЖ»", ...fontMain })],
-                    alignment: D.AlignmentType.CENTER,
-                    spacing: { after: 120 }
-                }),
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "Відділення комп'ютерних технологій • Циклова комісія інженерії ПЗ", font: "Times New Roman", size: 24 })],
-                    alignment: D.AlignmentType.CENTER,
-                    spacing: { after: 1200 }
-                }),
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "ШАБЛОН ЗВІТУ З ТЕХНОЛОГІЧНОЇ ПРАКТИКИ", ...fontHeading })],
-                    alignment: D.AlignmentType.CENTER,
-                    spacing: { after: 300 }
-                }),
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "(Встановлені стандартизовані стилі ДСТУ: Times New Roman 14pt, 1.5 інтервал, абзацний відступ 1.25 см)", font: "Times New Roman", size: 24, italics: true })],
-                    alignment: D.AlignmentType.CENTER,
-                    spacing: { after: 1800 }
-                }),
-                new D.Paragraph({
-                    children: [new D.TextRun({ text: "Тут розміщується основний текст звіту...", ...fontMain })],
-                    indent: { firstLine: 709 },
-                    spacing: { line: 360, after: 160 }
-                })
-            ]
-        }]
-    });
-
-    D.Packer.toBlob(doc).then(function(blob) {
-        saveAs(blob, "Шаблон_Звіту_Коледжу_Стилі_ДСТУ.docx");
-        показатиСповіщення("✅ Чистий шаблон зі стилями коледжу збережено!", "успіх");
-    });
-}
-
-function згенеруватиЗвітПрактикиDocx() {
-    var D = window.docx;
-    if (!D) {
-        показатиСповіщення("Завантаження бібліотеки Word...", "інфо");
-        return;
-    }
-
-    var спец = (document.getElementById("практ-спец") ? document.getElementById("практ-спец").value : "121 «Інженерія програмного забезпечення»").trim();
-    var група = (document.getElementById("практ-група") ? document.getElementById("практ-група").value : "ІТ-32").trim();
-    var відділення = (document.getElementById("практ-відділення") ? document.getElementById("практ-відділення").value : "Відділення комп'ютерних технологій").trim();
-    var комісія = (document.getElementById("практ-комісія") ? document.getElementById("практ-комісія").value : "Циклова комісія інженерії ПЗ").trim();
-    var студент = (document.getElementById("практ-студент") ? document.getElementById("практ-студент").value : "Студент коледжу").trim();
-    var керівник = (document.getElementById("практ-керівник") ? document.getElementById("практ-керівник").value : "викладач").trim();
-    var тема = (document.getElementById("практ-тема") ? document.getElementById("практ-тема").value : "Розробка модулів програмного комплексу").trim();
-    var база = (document.getElementById("практ-база") ? document.getElementById("практ-база").value : "ТОВ «ТехХаб Солюшнз»").trim();
-    var керівникБази = (document.getElementById("практ-керівник-бази") ? document.getElementById("практ-керівник-бази").value : "провідний розробник").trim();
-
-    var fontMain = { font: "Times New Roman", size: 28 };
-    var fontHeading = { font: "Times New Roman", size: 32, bold: true };
-    var fontSubHeading = { font: "Times New Roman", size: 28, bold: true };
-    var fontSmall = { font: "Times New Roman", size: 24 };
-
-    var paragraphs = [
-        // ТИТУЛЬНИЙ АРКУШ
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ", ...fontMain, bold: true })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 100 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "ВІДОКРЕМЛЕНИЙ СТРУКТУРНИЙ ПІДРОЗДІЛ «ФАХОВИЙ КОЛЕДЖ»", ...fontMain })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 100 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: відділення + " • " + комісія, ...fontSmall })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 900 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "ЗВІТ", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 120 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "про проходження технологічної практики", ...fontMain, bold: true })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 80 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "на базі: " + база, ...fontMain })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 80 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Тема індивідуального завдання: «" + тема + "»", ...fontMain, italics: true })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 700 }
-        }),
-        // Блок Студент / Керівники
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Спеціальність: " + спец, ...fontMain })],
-            alignment: D.AlignmentType.RIGHT,
-            spacing: { after: 60 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Студент(ка): " + студент + ", гр. " + група, ...fontMain })],
-            alignment: D.AlignmentType.RIGHT,
-            spacing: { after: 60 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Керівник від коледжу: " + керівник, ...fontMain })],
-            alignment: D.AlignmentType.RIGHT,
-            spacing: { after: 60 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Керівник від підприємства: " + керівникБази, ...fontMain })],
-            alignment: D.AlignmentType.RIGHT,
-            spacing: { after: 800 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "Київ — 2026", ...fontMain })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { after: 400 }
-        }),
-
-        // РОЗДІЛ: ВСТУП
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "ВСТУП", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { before: 400, after: 240 },
-            pageBreakBefore: true
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ 
-                text: "Технологічна практика є невід'ємною складовою практичної підготовки фахових молодших бакалаврів зі спеціальності " + спец + ". Метою практики є закріплення теоретичних знань, отриманих під час вивчення спеціальних дисциплін, та набуття практичних навичок роботи у виробничих умовах реального IT-підприємства.", 
-                ...fontMain 
-            })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 160 },
-            alignment: D.AlignmentType.JUSTIFY
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ 
-                text: "Основними завданнями технологічної практики були: ознайомлення з організаційною структурою підприємства " + база + ", вивчення регламентів техніки безпеки та охорони праці, архітектурне проектування компонентів програмних систем, написання модульних тестів та оформлення звітної інженерної документації.", 
-                ...fontMain 
-            })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 240 },
-            alignment: D.AlignmentType.JUSTIFY
-        }),
-
-        // РОЗДІЛ: ТЕХНОЛОГІЧНА ЧАСТИНА (ОСНОВНА ЧАСТИНА)
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "РОЗДІЛ 1. ТЕХНОЛОГІЧНА ЧАСТИНА (ВИКОНАННЯ ІНДИВІДУАЛЬНОГО ЗАВДАННЯ)", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { before: 400, after: 240 },
-            pageBreakBefore: true
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ 
-                text: "У межах індивідуального завдання за темою «" + тема + "» було виконано постановку задачі, аналіз вимог та проектування модульної архітектури компонентів. Реалізовано інтерфейсні елементи, логіку обробки вхідних даних та автоматичне збереження результатів.", 
-                ...fontMain 
-            })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 160 },
-            alignment: D.AlignmentType.JUSTIFY
-        }),
-
-        // РОЗДІЛ: ОХОРОНА ПРАЦІ
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "РОЗДІЛ 2. ОХОРОНА ПРАЦІ ТА БЕЗПЕКА ЖИТТЄДІЯЛЬНОСТІ", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { before: 400, after: 240 },
-            pageBreakBefore: true
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ 
-                text: "Перед початком виконання обов'язків на базі практики було пройдено вступний та первинний інструктажі з техніки безпеки та пожежної безпеки на робочому місці оператора ЕОМ. Організація робочого місця відповідає ДСанПіН 3.3.2.007-98 щодо освітленості, відстані до монітора (60–70 см) та режимів праці й відпочинку під час тривалої роботи за комп'ютером.", 
-                ...fontMain 
-            })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 240 },
-            alignment: D.AlignmentType.JUSTIFY
-        }),
-
-        // ВИСНОВКИ
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "ВИСНОВКИ", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { before: 400, after: 240 },
-            pageBreakBefore: true
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ 
-                text: "Під час проходження технологічної практики було повністю виконано календарний план та індивідуальне завдання за темою «" + тема + "». Успішно закріплено навички командної розробки, роботи з системами контролю версій Git та створення документації відповідно до вимог ДСТУ. Набутий практичний досвід буде використано під час виконання курсового та дипломного проектування.", 
-                ...fontMain 
-            })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 240 },
-            alignment: D.AlignmentType.JUSTIFY
-        }),
-
-        // ДЖЕРЕЛА
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ", ...fontHeading })],
-            alignment: D.AlignmentType.CENTER,
-            spacing: { before: 400, after: 240 },
-            pageBreakBefore: true
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "1. ДСТУ 3008:2015. Інформація та документація. Звіти у сфері науки і техніки. Структура та правила оформлювання. — Київ : ДП «УкрНДНЦ», 2016. — 26 с.", ...fontMain })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 120 }
-        }),
-        new D.Paragraph({
-            children: [new D.TextRun({ text: "2. Методичні вказівки та пам'ятка студенту щодо проходження технологічної практики для спеціальності " + спец + ". — 2026. — 18 с.", ...fontMain })],
-            indent: { firstLine: 709 },
-            spacing: { line: 360, after: 120 }
-        })
-    ];
-
-    var doc = new D.Document({
-        sections: [{
-            properties: {
-                page: {
-                    margin: { top: 1134, right: 567, bottom: 1134, left: 1701 } // 20-10-20-30 мм ДСТУ
-                }
-            },
-            children: paragraphs
-        }]
-    });
-
-    D.Packer.toBlob(doc).then(function(blob) {
-        var filename = "Звіт_Технологічна_Практика_" + (студент.replace(/\s+/g, "_") || "Студент") + ".docx";
-        saveAs(blob, filename);
-        показатиСповіщення("📘 Повний звіт з практики у форматі Word (.docx) успішно сформовано!", "успіх");
-    });
 }
 
 function відкритиДонат() {
