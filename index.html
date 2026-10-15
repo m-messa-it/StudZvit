@@ -41,8 +41,9 @@
 
     <!-- Зовнішні бібліотеки (CDN) для створення Word (.docx) та PDF (.pdf) файлів на клієнті -->
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>if (window.mermaid) mermaid.initialize({ startOnLoad: true, theme: 'default' });</script>
     <!-- Резервні локальні копії для надійної офлайн-роботи -->
     <script>
         if (!window.docx) document.write('<script src="docx.umd.js"><\/script>');
@@ -74,11 +75,10 @@
 
             <nav class="nav-links">
                 <button class="nav-tab active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
-                <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">Титульна сторінка</button>
-                <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">Конструктор звіту</button>
-                <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Нормоконтроль</button>
+                <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">📝 Конструктор звіту</button>
+                <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">Правила ДСТУ</button>
                 <button class="nav-tab" data-page="джерела" onclick="перейтиДо('джерела')">Список джерел</button>
-                <button class="nav-tab" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">Про сервіс</button>
+                <button class="nav-tab" data-page="про-сервіс" onclick="перейтиДо('про-сервіс')">📊 Схема та Промпти</button>
             </nav>
 
             <div class="nav-actions">
@@ -106,9 +106,9 @@
                     Повна свобода заповнення: створюйте титульні сторінки з будь-якими власними полями, збирайте індивідуальні звіти з довільними розділами, виконуйте автоматичний нормоконтроль та завантажуйте файл Word (.docx) в один клік без обмежень.
                 </p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="перейтиДо('титулка')">✨ Створити титульну сторінку</button>
-                    <button class="btn btn-secondary" onclick="перейтиДо('конструктор')">📝 Скласти звіт</button>
-                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Нормоконтроль тексту</button>
+                    <button class="btn btn-primary" onclick="перейтиДо('конструктор')">📝 Скласти навчальний звіт</button>
+                    <button class="btn btn-secondary" onclick="перейтиДо('нормоконтроль')">🔍 Перевірити текст за ДСТУ</button>
+                    <button class="btn btn-outline-primary" onclick="перейтиДо('про-сервіс')">📊 Схема та Промпти</button>
                 </div>
             </div>
 
@@ -818,23 +818,40 @@
         <section id="про-сервіс" class="page-view" style="display:none;">
             <div class="about-box">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
-                    <h2 style="font-size:24px; font-weight:800; color:var(--text-primary); margin:0;">Про сервіс StudZvit</h2>
+                    <h2 style="font-size:24px; font-weight:800; color:var(--text-primary); margin:0;">📊 Схема архітектури та Журнал промптів</h2>
                     <div style="display:flex; gap:8px; align-items:center;">
                         <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
                         <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
                     </div>
                 </div>
-                <p>
-                    <strong>StudZvit</strong> — це сучасний веб-інструмент автоматизованого формування та нормоконтролю студентської звітної документації. Застосунок розроблено як зразковий дипломний проєкт для полегшення рутинної підготовки навчальних робіт студентів відповідно до вимог Міністерства освіти і науки України та стандартів ДСТУ.
-                </p>
 
-                <h3>Принципи роботи сервісу</h3>
-                <ul>
-                    <li><strong>100% Безкоштовно та відкрито:</strong> у додатку повністю відсутні платні тарифи, приховані підписки або штучні обмеження на кількість сформованих файлів чи сторінок.</li>
-                    <li><strong>Повна гнучкість заповнення:</strong> студент не обмежений фіксованими шаблонами — можна додавати довільні власні поля титульної сторінки, писати код на будь-якій мові програмування та створювати власні розділи звіту.</li>
-                    <li><strong>Конфіденційність та безпека:</strong> усі дані зберігаються виключно на пристрої користувача. Жодні ваші документи чи особисті відомості не передаються на сторонні сервери.</li>
-                    <li><strong>Клієнтська генерація документів:</strong> файли Microsoft Word (.docx) створюються прямо у веб-браузері за допомогою нативного JavaScript без потреби у сторонньому серверному програмному забезпеченні.</li>
-                </ul>
+                <!-- Блок інтерактивної діаграми Mermaid -->
+                <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; padding:20px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                        <h3 style="font-size:16px; font-weight:800; color:#1e293b; margin:0;">Схема алгоритму взаємодії (Mermaid.js):</h3>
+                        <a href="https://mermaid.live/edit#pako:eNptkctuwjAMhl_F8gGugQ2w3WfpxI2aNqS-gIupDk3bVJKpUvXdh5A2bdM2Odn-_3eM7K42bY0b8nQ5q4bkWXmP0sJtV-WGlCgL36L0LcvjKqUfcfIuX-tFzZqZ9s4p1-K1wA1N2mH_0eA86e-984rTfV_Q_lUj3-P_Y9gG20-wDbafYNtsP8F2tP0E22n7CbbL9hNsz_Y72K60H2A7bj_B9qT9BNtx-wm2U_YTbM_ZT7DduZ9ge3Y_wfbsfs7x52z_A_m8pE4" target="_blank" class="btn btn-sm btn-outline-primary" style="text-decoration:none;">
+                            🔗 Відкрити схему в Mermaid.live
+                        </a>
+                    </div>
+                    <div class="mermaid" style="text-align:center; padding:10px 0;">
+flowchart TD
+    Start([Початок]) --> Input[1. Введення даних: РКЕПФК, ІТ-32, предмет, тема]
+    Input --> Validate{Перевірка валідності}
+    Validate -- Некоректно --> Error[Підсвітити червоним та показати підказку]
+    Error --> Input
+    Validate -- Коректно --> LivePreview[2. Оновлення Live Preview бланка А4 за ДСТУ]
+    LivePreview --> TypoCheck[3. Перевірка правил: тире, лапки « », пробіли]
+    TypoCheck --> GenerateDocx[4. Клієнтська генерація docx.js / Друк у PDF]
+    GenerateDocx --> Finish([Готовий звіт завантажено на ПК])
+                    </div>
+                </div>
+
+                <h3>Журнал інженерних промптів (Prompt Engineering):</h3>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px; margin-bottom:20px; font-family:monospace; font-size:13px; line-height:1.6; color:#1e293b;">
+                    <strong>1. Ідея:</strong> «Створити сервіс для студентів РКЕПФК (група ІТ-32), який об'єднує титулку та звіт в єдиний конструктор із бланком А4 за ДСТУ.»<br><br>
+                    <strong>2. Вимоги:</strong> «Поля 30-10-20-20 мм, шрифт Times New Roman 14pt, 1.5 інтервал, перевірка тире/лапок, клієнтська генерація docx.js без хмари.»<br><br>
+                    <strong>3. Архітектура:</strong> «Поділ на рівні: форма UI ➔ перевірка подій input ➔ оновлення DOM А4 ➔ експорт Word/PDF.»
+                </div>
 
                 <h3>Технічні стандарти ДСТУ 3008:2015, закладені в систему</h3>
                 <table class="dstu-table">
