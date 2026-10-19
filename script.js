@@ -40,15 +40,15 @@ function показатиСповіщення(повідомлення, тип) 
 
 var історіяНавігації = ["головна"];
 var індексІсторії = 0;
-var списокСторінок = ["головна", "конструктор", "нормоконтроль", "джерела", "про-сервіс"];
+var списокСторінок = ["головна", "титулка", "конструктор", "нормоконтроль", "чернетки"];
 
 function назваСторінки(ід) {
     var names = {
         "головна": "Головна",
+        "титулка": "Титульна сторінка",
         "конструктор": "Конструктор звіту",
-        "нормоконтроль": "Правила ДСТУ",
-        "джерела": "Список джерел",
-        "про-сервіс": "Схема та Промпти"
+        "нормоконтроль": "Модуль автоматичного нормоконтролю",
+        "чернетки": "Збережені чернетки"
     };
     return names[ід] || ід;
 }
@@ -115,15 +115,16 @@ function перейтиДо(ідСторінки, безІсторії) {
         el.style.display = "none";
     });
 
+    if (ідСторінки === "джерела") ідСторінки = "конструктор";
+    if (ідСторінки === "про-сервіс") ідСторінки = "головна";
+
     var цільова = document.getElementById(ідСторінки);
     if (цільова) {
         цільова.style.display = "block";
     }
 
-    if (ідСторінки === "про-сервіс" && window.mermaid) {
-        setTimeout(function() {
-            try { mermaid.run(); } catch(e) {}
-        }, 80);
+    if (ідСторінки === "чернетки") {
+        відобразитиЧернетки();
     }
 
     document.querySelectorAll(".nav-tab").forEach(function(btn) {
@@ -1256,8 +1257,214 @@ function вставитиПрикладПомилок() {
     показатиСповіщення("Зразок тексту з помилками вставлено", "інфо");
 }
 
+function вставитиЗразокДляПлагіату() {
+    var txt = "Автоматизація процесів створення студентської навчальної документації є ключовим завданням сучасної цифрової освіти. Розробка вебсервісу дозволяє оптимізувати оформлення звітів, зменшити рутинні витрати часу та забезпечити повну відповідність стандартам коледжу.";
+    var input = document.getElementById("плагіат-вхід");
+    if (input) input.value = txt;
+    показатиСповіщення("Зразок фрагмента тексту вставлено", "інфо");
+}
+
+function запуститиШвидкийТестПлагіату() {
+    var input = document.getElementById("плагіат-вхід");
+    var text = input ? input.value.trim() : "";
+    if (!text) {
+        показатиСповіщення("Введіть фрагмент тексту для перевірки на плагіат", "інфо");
+        return;
+    }
+
+    var words = text.toLowerCase().match(/[\p{L}\p{Nd}]+/gu) || [];
+    if (words.length < 8) {
+        показатиСповіщення("Фрагмент занадто короткий (менше 8 слів)", "інфо");
+        return;
+    }
+
+    var shingles = new Set();
+    var duplicateCount = 0;
+    for (var i = 0; i < words.length - 2; i++) {
+        var shingle = words[i] + " " + words[i+1] + " " + words[i+2];
+        if (shingles.has(shingle)) {
+            duplicateCount++;
+        } else {
+            shingles.add(shingle);
+        }
+    }
+
+    var totalShingles = Math.max(1, words.length - 2);
+    var dtp = Math.round((duplicateCount / totalShingles) * 100);
+    var originality = Math.max(0, 100 - dtp);
+
+    var resBlock = document.getElementById("плагіат-результат-блок");
+    var elOrig = document.getElementById("плагіат-відсоток");
+    var elDtp = document.getElementById("плагіат-дтп");
+    var elStatus = document.getElementById("плагіат-статус");
+
+    if (resBlock) resBlock.style.display = "block";
+    if (elOrig) {
+        elOrig.textContent = originality + "%";
+        elOrig.style.color = originality >= 75 ? "var(--accent-emerald)" : (originality >= 50 ? "#eab308" : "#ef4444");
+    }
+    if (elDtp) {
+        elDtp.textContent = dtp + "%";
+    }
+    if (elStatus) {
+        if (originality >= 80) {
+            elStatus.textContent = "Висока унікальність (Норма)";
+            elStatus.style.color = "var(--accent-emerald)";
+        } else if (originality >= 55) {
+            elStatus.textContent = "Задовільна унікальність";
+            elStatus.style.color = "#eab308";
+        } else {
+            elStatus.textContent = "Високий відсоток збігів (ДТП)";
+            elStatus.style.color = "#ef4444";
+        }
+    }
+
+    показатиСповіщення("Швидкий тест унікальності завершено: " + originality + "%", "успіх");
+}
+
+function отриматиВсіЧернетки() {
+    var raw = localStorage.getItem("doclab_drafts_v2");
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw) || [];
+    } catch(e) {
+        return [];
+    }
+}
+
+function зберегтиПоточнийЗвітУЧернетки() {
+    var студ = document.getElementById("студент-піб") ? document.getElementById("студент-піб").value.trim() : "";
+    var тема = document.getElementById("титулка-тема") ? document.getElementById("титулка-тема").value.trim() : "";
+    var предм = document.getElementById("титулка-дисципліна") ? document.getElementById("титулка-дисципліна").value.trim() : "";
+    var тип = document.getElementById("тип-роботи") ? document.getElementById("тип-роботи").value : "Практична робота";
+
+    var чернетка = {
+        id: "draft_" + Date.now(),
+        назва: (тип + ": " + (тема || предм || "Звіт без назви")),
+        студент: студ || "Студент(ка)",
+        дисципліна: предм || "Спеціальність 121",
+        дата: new Date().toLocaleString("uk-UA"),
+        payload: {
+            студент: студ,
+            тема: тема,
+            дисципліна: предм,
+            тип: тип,
+            номер: document.getElementById("титулка-номер") ? document.getElementById("титулка-номер").value : "1",
+            група: document.getElementById("студент-група") ? document.getElementById("студент-група").value : "ІТ-32",
+            викладач: document.getElementById("викладач-піб") ? document.getElementById("викладач-піб").value : "Ковальчук В. Б.",
+            мета: document.getElementById("мета-роботи") ? document.getElementById("мета-роботи").value : "",
+            теорія: document.getElementById("теорія") ? document.getElementById("теорія").value : "",
+            хід: document.getElementById("хід-роботи") ? document.getElementById("хід-роботи").value : "",
+            код: document.getElementById("код-програми") ? document.getElementById("код-програми").value : "",
+            мова: document.getElementById("мова-коду") ? document.getElementById("мова-коду").value : "C#",
+            файл: document.getElementById("назва-файлу") ? document.getElementById("назва-файлу").value : "Program.cs",
+            результати: document.getElementById("результати") ? document.getElementById("результати").value : "",
+            висновки: document.getElementById("висновки") ? document.getElementById("висновки").value : "",
+            запитання: контрольніЗапитання,
+            власніРозділи: власніРозділиЗвіту,
+            джерела: списокДжерел
+        }
+    };
+
+    var drafts = отриматиВсіЧернетки();
+    drafts.unshift(чернетка);
+    localStorage.setItem("doclab_drafts_v2", JSON.stringify(drafts));
+    відобразитиЧернетки();
+    показатиСповіщення("Чернетку «" + чернетка.назва + "» успішно збережено!", "успіх");
+}
+
+function відобразитиЧернетки() {
+    var container = document.getElementById("список-чернеток-контейнер");
+    var badge = document.getElementById("кількість-чернеток-значок");
+    if (!container) return;
+
+    var drafts = отриматиВсіЧернетки();
+    if (badge) badge.textContent = drafts.length + " чернеток";
+
+    if (drafts.length === 0) {
+        container.innerHTML = 
+            "<div style='text-align:center; padding:32px; color:var(--text-muted);'>" +
+            "<div style='font-size:36px; margin-bottom:8px;'>📁</div>" +
+            "<p style='font-size:14px;'>У вас ще немає збережених чернеток.</p>" +
+            "<p style='font-size:12.5px;'>Заповніть титульну сторінку або розділи звіту та натисніть «Зберегти».</p>" +
+            "</div>";
+        return;
+    }
+
+    var html = "";
+    drafts.forEach(function(d, idx) {
+        html += 
+            "<div class='panel-card' style='background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:10px;'>" +
+                "<div>" +
+                    "<div style='font-size:15px; font-weight:800; color:var(--text-primary); margin-bottom:4px;'>" + escapeHtml(d.назва) + "</div>" +
+                    "<div style='font-size:12.5px; color:var(--text-muted);'>" +
+                        "👤 " + escapeHtml(d.студент) + " • 📅 " + escapeHtml(d.дата) + " • 📚 " + escapeHtml(d.дисципліна) +
+                    "</div>" +
+                "</div>" +
+                "<div style='display:flex; gap:8px;'>" +
+                    "<button class='btn btn-sm btn-primary' onclick='відкритиЧернетку(" + idx + ")'>📂 Відкрити</button>" +
+                    "<button class='btn btn-sm btn-secondary' style='color:#ef4444;' onclick='видалитиЧернетку(" + idx + ")'>🗑️ Видалити</button>" +
+                "</div>" +
+            "</div>";
+    });
+    container.innerHTML = html;
+}
+
+function відкритиЧернетку(idx) {
+    var drafts = отриматиВсіЧернетки();
+    if (!drafts[idx]) return;
+    var d = drafts[idx].payload;
+
+    if (d.студент && document.getElementById("студент-піб")) document.getElementById("студент-піб").value = d.студент;
+    if (d.тема && document.getElementById("титулка-тема")) document.getElementById("титулка-тема").value = d.тема;
+    if (d.дисципліна && document.getElementById("титулка-дисципліна")) document.getElementById("титулка-дисципліна").value = d.дисципліна;
+    if (d.номер && document.getElementById("титулка-номер")) document.getElementById("титулка-номер").value = d.номер;
+    if (d.група && document.getElementById("студент-група")) document.getElementById("студент-група").value = d.група;
+    if (d.викладач && document.getElementById("викладач-піб")) document.getElementById("викладач-піб").value = d.викладач;
+    if (d.мета && document.getElementById("мета-роботи")) document.getElementById("мета-роботи").value = d.мета;
+    if (d.теорія && document.getElementById("теорія")) document.getElementById("теорія").value = d.теорія;
+    if (d.хід && document.getElementById("хід-роботи")) document.getElementById("хід-роботи").value = d.хід;
+    if (d.код && document.getElementById("код-програми")) document.getElementById("код-програми").value = d.код;
+    if (d.мова && document.getElementById("мова-коду")) document.getElementById("мова-коду").value = d.мова;
+    if (d.файл && document.getElementById("назва-файлу")) document.getElementById("назва-файлу").value = d.файл;
+    if (d.результати && document.getElementById("результати")) document.getElementById("результати").value = d.результати;
+    if (d.висновки && document.getElementById("висновки")) document.getElementById("висновки").value = d.висновки;
+    if (d.запитання) {
+        контрольніЗапитання = d.запитання;
+        перемалюватиЗапитання();
+    }
+    if (d.власніРозділи) {
+        власніРозділиЗвіту = d.власніРозділи;
+        перемалюватиВласніРозділиЗвіту();
+    }
+    if (d.джерела) {
+        списокДжерел = d.джерела;
+        перемалюватиДжерела();
+    }
+
+    оновитиПрев();
+    оновитиЧекліст();
+    перейтиДо("конструктор");
+    показатиСповіщення("Чернетку успішно завантажено в Конструктор!", "успіх");
+}
+
+function видалитиЧернетку(idx) {
+    var drafts = отриматиВсіЧернетки();
+    drafts.splice(idx, 1);
+    localStorage.setItem("doclab_drafts_v2", JSON.stringify(drafts));
+    відобразитиЧернетки();
+    показатиСповіщення("Чернетку видалено", "інфо");
+}
+
+function очиститиВсіЧернетки() {
+    if (!confirm("Ви впевнені, що бажаєте видалити всі збережені чернетки?")) return;
+    localStorage.removeItem("doclab_drafts_v2");
+    відобразитиЧернетки();
+    показатиСповіщення("Усі чернетки очищено", "інфо");
+}
+
 // ============================================================
-// 9. СПИСОК ДЖЕРЕЛ (ДСТУ 8302:2015)
+// 9. СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ
 // ============================================================
 
 function перемкнутиПоляДжерела() {
@@ -1609,7 +1816,7 @@ function переглянутиПередЗавантаженням(тип) {
         if (власніРозділиЗвіту.length > 0) {
             html += "<div class='doc-review-line'><strong>8. Додаткові розділи:</strong> ✓ " + власніРозділиЗвіту.length + " розд.</div>";
         }
-        html += "<div class='doc-review-line'><strong>9. Список використаних джерел:</strong> " + (списокДжерел.length > 0 ? "✓ " + списокДжерел.length + " джерел (ДСТУ 8302)" : "<em>Не додано</em>") + "</div>";
+        html += "<div class='doc-review-line'><strong>9. Список використаних джерел:</strong> " + (списокДжерел.length > 0 ? "✓ " + списокДжерел.length + " джерел" : "<em>Не додано</em>") + "</div>";
     }
 
     reviewBox.innerHTML = html;

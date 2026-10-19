@@ -7,3 +7,22 @@ server.ps1
 
 chrome_temp/
 test_profile/
+
+# Build artifacts & temp
+bin/
+obj/
+*.exe
+*.mp4
+*.ogg
+*.mp3
+*.log
+video_frames/
+vscode_scenes/
+real_vscode_scenes/
+test_*.ps1
+test_*.png
+anim_frame_*.jpg
+app_clean_*.jpg
+app_frame_*.jpg
+app_preview_*.jpg
+preview_frame_*.jpg
