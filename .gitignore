@@ -16,6 +16,10 @@ obj/
 *.ogg
 *.mp3
 *.log
+*.docx
+*.bat
+*.ps1
+Render*.cs
 video_frames/
 vscode_scenes/
 real_vscode_scenes/
