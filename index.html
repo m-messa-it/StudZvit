@@ -75,7 +75,6 @@
 
             <nav class="nav-links">
                 <button class="nav-tab active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
-                <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">📄 Титульна сторінка</button>
                 <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">📝 Конструктор звіту</button>
                 <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">🔍 Перевірка тексту</button>
                 <button class="nav-tab" data-page="чернетки" onclick="перейтиДо('чернетки')">📂 Збережені чернетки</button>
@@ -104,12 +103,12 @@
                 <h1 class="hero-title">StudZvit</h1>
                 <p class="hero-slogan" style="font-size:20px; font-weight:700; color:var(--accent-primary); margin-top:-8px; margin-bottom:12px;">Розумний генератор студентської документації!</p>
                 <p class="hero-desc">
-                    Повна свобода заповнення: створення титульних аркушів за вимогами коледжу, покроковий конструктор повного звіту з лістингом коду та джерелами, автоматична перевірка тексту та виправлення типографіки з експортом у Microsoft Word (.docx).
+                    Повна свобода заповнення: покроковий конструктор повного звіту з титульною сторінкою за вимогами коледжу, лістингом коду та джерелами, автоматична перевірка тексту та виправлення типографіки з експортом у Microsoft Word (.docx).
                 </p>
                 <div class="hero-buttons">
                     <button class="btn btn-primary" onclick="перейтиДо('конструктор')">📝 Конструктор звіту</button>
-                    <button class="btn btn-secondary" onclick="перейтиДо('титулка')">📄 Титульна сторінка</button>
-                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Перевірка тексту</button>
+                    <button class="btn btn-secondary" onclick="перейтиДо('нормоконтроль')">🔍 Перевірка тексту</button>
+                    <button class="btn btn-outline-primary" onclick="перейтиДо('чернетки')">📂 Збережені чернетки</button>
                 </div>
             </div>
 
@@ -137,17 +136,10 @@
 
             <!-- Сітка можливостей -->
             <div class="features-grid">
-                <div class="feature-box" onclick="перейтиДо('титулка')">
-                    <div class="feature-icon-badge">📄</div>
-                    <h3>Гнучкий генератор титульних</h3>
-                    <p>Формування титулки під ВСП «РКЕПФК» або будь-який інший заклад. Інтерактивний бланк А4 з точними відступами та Live Preview.</p>
-                    <span class="feature-link">Перейти до генератора &rarr;</span>
-                </div>
-
                 <div class="feature-box" onclick="перейтиДо('конструктор')">
                     <div class="feature-icon-badge">🛠️</div>
                     <h3>Конструктор повного звіту</h3>
-                    <p>Покрокове формування звіту: титулка, мета, хід виконання, програмний код (C#, JS, Python), скріншоти, висновки та список джерел.</p>
+                    <p>Покрокове формування звіту: вбудована титульна сторінка (ВСП «РКЕПФК»), мета, теорія, хід виконання, програмний код (C#, JS, Python), скріншоти, висновки та список джерел.</p>
                     <span class="feature-link">Скласти структуру &rarr;</span>
                 </div>
 
@@ -188,230 +180,14 @@
 
             <!-- Нижня навігація -->
             <div class="page-nav-bar">
-                <span style="font-size:13px; color:var(--text-muted);">Крок 1 з 5: Оберіть інструмент або почніть з титульної сторінки</span>
-                <button class="page-nav-btn primary" onclick="перейтиДо('титулка')">
-                    Створити титульну сторінку &rarr;
+                <span style="font-size:13px; color:var(--text-muted);">Почніть складати звіт або перейдіть до перевірки тексту:</span>
+                <button class="page-nav-btn primary" onclick="перейтиДо('конструктор')">
+                    Перейти до Конструктора звіту &rarr;
                 </button>
             </div>
         </section>
 
-        <!-- ==================== 2. ГЕНЕРАТОР ТИТУЛЬНОЇ ==================== -->
-        <section id="титулка" class="page-view" style="display:none;">
-            <div class="page-header">
-                <div>
-                    <h2 class="page-title">Генератор титульної сторінки</h2>
-                    <p class="page-subtitle">Заповнюйте лише ті поля, які вам потрібні. Усе порожнє не з'являється на бланку.</p>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                    <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
-                    <button class="btn btn-sm btn-secondary btn-nav-forward" onclick="навігаціяВперед()" title="Перейти вперед">Вперед &#8594;</button>
-                    <button class="btn btn-sm btn-secondary" onclick="заповнитиДемо()">⚡ Зразок</button>
-                    <button class="btn btn-sm btn-outline-primary" onclick="очиститиФормуТитулки()">🧹 Очистити форму</button>
-                </div>
-            </div>
-
-            <!-- Простий 3-кроковий гід для студентів та викладачів -->
-            <div class="steps-strip">
-                <div class="step-card">
-                    <div class="step-circle">1</div>
-                    <div class="step-content">
-                        <strong>Заповніть поля</strong>
-                        <span>Введіть дані або зніміть непотрібні галочки</span>
-                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="step-circle">2</div>
-                    <div class="step-content">
-                        <strong>Погляньте на зразок</strong>
-                        <span>Праворуч видно реальний вигляд бланка А4 за ДСТУ</span>
-                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="step-circle">3</div>
-                    <div class="step-content">
-                        <strong>Перевірте та скачайте</strong>
-                        <span>Перегляньте перед завантаженням та збережіть у Word</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="generator-grid">
-                <!-- Ліва колонка: Форма -->
-                <div class="panel-card">
-                    <div class="panel-top-bar">
-                        <span class="panel-top-title">Основні відомості</span>
-                        <span style="font-size:12px; color:var(--text-muted);">Можна заповнювати частково</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label><input type="checkbox" id="чек-тип" checked onchange="перемкнутиПоле('тип-роботи', this.checked)"> Тип навчальної роботи</label>
-                        <select id="тип-роботи" class="form-control" onchange="оновитиПрев()">
-                            <option value="Практична робота" selected>Практична робота</option>
-                            <option value="Лабораторна робота">Лабораторна робота</option>
-                            <option value="Курсова робота">Курсова робота</option>
-                            <option value="Курсовий проєкт">Курсовий проєкт</option>
-                            <option value="Контрольна робота">Контрольна робота</option>
-                            <option value="Реферат">Реферат</option>
-                            <option value="Дипломний проєкт">Дипломний проєкт</option>
-                            <option value="Самостійна робота">Самостійна робота</option>
-                        </select>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-номер" checked onchange="перемкнутиПоле('номер-роботи', this.checked)"> Номер роботи</label>
-                            <input type="text" id="номер-роботи" class="form-control" placeholder="Наприклад: 4" oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-варіант" checked onchange="перемкнутиПоле('варіант', this.checked)"> Варіант</label>
-                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 3" oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label><input type="checkbox" id="чек-дисципліна" checked onchange="перемкнутиПоле('дисципліна', this.checked)"> Навчальна дисципліна</label>
-                        <input type="text" id="дисципліна" class="form-control" placeholder="Введіть назву предмета..." oninput="оновитиПрев()">
-                    </div>
-
-                    <div class="form-group">
-                        <label><input type="checkbox" id="чек-тема" checked onchange="перемкнутиПоле('тема-роботи', this.checked)"> Тема роботи</label>
-                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Введіть тему роботи..." oninput="оновитиПрев()"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label><input type="checkbox" id="чек-заклад" checked onchange="перемкнутиПоле('заклад', this.checked)"> Навчальний заклад</label>
-                        <input type="text" id="заклад" class="form-control" value="Рівненський кооперативний економіко-правовий фаховий коледж" placeholder="Рівненський кооперативний економіко-правовий фаховий коледж" oninput="оновитиПрев()">
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-відділення" checked onchange="перемкнутиПоле('відділення', this.checked)"> Відділення / Факультет</label>
-                            <input type="text" id="відділення" class="form-control" placeholder="Відділення програмування..." oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-кафедра" checked onchange="перемкнутиПоле('кафедра', this.checked)"> Кафедра / Комісія</label>
-                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія..." oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-студент" checked onchange="перемкнутиПоле('студент-піб', this.checked)"> ПІБ студента</label>
-                            <input type="text" id="студент-піб" class="form-control" placeholder="Введіть ПІБ студента..." oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-група" checked onchange="перемкнутиПоле('група', this.checked)"> Група</label>
-                            <input type="text" id="група" class="form-control" placeholder="Наприклад: ІПЗ-21" oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-спец" checked onchange="перемкнутиПоле('спеціальність', this.checked)"> Спеціальність</label>
-                            <input type="text" id="спеціальність" class="form-control" placeholder="Наприклад: 121 Інженерія ПЗ" oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-курс" checked onchange="перемкнутиПоле('курс', this.checked)"> Курс</label>
-                            <input type="text" id="курс" class="form-control" placeholder="Наприклад: 2" oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-викладач" checked onchange="перемкнутиПоле('викладач-піб', this.checked)"> ПІБ викладача</label>
-                            <input type="text" id="викладач-піб" class="form-control" placeholder="Введіть ПІБ керівника..." oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-посада" checked onchange="перемкнутиПоле('викладач-посада', this.checked)"> Посада керівника</label>
-                            <input type="text" id="викладач-посада" class="form-control" placeholder="викладач / доцент / професор" oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-місто" checked onchange="перемкнутиПоле('місто', this.checked)"> Місто</label>
-                            <input type="text" id="місто" class="form-control" placeholder="Київ" oninput="оновитиПрев()">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" id="чек-рік" checked onchange="перемкнутиПоле('рік', this.checked)"> Рік</label>
-                            <input type="text" id="рік" class="form-control" placeholder="2026" oninput="оновитиПрев()">
-                        </div>
-                    </div>
-
-                    <!-- Блок додаткових власних полів -->
-                    <div class="custom-fields-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <label style="font-size:13px; font-weight:700; color:var(--text-primary);">+ Власні довільні поля титулки</label>
-                            <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнеПолеТитулки()">+ Додати поле</button>
-                        </div>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">
-                            Потрібно додати рецензента, оцінку чи консультанта? Додайте будь-який рядок:
-                        </p>
-                        <div id="список-власних-полів-титулки"></div>
-                    </div>
-
-                    <div class="btn-group-actions">
-                        <button class="btn btn-primary" onclick="переглянутиПередЗавантаженням('титулка')">📥 Скачати Word (.docx)</button>
-                        <button class="btn btn-secondary" onclick="завантажитиТитулкуPDF()" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; font-weight:700;">📄 Скачати PDF (.pdf)</button>
-                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк</button>
-                        <button class="btn btn-outline-primary" onclick="зберегтиПрофіль()">💾 Зберегти профіль</button>
-                    </div>
-                </div>
-
-                <!-- Права колонка: Інтерактивний бланк А4 -->
-                <div class="preview-container">
-                    <div class="preview-toolbar">
-                        <span class="preview-title-badge">Живий бланк А4 (ДСТУ 3008:2015)</span>
-                        <div class="preview-zoom-btns">
-                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(0.9)">-</button>
-                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(1)">100%</button>
-                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(1.1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="a4-viewport">
-                        <div class="a4-paper" id="прев-титулка">
-                            <div class="a4-top-section">
-                                <div class="a4-org" id="прев-заклад">РІВНЕНСЬКИЙ КООПЕРАТИВНИЙ ЕКОНОМІКО-ПРАВОВИЙ ФАХОВИЙ КОЛЕДЖ</div>
-                                <div class="a4-suborg" id="прев-відділення-кафедра"></div>
-                            </div>
-
-                            <div class="a4-middle-section">
-                                <div class="a4-doc-title" id="прев-тип">ПРАКТИЧНА РОБОТА</div>
-                                <div class="a4-doc-disc" id="прев-дисципліна"></div>
-                                <div class="a4-doc-topic" id="прев-тема"></div>
-                                <div class="a4-doc-variant" id="прев-варіант"></div>
-                            </div>
-
-                            <div class="a4-meta-section">
-                                <div class="a4-meta-block">
-                                    <div class="a4-meta-line" id="прев-студент"><strong>Виконав(ла):</strong> студент(ка)</div>
-                                    <div class="a4-meta-line" id="прев-група"></div>
-                                    <div class="a4-meta-line" id="прев-спец"></div>
-                                    <div class="a4-meta-line" id="прев-викладач" style="margin-top: 10px;"><strong>Перевірив(ла):</strong> викладач</div>
-                                    <div id="прев-власні-поля" class="a4-custom-rows"></div>
-                                </div>
-                            </div>
-
-                            <div class="a4-bottom-section">
-                                <span id="прев-місто-рік"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Нижня навігація між вкладками (стрілочки) -->
-            <div class="page-nav-bar">
-                <button class="page-nav-btn btn-nav-back" onclick="навігаціяНазад()">&#8592; Назад</button>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <button class="page-nav-btn" onclick="переглянутиПередЗавантаженням('титулка')">👁️ Перевірити документ</button>
-                    <button class="page-nav-btn primary btn-nav-forward" onclick="навігаціяВперед()">Вперед &#8594;</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== 3. КОНСТРУКТОР ЗВІТУ ==================== -->
+        <!-- ==================== 2. КОНСТРУКТОР ЗВІТУ ==================== -->
         <section id="конструктор" class="page-view" style="display:none;">
             <div class="page-header">
                 <div>
@@ -461,15 +237,179 @@
                             <div class="acc-title-left">
                                 <span class="acc-index">1</span>
                                 <span class="acc-name">Титульна сторінка</span>
-                                <span class="acc-badge">Автоматично</span>
+                                <span class="acc-badge">Вбудовано у звіт</span>
                             </div>
                             <span class="acc-toggle-icon">&plus;</span>
                         </button>
                         <div class="accordion-content" style="display:none; padding-top:16px;">
-                            <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
-                                Дані для титульної сторінки беруться з вкладки «Титульна сторінка». Усе, що ви там вказали, буде автоматично додано до звіту.
+                            <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;">
+                                Заповніть реквізити титульної сторінки (ВСП «РКЕПФК» або іншого закладу). Вони автоматично сформують титульний аркуш вашого звіту.
                             </p>
-                            <button class="btn btn-sm btn-outline-primary" onclick="перейтиДо('титулка')">Налаштувати титульну сторінку</button>
+                            
+                            <div class="generator-grid">
+                                <!-- Ліва колонка: Форма -->
+                                <div class="panel-card">
+                                    <div class="panel-top-bar">
+                                        <span class="panel-top-title">Основні відомості титулки</span>
+                                        <span style="font-size:12px; color:var(--text-muted);">Можна заповнювати частково</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><input type="checkbox" id="чек-тип" checked onchange="перемкнутиПоле('тип-роботи', this.checked)"> Тип навчальної роботи</label>
+                                        <select id="тип-роботи" class="form-control" onchange="оновитиПрев()">
+                                            <option value="Практична робота" selected>Практична робота</option>
+                                            <option value="Лабораторна робота">Лабораторна робота</option>
+                                            <option value="Курсова робота">Курсова робота</option>
+                                            <option value="Курсовий проєкт">Курсовий проєкт</option>
+                                            <option value="Контрольна робота">Контрольна робота</option>
+                                            <option value="Реферат">Реферат</option>
+                                            <option value="Дипломний проєкт">Дипломний проєкт</option>
+                                            <option value="Самостійна робота">Самостійна робота</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-номер" checked onchange="перемкнутиПоле('номер-роботи', this.checked)"> Номер роботи</label>
+                                            <input type="text" id="номер-роботи" class="form-control" placeholder="Наприклад: 4" oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-варіант" checked onchange="перемкнутиПоле('варіант', this.checked)"> Варіант</label>
+                                            <input type="text" id="варіант" class="form-control" placeholder="Наприклад: 3" oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><input type="checkbox" id="чек-дисципліна" checked onchange="перемкнутиПоле('дисципліна', this.checked)"> Навчальна дисципліна</label>
+                                        <input type="text" id="дисципліна" class="form-control" placeholder="Введіть назву предмета..." oninput="оновитиПрев()">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><input type="checkbox" id="чек-тема" checked onchange="перемкнутиПоле('тема-роботи', this.checked)"> Тема роботи</label>
+                                        <textarea id="тема-роботи" class="form-control" rows="2" placeholder="Введіть тему роботи..." oninput="оновитиПрев()"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><input type="checkbox" id="чек-заклад" checked onchange="перемкнутиПоле('заклад', this.checked)"> Навчальний заклад</label>
+                                        <input type="text" id="заклад" class="form-control" value="Рівненський кооперативний економіко-правовий фаховий коледж" placeholder="Рівненський кооперативний економіко-правовий фаховий коледж" oninput="оновитиПрев()">
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-відділення" checked onchange="перемкнутиПоле('відділення', this.checked)"> Відділення / Факультет</label>
+                                            <input type="text" id="відділення" class="form-control" placeholder="Відділення програмування..." oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-кафедра" checked onchange="перемкнутиПоле('кафедра', this.checked)"> Кафедра / Комісія</label>
+                                            <input type="text" id="кафедра" class="form-control" placeholder="Циклова комісія..." oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-студент" checked onchange="перемкнутиПоле('студент-піб', this.checked)"> ПІБ студента</label>
+                                            <input type="text" id="студент-піб" class="form-control" placeholder="Введіть ПІБ студента..." oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-група" checked onchange="перемкнутиПоле('група', this.checked)"> Група</label>
+                                            <input type="text" id="група" class="form-control" placeholder="Наприклад: ІТ-32" oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-спец" checked onchange="перемкнутиПоле('спеціальність', this.checked)"> Спеціальність</label>
+                                            <input type="text" id="спеціальність" class="form-control" placeholder="Наприклад: 121 Інженерія ПЗ" oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-курс" checked onchange="перемкнутиПоле('курс', this.checked)"> Курс</label>
+                                            <input type="text" id="курс" class="form-control" placeholder="Наприклад: 2" oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-викладач" checked onchange="перемкнутиПоле('викладач-піб', this.checked)"> ПІБ викладача</label>
+                                            <input type="text" id="викладач-піб" class="form-control" placeholder="Введіть ПІБ керівника..." oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-посада" checked onchange="перемкнутиПоле('викладач-посада', this.checked)"> Посада керівника</label>
+                                            <input type="text" id="викладач-посада" class="form-control" placeholder="викладач / доцент / професор" oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-місто" checked onchange="перемкнутиПоле('місто', this.checked)"> Місто</label>
+                                            <input type="text" id="місто" class="form-control" placeholder="Київ" oninput="оновитиПрев()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" id="чек-рік" checked onchange="перемкнутиПоле('рік', this.checked)"> Рік</label>
+                                            <input type="text" id="рік" class="form-control" placeholder="2026" oninput="оновитиПрев()">
+                                        </div>
+                                    </div>
+
+                                    <!-- Блок додаткових власних полів -->
+                                    <div class="custom-fields-box">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                            <label style="font-size:13px; font-weight:700; color:var(--text-primary);">+ Власні довільні поля титулки</label>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="додатиВласнеПолеТитулки()">+ Додати поле</button>
+                                        </div>
+                                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">
+                                            Потрібно додати рецензента, оцінку чи консультанта? Додайте будь-який рядок:
+                                        </p>
+                                        <div id="список-власних-полів-титулки"></div>
+                                    </div>
+
+                                    <div class="btn-group-actions" style="margin-top:12px;">
+                                        <button class="btn btn-primary" onclick="завантажитиТитулку()">📥 Скачати тільки титулку (.docx)</button>
+                                        <button class="btn btn-secondary" onclick="завантажитиТитулкуPDF()" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; font-weight:700;">📄 Скачати PDF (.pdf)</button>
+                                        <button class="btn btn-secondary" onclick="друкуватиТитулку()">🖨️ Друк</button>
+                                    </div>
+                                </div>
+
+                                <!-- Права колонка: Інтерактивний бланк А4 -->
+                                <div class="preview-container">
+                                    <div class="preview-toolbar">
+                                        <span class="preview-title-badge">Живий бланк А4</span>
+                                        <div class="preview-zoom-btns">
+                                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(0.9)">-</button>
+                                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(1)">100%</button>
+                                            <button class="btn btn-sm btn-secondary" onclick="масштабуватиПрев(1.1)">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="a4-viewport">
+                                        <div class="a4-paper" id="прев-титулка">
+                                            <div class="a4-top-section">
+                                                <div class="a4-org" id="прев-заклад">РІВНЕНСЬКИЙ КООПЕРАТИВНИЙ ЕКОНОМІКО-ПРАВОВИЙ ФАХОВИЙ КОЛЕДЖ</div>
+                                                <div class="a4-suborg" id="прев-відділення-кафедра"></div>
+                                            </div>
+
+                                            <div class="a4-middle-section">
+                                                <div class="a4-doc-title" id="прев-тип">ПРАКТИЧНА РОБОТА</div>
+                                                <div class="a4-doc-disc" id="прев-дисципліна"></div>
+                                                <div class="a4-doc-topic" id="прев-тема"></div>
+                                                <div class="a4-doc-variant" id="прев-варіант"></div>
+                                            </div>
+
+                                            <div class="a4-meta-section">
+                                                <div class="a4-meta-block">
+                                                    <div class="a4-meta-line" id="прев-студент"><strong>Виконав(ла):</strong> студент(ка)</div>
+                                                    <div class="a4-meta-line" id="прев-група"></div>
+                                                    <div class="a4-meta-line" id="прев-спец"></div>
+                                                    <div class="a4-meta-line" id="прев-викладач" style="margin-top: 10px;"><strong>Перевірив(ла):</strong> викладач</div>
+                                                    <div id="прев-власні-поля" class="a4-custom-rows"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="a4-bottom-section">
+                                                <span id="прев-місто-рік"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

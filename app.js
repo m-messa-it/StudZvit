@@ -40,12 +40,11 @@ function показатиСповіщення(повідомлення, тип) 
 
 var історіяНавігації = ["головна"];
 var індексІсторії = 0;
-var списокСторінок = ["головна", "титулка", "конструктор", "нормоконтроль", "чернетки"];
+var списокСторінок = ["головна", "конструктор", "нормоконтроль", "чернетки"];
 
 function назваСторінки(ід) {
     var names = {
         "головна": "Головна",
-        "титулка": "Титульна сторінка",
         "конструктор": "Конструктор звіту",
         "нормоконтроль": "Перевірка тексту",
         "чернетки": "Збережені чернетки"
@@ -345,69 +344,83 @@ function оновитиПрев() {
 
     // Заклад та підрозділи
     var elЗаклад = document.getElementById("прев-заклад");
-    if (заклад) {
-        elЗаклад.textContent = заклад.toUpperCase();
-        elЗаклад.style.display = "block";
-    } else {
-        elЗаклад.textContent = "";
-        elЗаклад.style.display = "none";
+    if (elЗаклад) {
+        if (заклад) {
+            elЗаклад.textContent = заклад.toUpperCase();
+            elЗаклад.style.display = "block";
+        } else {
+            elЗаклад.textContent = "";
+            elЗаклад.style.display = "none";
+        }
     }
     
     var subOrg = "";
     if (відділення) subOrg += відділення;
     if (кафедра) subOrg += (subOrg ? " • " : "") + кафедра;
     var elSubOrg = document.getElementById("прев-відділення-кафедра");
-    if (subOrg) {
-        elSubOrg.textContent = subOrg;
-        elSubOrg.style.display = "block";
-    } else {
-        elSubOrg.textContent = "";
-        elSubOrg.style.display = "none";
+    if (elSubOrg) {
+        if (subOrg) {
+            elSubOrg.textContent = subOrg;
+            elSubOrg.style.display = "block";
+        } else {
+            elSubOrg.textContent = "";
+            elSubOrg.style.display = "none";
+        }
     }
 
     // Тип і номер
     var elТип = document.getElementById("прев-тип");
-    if (тип) {
-        var текстТипу = тип;
-        if (номер) текстТипу += " № " + номер;
-        elТип.textContent = текстТипу;
-        elТип.style.display = "block";
-    } else {
-        elТип.style.display = "none";
+    if (elТип) {
+        if (тип) {
+            var текстТипу = тип;
+            if (номер) текстТипу += " № " + номер;
+            elТип.textContent = текстТипу;
+            elТип.style.display = "block";
+        } else {
+            elТип.style.display = "none";
+        }
     }
 
     // Дисципліна, тема, варіант
     var elДисципліна = document.getElementById("прев-дисципліна");
-    if (дисципліна) {
-        elДисципліна.textContent = "з дисципліни «" + дисципліна + "»";
-        elДисципліна.style.display = "block";
-    } else {
-        elДисципліна.style.display = "none";
+    if (elДисципліна) {
+        if (дисципліна) {
+            elДисципліна.textContent = "з дисципліни «" + дисципліна + "»";
+            elДисципліна.style.display = "block";
+        } else {
+            elДисципліна.style.display = "none";
+        }
     }
 
     var elТема = document.getElementById("прев-тема");
-    if (тема) {
-        elТема.textContent = "Тема: " + тема;
-        elТема.style.display = "block";
-    } else {
-        elТема.style.display = "none";
+    if (elТема) {
+        if (тема) {
+            elТема.textContent = "Тема: " + тема;
+            elТема.style.display = "block";
+        } else {
+            elТема.style.display = "none";
+        }
     }
 
     var elВаріант = document.getElementById("прев-варіант");
-    if (варіант) {
-        elВаріант.textContent = "Варіант № " + варіант;
-        elВаріант.style.display = "block";
-    } else {
-        elВаріант.style.display = "none";
+    if (elВаріант) {
+        if (варіант) {
+            elВаріант.textContent = "Варіант № " + варіант;
+            elВаріант.style.display = "block";
+        } else {
+            elВаріант.style.display = "none";
+        }
     }
 
     // Мета-дані: студент
     var elСтудент = document.getElementById("прев-студент");
-    if (студент) {
-        elСтудент.innerHTML = "<strong>Виконав(ла):</strong> " + студент;
-        elСтудент.style.display = "block";
-    } else {
-        elСтудент.style.display = "none";
+    if (elСтудент) {
+        if (студент) {
+            elСтудент.innerHTML = "<strong>Виконав(ла):</strong> " + студент;
+            elСтудент.style.display = "block";
+        } else {
+            elСтудент.style.display = "none";
+        }
     }
     
     // Група та курс
@@ -415,45 +428,53 @@ function оновитиПрев() {
     if (група) рядГрупи += "групи " + група;
     if (курс) рядГрупи += (рядГрупи ? ", " : "") + курс + " курсу";
     var elГрупа = document.getElementById("прев-група");
-    if (рядГрупи) {
-        elГрупа.textContent = рядГрупи;
-        elГрупа.style.display = "block";
-    } else {
-        elГрупа.style.display = "none";
+    if (elГрупа) {
+        if (рядГрупи) {
+            elГрупа.textContent = рядГрупи;
+            elГрупа.style.display = "block";
+        } else {
+            elГрупа.style.display = "none";
+        }
     }
 
     // Спеціальність
     var elСпец = document.getElementById("прев-спец");
-    if (спеціальність) {
-        elСпец.textContent = "спеціальності " + спеціальність;
-        elСпец.style.display = "block";
-    } else {
-        elСпец.style.display = "none";
+    if (elСпец) {
+        if (спеціальність) {
+            elСпец.textContent = "спеціальності " + спеціальність;
+            elСпец.style.display = "block";
+        } else {
+            elСпец.style.display = "none";
+        }
     }
     
     // Викладач / керівник
     var elВикладач = document.getElementById("прев-викладач");
-    if (викладач) {
-        var виклТекст = "<strong>Перевірив(ла):</strong> ";
-        if (викладачПосада) виклТекст += викладачПосада + " ";
-        виклТекст += викладач;
-        elВикладач.innerHTML = виклТекст;
-        elВикладач.style.display = "block";
-    } else {
-        elВикладач.style.display = "none";
+    if (elВикладач) {
+        if (викладач) {
+            var виклТекст = "<strong>Перевірив(ла):</strong> ";
+            if (викладачПосада) виклТекст += викладачПосада + " ";
+            виклТекст += викладач;
+            elВикладач.innerHTML = виклТекст;
+            elВикладач.style.display = "block";
+        } else {
+            elВикладач.style.display = "none";
+        }
     }
 
     // Власні довільні поля
     var превВласні = document.getElementById("прев-власні-поля");
-    превВласні.innerHTML = "";
-    власніПоляТитулки.forEach(function(item) {
-        if (item.назва || item.значення) {
-            var row = document.createElement("div");
-            row.className = "a4-meta-line";
-            row.innerHTML = "<strong>" + escapeHtml(item.назва) + ":</strong> " + escapeHtml(item.значення);
-            превВласні.appendChild(row);
-        }
-    });
+    if (превВласні) {
+        превВласні.innerHTML = "";
+        власніПоляТитулки.forEach(function(item) {
+            if (item.назва || item.значення) {
+                var row = document.createElement("div");
+                row.className = "a4-meta-line";
+                row.innerHTML = "<strong>" + escapeHtml(item.назва) + ":</strong> " + escapeHtml(item.значення);
+                превВласні.appendChild(row);
+            }
+        });
+    }
 
     // Місто та рік
     var elНиз = document.getElementById("прев-місто-рік");
@@ -877,6 +898,129 @@ function завантажитиЗвіт() {
                 }));
             }
         });
+    }
+
+    // 0. ТИТУЛЬНА СТОРІНКА (якщо заповнено дані)
+    var тип = (чиУвімкнено("чек-тип") ? (document.getElementById("тип-роботи") ? document.getElementById("тип-роботи").value : "Практична робота") : "").toUpperCase();
+    var номер = чиУвімкнено("чек-номер") ? (document.getElementById("номер-роботи") ? document.getElementById("номер-роботи").value.trim() : "") : "";
+    var дисципліна = чиУвімкнено("чек-дисципліна") ? (document.getElementById("дисципліна") ? document.getElementById("дисципліна").value.trim() : "") : "";
+    var тема = чиУвімкнено("чек-тема") ? (document.getElementById("тема-роботи") ? document.getElementById("тема-роботи").value.trim() : "") : "";
+    var заклад = чиУвімкнено("чек-заклад") ? (document.getElementById("заклад") ? document.getElementById("заклад").value.trim() : "") : "";
+    var відділення = чиУвімкнено("чек-відділення") ? (document.getElementById("відділення") ? document.getElementById("відділення").value.trim() : "") : "";
+    var кафедра = чиУвімкнено("чек-кафедра") ? (document.getElementById("кафедра") ? document.getElementById("кафедра").value.trim() : "") : "";
+    var студент = чиУвімкнено("чек-студент") ? (document.getElementById("студент-піб") ? document.getElementById("студент-піб").value.trim() : "") : "";
+    var група = чиУвімкнено("чек-група") ? (document.getElementById("група") ? document.getElementById("група").value.trim() : "") : "";
+    var спеціальність = чиУвімкнено("чек-спец") ? (document.getElementById("спеціальність") ? document.getElementById("спеціальність").value.trim() : "") : "";
+    var курс = чиУвімкнено("чек-курс") ? (document.getElementById("курс") ? document.getElementById("курс").value.trim() : "") : "";
+    var викладач = чиУвімкнено("чек-викладач") ? (document.getElementById("викладач-піб") ? document.getElementById("викладач-піб").value.trim() : "") : "";
+    var викладачПосада = чиУвімкнено("чек-посада") ? (document.getElementById("викладач-посада") ? document.getElementById("викладач-посада").value.trim() : "") : "";
+    var варіант = чиУвімкнено("чек-варіант") ? (document.getElementById("варіант") ? document.getElementById("варіант").value.trim() : "") : "";
+    var місто = чиУвімкнено("чек-місто") ? (document.getElementById("місто") ? document.getElementById("місто").value.trim() : "") : "";
+    var рік = чиУвімкнено("чек-рік") ? (document.getElementById("рік") ? document.getElementById("рік").value.trim() : "") : "";
+
+    var шрифтОсновний = { font: "Times New Roman", size: 28 };
+    var шрифтМалий = { font: "Times New Roman", size: 24 };
+    var шрифтЗаголовокТитул = { font: "Times New Roman", size: 32, bold: true };
+
+    if (заклад || дисципліна || тема || студент) {
+        if (заклад) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: заклад.toUpperCase(), ...шрифтОсновний })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 80 }
+            }));
+        }
+        if (відділення || кафедра) {
+            var sub = (відділення ? відділення : "") + (відділення && кафедра ? " • " : "") + (кафедра ? кафедра : "");
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: sub, ...шрифтМалий })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 140 }
+            }));
+        }
+        for (var i = 0; i < 4; i++) {
+            абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
+        }
+        if (тип) {
+            var назваТипу = тип;
+            if (номер) назваТипу += " № " + номер;
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: назваТипу, ...шрифтЗаголовокТитул })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 120 }
+            }));
+        }
+        if (дисципліна) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: "з дисципліни «" + дисципліна + "»", ...шрифтОсновний })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 80 }
+            }));
+        }
+        if (тема) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: "Тема: " + тема, ...шрифтЖирний })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 80 }
+            }));
+        }
+        if (варіант) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: "Варіант № " + варіант, ...шрифтОсновний })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 140 }
+            }));
+        }
+        for (var j = 0; j < 3; j++) {
+            абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
+        }
+
+        var відступМета = { left: D.convertMillimetersToTwip(80) };
+        if (студент) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: "Виконав(ла): студент(ка) " + студент, ...шрифтОсновний })],
+                indent: відступМета,
+                spacing: { after: 40 }
+            }));
+        }
+        if (група || курс) {
+            var gr = (група ? "групи " + група : "") + (група && курс ? ", " : "") + (курс ? курс + " курсу" : "");
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: gr, ...шрифтОсновний })],
+                indent: відступМета,
+                spacing: { after: 40 }
+            }));
+        }
+        if (спеціальність) {
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: "спеціальності «" + спеціальність + "»", ...шрифтОсновний })],
+                indent: відступМета,
+                spacing: { after: 40 }
+            }));
+        }
+        if (викладач) {
+            var vText = "Перевірив(ла): " + (викладачПосада ? викладачПосада + " " : "") + викладач;
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: vText, ...шрифтОсновний })],
+                indent: відступМета,
+                spacing: { before: 80, after: 40 }
+            }));
+        }
+        for (var k = 0; k < 3; k++) {
+            абзаци.push(new D.Paragraph({ children: [], spacing: { after: 200 } }));
+        }
+        if (місто || рік) {
+            var mr = (місто ? місто : "") + (місто && рік ? " — " : "") + (рік ? рік : "");
+            абзаци.push(new D.Paragraph({
+                children: [new D.TextRun({ text: mr, ...шрифтОсновний })],
+                alignment: D.AlignmentType.CENTER,
+                spacing: { after: 0 }
+            }));
+        }
+        // Розрив сторінки після титулки
+        абзаци.push(new D.Paragraph({
+            children: [new D.PageBreak()]
+        }));
     }
 
     // 1. Мета
