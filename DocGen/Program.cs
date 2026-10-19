@@ -8,7 +8,7 @@ namespace DocGen
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine("Запуск генератора пояснювальної записки DocLab через Word COM...");
+            Console.WriteLine("Генерація технічної документації, аналізу коду, схем та промптів...");
 
             Type? wordType = Type.GetTypeFromProgID("Word.Application");
             if (wordType == null)
@@ -25,444 +25,392 @@ namespace DocGen
                 dynamic doc = word.Documents.Add();
                 dynamic selection = word.Selection;
 
-                // Налаштування параметрів сторінки за ДСТУ:
-                // Ліве: 30 мм (85.04 pt), Праве: 10 мм (28.35 pt), Верхнє: 20 мм (56.69 pt), Нижнє: 20 мм (56.69 pt)
-                doc.PageSetup.LeftMargin = 85.04f;
-                doc.PageSetup.RightMargin = 28.35f;
-                doc.PageSetup.TopMargin = 56.69f;
-                doc.PageSetup.BottomMargin = 56.69f;
+                // Налаштування полів сторінки
+                doc.PageSetup.LeftMargin = 72.0f; // 25 мм
+                doc.PageSetup.RightMargin = 56.7f; // 20 мм
+                doc.PageSetup.TopMargin = 56.7f;
+                doc.PageSetup.BottomMargin = 56.7f;
 
-                void SetNormalStyle()
+                void SetNormal()
                 {
-                    selection.Font.Name = "Times New Roman";
-                    selection.Font.Size = 14;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 11;
                     selection.Font.Bold = 0;
                     selection.Font.Italic = 0;
-                    selection.ParagraphFormat.Alignment = 3; // wdAlignParagraphJustify
-                    selection.ParagraphFormat.LineSpacingRule = 1; // wdLineSpace1pt5
-                    selection.ParagraphFormat.FirstLineIndent = 35.43f; // 1.25 см
-                    selection.ParagraphFormat.SpaceAfter = 0;
-                    selection.ParagraphFormat.SpaceBefore = 0;
-                }
-
-                void SetHeading(string text, int level = 1)
-                {
+                    selection.Font.Color = 0x1E293B;
+                    selection.ParagraphFormat.Alignment = 3; // Justify
+                    selection.ParagraphFormat.LineSpacingRule = 0; // Single
                     selection.ParagraphFormat.FirstLineIndent = 0;
-                    selection.ParagraphFormat.Alignment = 1; // Center
-                    selection.Font.Name = "Times New Roman";
-                    selection.Font.Size = level == 1 ? 16 : 14;
-                    selection.Font.Bold = 1;
-                    selection.ParagraphFormat.SpaceBefore = 12;
+                    selection.ParagraphFormat.SpaceBefore = 0;
                     selection.ParagraphFormat.SpaceAfter = 6;
-                    selection.TypeText(text);
-                    selection.TypeParagraph();
-                    SetNormalStyle();
                 }
 
-                void SetSubHeading(string text)
+                void SetTitle(string text)
                 {
-                    selection.ParagraphFormat.FirstLineIndent = 35.43f;
-                    selection.ParagraphFormat.Alignment = 0; // Left
-                    selection.Font.Name = "Times New Roman";
-                    selection.Font.Size = 14;
+                    selection.ParagraphFormat.Alignment = 1; // Center
+                    selection.ParagraphFormat.FirstLineIndent = 0;
+                    selection.ParagraphFormat.SpaceBefore = 10;
+                    selection.ParagraphFormat.SpaceAfter = 6;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 21;
                     selection.Font.Bold = 1;
-                    selection.ParagraphFormat.SpaceBefore = 6;
-                    selection.ParagraphFormat.SpaceAfter = 4;
+                    selection.Font.Color = 0x1E3A8A; // Темно-синій
                     selection.TypeText(text);
                     selection.TypeParagraph();
-                    SetNormalStyle();
+                    SetNormal();
                 }
 
-                void AddParagraph(string text)
+                void SetSubtitle(string text)
                 {
-                    SetNormalStyle();
+                    selection.ParagraphFormat.Alignment = 1;
+                    selection.ParagraphFormat.FirstLineIndent = 0;
+                    selection.ParagraphFormat.SpaceBefore = 0;
+                    selection.ParagraphFormat.SpaceAfter = 18;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 12.5f;
+                    selection.Font.Italic = 1;
+                    selection.Font.Color = 0x475569;
                     selection.TypeText(text);
                     selection.TypeParagraph();
+                    SetNormal();
+                }
+
+                void SetH1(string text)
+                {
+                    selection.ParagraphFormat.Alignment = 0; // Left
+                    selection.ParagraphFormat.FirstLineIndent = 0;
+                    selection.ParagraphFormat.SpaceBefore = 16;
+                    selection.ParagraphFormat.SpaceAfter = 6;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 14.5f;
+                    selection.Font.Bold = 1;
+                    selection.Font.Color = 0x1E3A8A;
+                    selection.TypeText(text);
+                    selection.TypeParagraph();
+                    SetNormal();
+                }
+
+                void SetH2(string text)
+                {
+                    selection.ParagraphFormat.Alignment = 0;
+                    selection.ParagraphFormat.FirstLineIndent = 0;
+                    selection.ParagraphFormat.SpaceBefore = 10;
+                    selection.ParagraphFormat.SpaceAfter = 4;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 12;
+                    selection.Font.Bold = 1;
+                    selection.Font.Color = 0x0F172A;
+                    selection.TypeText(text);
+                    selection.TypeParagraph();
+                    SetNormal();
+                }
+
+                void AddP(string text)
+                {
+                    SetNormal();
+                    selection.TypeText(text);
+                    selection.TypeParagraph();
+                }
+
+                void AddBullet(string boldPrefix, string text)
+                {
+                    SetNormal();
+                    selection.ParagraphFormat.FirstLineIndent = 16.0f;
+                    selection.Font.Bold = 1;
+                    selection.TypeText("• " + boldPrefix + ": ");
+                    selection.Font.Bold = 0;
+                    selection.TypeText(text);
+                    selection.TypeParagraph();
+                    selection.ParagraphFormat.FirstLineIndent = 0;
                 }
 
                 void AddCodeBlock(string code)
                 {
                     selection.ParagraphFormat.FirstLineIndent = 0;
                     selection.ParagraphFormat.Alignment = 0; // Left
-                    selection.ParagraphFormat.LineSpacingRule = 0; // Single
+                    selection.ParagraphFormat.LineSpacingRule = 0;
+                    selection.ParagraphFormat.SpaceBefore = 3;
+                    selection.ParagraphFormat.SpaceAfter = 6;
                     selection.Font.Name = "Consolas";
                     selection.Font.Size = 9.5f;
                     selection.Font.Bold = 0;
+                    selection.Font.Color = 0x0F172A;
                     selection.TypeText(code);
                     selection.TypeParagraph();
-                    SetNormalStyle();
+                    SetNormal();
                 }
 
-                // ==========================================
-                // 1. ТИТУЛЬНИЙ АРКУШ
-                // ==========================================
-                selection.ParagraphFormat.Alignment = 1; // Center
-                selection.ParagraphFormat.FirstLineIndent = 0;
-                selection.ParagraphFormat.LineSpacingRule = 0; // Single
-                selection.Font.Name = "Times New Roman";
-                selection.Font.Size = 12;
-                selection.Font.Bold = 1;
+                void AddPromptBox(string title, string promptContent)
+                {
+                    selection.ParagraphFormat.FirstLineIndent = 0;
+                    selection.ParagraphFormat.Alignment = 0;
+                    selection.ParagraphFormat.SpaceBefore = 6;
+                    selection.ParagraphFormat.SpaceAfter = 2;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 11;
+                    selection.Font.Bold = 1;
+                    selection.Font.Color = 0x2563EB;
+                    selection.TypeText("📌 " + title);
+                    selection.TypeParagraph();
 
-                selection.TypeText("МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ");
-                selection.TypeParagraph();
-                selection.TypeText("ВІДОКРЕМЛЕНИЙ СТРУКТУРНИЙ ПІДРОЗДІЛ");
-                selection.TypeParagraph();
-                selection.TypeText("«РІВНЕНСЬКИЙ КООПЕРАТИВНИЙ ЕКОНОМІКО-ПРАВОВИЙ ФАХОВИЙ КОЛЕДЖ»");
-                selection.TypeParagraph();
-                selection.TypeParagraph();
+                    selection.ParagraphFormat.SpaceBefore = 2;
+                    selection.ParagraphFormat.SpaceAfter = 10;
+                    selection.Font.Name = "Consolas";
+                    selection.Font.Size = 9.5f;
+                    selection.Font.Bold = 0;
+                    selection.Font.Color = 0x0F172A;
+                    selection.TypeText(promptContent);
+                    selection.TypeParagraph();
+                    SetNormal();
+                }
 
-                selection.Font.Size = 13;
-                selection.Font.Bold = 0;
-                selection.TypeText("Відділення комп'ютерних технологій");
-                selection.TypeParagraph();
-                selection.TypeText("Циклова комісія інженерії програмного забезпечення");
-                selection.TypeParagraph();
-                selection.TypeParagraph();
-                selection.TypeParagraph();
+                // ========================================================
+                // ТИТУЛЬНИЙ БЛОК
+                // ========================================================
+                SetTitle("ТЕХНІЧНИЙ ОПИС, АНАЛІЗ КОДУ,\nСХЕМИ ТА ПРОМПТИ ПРОЄКТУ «STUDZVIT»");
+                SetSubtitle("Комплексна специфікація системи, аналіз бекенду на C# та фронтенду на JS, архітектурні схеми та повний інженерний журнал промптів");
 
-                selection.Font.Size = 18;
-                selection.Font.Bold = 1;
-                selection.TypeText("ПОЯСНЮВАЛЬНА ЗАПИСКА");
-                selection.TypeParagraph();
-                selection.Font.Size = 14;
-                selection.TypeText("до проекту на тему:");
-                selection.TypeParagraph();
-                selection.Font.Size = 16;
-                selection.TypeText("«РОЗРОБКА ВЕБСЕРВІСУ АВТОМАТИЗАЦІЇ ФОРМУВАННЯ СТУДЕНТСЬКОЇ НАВЧАЛЬНОЇ ДОКУМЕНТАЦІЇ ТА НОРМОКОНТРОЛЮ \"DOCLAB\"»");
-                selection.TypeParagraph();
-                selection.TypeParagraph();
-                selection.TypeParagraph();
-
-                // Метадані праворуч
-                selection.ParagraphFormat.Alignment = 2; // Right
-                selection.Font.Size = 13;
-                selection.Font.Bold = 0;
-                selection.TypeText("Виконала: студентка гр. ІТ-32\nспеціальності 121 «Інженерія програмного забезпечення»\nМарія (Месса А.)\n\nКерівник / викладач:\nКовальчук В. Б.\n");
-                selection.TypeParagraph();
-                selection.TypeParagraph();
-                selection.TypeParagraph();
-
-                // Місто і рік знизу
-                selection.ParagraphFormat.Alignment = 1; // Center
-                selection.Font.Size = 13;
-                selection.Font.Bold = 1;
-                selection.TypeText("Рівне — 2026");
-                selection.InsertBreak(7); // wdPageBreak
-
-                // ==========================================
-                // 2. ЗМІСТ
-                // ==========================================
-                SetHeading("ЗМІСТ");
-                selection.ParagraphFormat.FirstLineIndent = 0;
-                selection.ParagraphFormat.LineSpacingRule = 1;
-                selection.Font.Size = 13;
-                selection.TypeText("ВСТУП .................................................................................................................................... 3\n");
-                selection.TypeText("РОЗДІЛ 1. АНАЛІЗ ПРЕДМЕТНОЇ ОБЛАСТІ ТА СПЕЦИФІКАЦІЯ ВИМОГ ........................ 4\n");
-                selection.TypeText("   1.1. Проблематика підготовки навчальної документації ............................................... 4\n");
-                selection.TypeText("   1.2. Нормативні стандарти оформлення робіт у ВСП «РКЕПФК» ................................. 5\n");
-                selection.TypeText("   1.3. Специфікація функціональних та нефункціональних вимог .................................... 6\n");
-                selection.TypeText("РОЗДІЛ 2. АРХІТЕКТУРА СИСТЕМИ ТА АЛГОРИТМИ ВЗАЄМОДІЇ ................................... 8\n");
-                selection.TypeText("   2.1. Архітектурна схема вебсервісу «DocLab» ................................................................ 8\n");
-                selection.TypeText("   2.2. Алгоритм взаємодії модулів та схема Draw.io / Mermaid ........................................ 9\n");
-                selection.TypeText("   2.3. Використання асинхронних черг повідомлень RabbitMQ ........................................ 11\n");
-                selection.TypeText("РОЗДІЛ 3. ПРОГРАМНА РЕАЛІЗАЦІЯ ВЕБСЕРВІСУ «DOCLAB» ....................................... 13\n");
-                selection.TypeText("   3.1. Бекенд-архітектура на базі C# ASP.NET Core Web API ............................................. 13\n");
-                selection.TypeText("   3.2. Контролери API: DocumentController та ValidationController ................................. 14\n");
-                selection.TypeText("   3.3. Сервіси бізнес-логіки: DocumentGeneratorService та NormoControlService ............. 16\n");
-                selection.TypeText("   3.4. Глобальний обробник винятків: GlobalExceptionMiddleware ................................. 18\n");
-                selection.TypeText("   3.5. Фронтенд-компоненти: конструктор, нормоконтроль та чернетки ........................ 20\n");
-                selection.TypeText("РОЗДІЛ 4. ЖУРНАЛ ІНЖЕНЕРНИХ ПРОМПТІВ (PROMPT ENGINEERING) ..................... 22\n");
-                selection.TypeText("   4.1. Етап 1: Формулювання головної ідеї проекту .......................................................... 22\n");
-                selection.TypeText("   4.2. Етап 2: Збір вимог та навчальна специфікація коледжу .......................................... 23\n");
-                selection.TypeText("   4.3. Етап 3: Побудова архітектури та діаграм взаємодії ................................................ 24\n");
-                selection.TypeText("   4.4. Етап 4: Генерація модульного коду системи ........................................................... 25\n");
-                selection.TypeText("РОЗДІЛ 5. ТЕСТУВАННЯ ТА РЕЗУЛЬТАТИ АПРОБАЦІЇ .................................................... 27\n");
-                selection.TypeText("   5.1. Тестування експрес-оцінки унікальності (ДТП) ...................................................... 27\n");
-                selection.TypeText("   5.2. Апробація автоматичного нормоконтролю типографіки ......................................... 28\n");
-                selection.TypeText("   5.3. Валідація експорту в Microsoft Word (.docx) ............................................................ 29\n");
-                selection.TypeText("ВИСНОВКИ ................................................................................................................................ 30\n");
-                selection.TypeText("СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ .................................................................................. 31\n");
-                selection.InsertBreak(7); // wdPageBreak
-
-                // ==========================================
-                // 3. ВСТУП
-                // ==========================================
-                SetHeading("ВСТУП");
-                AddParagraph("Сучасний процес підготовки здобувачів фахової передвищої освіти за спеціальністю 121 «Інженерія програмного забезпечення» вимагає не лише високої кваліфікації у написанні алгоритмічного коду та проектуванні систем, але й суворого дотримання стандартів академічного оформлення звітної технічної документації. У Відокремленому структурному підрозділі «Рівненський кооперативний економіко-правовий фаховий коледж» (ВСП «РКЕПФК») студенти виконують значну кількість практичних, лабораторних та курсових робіт. Проте, як свідчить практика, студенти нерідко витрачають до 40% загального часу не на вирішення інженерної задачі, а на рутинне налаштування шрифтів, відступів, таблиць, оформлення титульних сторінок та бібліографічних описів.");
-                AddParagraph("Актуальність розробки полягає у створенні спеціалізованого вебсервісу «DocLab» («Розумний генератор студентської документації!»), призначеного для повної автоматизації побудови навчальних звітів відповідно до вимог коледжу та діючих державних стандартів України (ДСТУ). Вебсервіс покликаний позбавити студентів рутинних друкарських операцій, усунути суб'єктивні типографічні помилки та забезпечити гарантовану якість і уніфікацію електронних документів перед здачею викладачеві.");
-                AddParagraph("Метою проекту є проектування та програмна реалізація модульного вебсервісу, що об'єднує конструктор комплексного звіту, генератор титульних сторінок з миттєвим інтерактивним переглядом (Live Preview бланка А4), модуль автоматичного нормоконтролю тексту, експрес-тест на унікальність та відсоток дубльованого тексту (ДТП), а також надійний механізм експорту сформованих матеріалів у формат Microsoft Word (.docx).");
-                AddParagraph("Для досягнення поставленої мети визначено такі основні завдання:");
-                AddParagraph("1. Провести детальний аналіз нормативних вимог ВСП «РКЕПФК» та стандартів оформлення технічної документації.");
-                AddParagraph("2. Розробити технічне завдання, специфікацію функціональних (FR) та нефункціональних (NFR) вимог.");
-                AddParagraph("3. Спроектувати системну архітектуру платформи із застосуванням сучасного стеку технологій: бекенду на C# ASP.NET Core Web API та модульного клієнтського застосунку.");
-                AddParagraph("4. Реалізувати механізм асинхронної обробки складних задач генерації документів за допомогою сервісів черг RabbitMQ.");
-                AddParagraph("5. Створити інтуїтивний інтерфейс єдиного конструктора звітів із можливістю гнучкого додавання розділів, лістингів коду різними мовами програмування та списку джерел.");
-                AddParagraph("6. Задокументувати повний цикл інженерних промптів (Prompt Engineering) відповідно до стандартів парного проектування зі штучним інтелектом.");
-                AddParagraph("7. Провести всебічне тестування працездатності створених модулів та оцінити результати апробації системи.");
+                // ========================================================
+                // ЗМІСТ
+                // ========================================================
+                SetH1("ЗМІСТ");
+                AddP("1. Аналіз структури проєкту та коду (Бекенд і Фронтенд)");
+                AddP("   1.1. Файлова структура каталогів C# та JavaScript");
+                AddP("   1.2. Конфігурація та глобальна обробка винятків (GlobalExceptionMiddleware)");
+                AddP("   1.3. Утиліти черг повідомлень RabbitMQ та взаємодія з API");
+                AddP("   1.4. Сервіси генерації документів та витягування даних");
+                AddP("2. Технічна документація, вимоги та архітектура (Requirements Specification)");
+                AddP("   2.1. Загальні відомості про вебресурс");
+                AddP("   2.2. Функціональні вимоги до модулів");
+                AddP("   2.3. Нормативні параметри оформлення документації");
+                AddP("3. Діаграми та схеми алгоритмів (Mermaid / Draw.io)");
+                AddP("   3.1. Візуальна схема взаємодії компонентів системи");
+                AddP("   3.2. Пояснення логіки та потоків обробки даних");
+                AddP("4. Демонстрація роботи вебресурсу в браузері");
+                AddP("   4.1. Огляд головної сторінки («Розумний генератор студентської документації!»)");
+                AddP("   4.2. Модуль автоматичного нормоконтролю та швидкої перевірки на плагіат/ДТП");
+                AddP("   4.3. Генератор титульної сторінки з Live Preview бланка А4");
+                AddP("   4.4. Конструктор повного звіту зі вбудованим списком джерел");
+                AddP("   4.5. Сховище чернеток (безпечне локальне збереження робіт)");
+                AddP("5. Повний журнал інженерних промптів (Prompt Engineering)");
+                AddP("   5.1. Збірний Mega-Prompt створення вебресурсу");
+                AddP("   5.2. Поетапні промпти: від концепції до кодогенерації");
+                AddP("6. Інструкції, стандарти та коментарі до коду");
                 selection.InsertBreak(7);
 
-                // ==========================================
-                // 4. РОЗДІЛ 1
-                // ==========================================
-                SetHeading("РОЗДІЛ 1. АНАЛІЗ ПРЕДМЕТНОЇ ОБЛАСТІ ТА СПЕЦИФІКАЦІЯ ВИМОГ");
-                SetSubHeading("1.1. Проблематика підготовки навчальної документації");
-                AddParagraph("Під час навчання у ВСП «РКЕПФК» на відділенні комп'ютерних технологій студенти спеціальності 121 «Інженерія програмного забезпечення» регулярно складають письмові звіти до навчальних завдань. Типовими проблемами, з якими стикаються викладачі під час перевірки, є: порушення геометрії полів документа (використання стандартних налаштувань текстового редактора замість лівого поля 30 мм), змішування різних шрифтових гарнітур, відсутність абзацного відступу 1.25 см, використання прямих лапок замість типографічних «ялинок», вживання дефісів замість тире та некоректний бібліографічний опис джерел.");
-                AddParagraph("Автоматизація вказаних рутинних операцій у межах єдиного вебресурсу «DocLab» дозволяє повністю виключити людський фактор і забезпечити однаковий зразковий вигляд усіх студентських робіт.");
+                // ========================================================
+                // 1. АНАЛІЗ СТРУКТУРИ ПРОЄКТУ ТА КОДУ
+                // ========================================================
+                SetH1("1. АНАЛІЗ СТРУКТУРИ ПРОЄКТУ ТА КОДУ (БЕКЕНД І ФРОНТЕНД)");
+                AddP("Проєкт «StudZvit» має чіткий поділ на клієнтську та серверну частини, реалізовані мовами C# (.NET 8/10) та JavaScript (ES6+):");
 
-                SetSubHeading("1.2. Нормативні стандарти оформлення робіт у ВСП «РКЕПФК»");
-                AddParagraph("Навчальна документація, що генерується системою «DocLab», суворо відповідає наступним обов'язковим нормативним параметрам:");
-                AddParagraph("• Формат аркуша паперу: стандартний європейський А4 (210 × 297 мм).");
-                AddParagraph("• Розміри полів сторінки: ліве поле — 30 мм (для підшивання документа у паперову справу), праве поле — 10 мм, верхнє поле — 20 мм, нижнє поле — 20 мм.");
-                AddParagraph("• Гарнітура шрифту: Times New Roman, пряме накреслення.");
-                AddParagraph("• Кегль (розмір шрифту): 14 pt для основного змісту, 12 pt для табличних даних та лістингів, 16 pt напівжирний для головних структурних заголовків.");
-                AddParagraph("• Міжрядковий інтервал: рівно 1.5 рядка (linespace).");
-                AddParagraph("• Абзацний відступ (перший рядок параграфа): строго 1.25 см.");
-                AddParagraph("• Вирівнювання тексту: строго по ширині сторінки (Justify) з рівномірним розподілом проміжків між словами.");
+                SetH2("1.1. Файлова структура каталогів C# та JavaScript:");
+                AddCodeBlock(
+@"StudDoc/
+├── backend/                              # C# ASP.NET Core Web API
+│   ├── Controllers/
+│   │   ├── DocumentController.cs         # API генерації титулок та звітів
+│   │   └── ValidationController.cs       # API нормоконтролю та перевірки на плагіат/ДТП
+│   ├── Middlewares/
+│   │   └── GlobalExceptionMiddleware.cs  # Глобальний обробник неперехоплених винятків
+│   ├── Services/
+│   │   ├── DocumentGeneratorService.cs   # Формування Word-документів за шаблоном
+│   │   ├── NormoControlService.cs        # Валідація типографіки та розрахунок шинглів
+│   │   └── RabbitMqService.cs            # Черги повідомлень для асинхронної обробки
+│   ├── Program.cs                        # Точка входу, реєстрація DI та Middleware
+│   └── DocLab.Backend.csproj             # Файл проекту C# (.NET Core)
+├── index.html                            # Семантична розмітка SPA-інтерфейсу (5 вкладок)
+├── style.css                             # Стилі інтерфейсу, макет аркуша А4, друк @media print
+├── script.js                             # Модульна логіка UI, генерація docx.js, чернетки
+├── REQUIREMENTS_SPECIFICATION.md         # Специфікація вимог та архітектури
+├── PROMPTS.md                            # Журнал поетапних інженерних промптів
+└── diagram_doclab.png                    # Експортована діаграма алгоритму Draw.io");
 
-                SetSubHeading("1.3. Специфікація функціональних та нефункціональних вимог");
-                AddParagraph("На основі проведеного аналізу сформовано детальний перелік функціональних вимог до системи «DocLab»:");
-                AddParagraph("• FR-01 (Генератор титульних сторінок): забезпечення форми для введення найменування закладу (ВСП «РКЕПФК»), відділення комп'ютерних технологій, циклової комісії інженерії ПЗ, назви дисципліни, номера і типу роботи, теми, даних студента (група ІТ-32) та викладача (Ковальчук В. Б.) з синхронним відображенням на бланку Live Preview А4.");
-                AddParagraph("• FR-02 (Конструктор повного звіту): модульне покрокове середовище для введення мети, теоретичних відомостей, ходу виконання з підсвічуванням коду (C#, JS, Python), скріншотів, висновків, контрольних запитань та списку використаних джерел.");
-                AddParagraph("• FR-03 (Модуль автоматичного нормоконтролю): перевірка тексту на наявність типографічних помилок (дефіси замість тире, прямі лапки, зайві пробіли) з можливістю автокорекції в один клік.");
-                AddParagraph("• FR-04 (Експрес-тест на унікальність та ДТП): аналіз відсотка дубльованого тексту за алгоритмом шинглів для запобігання академічній недоброчесності.");
-                AddParagraph("• FR-05 (Збережені чернетки): підтримка локального сховища (localStorage) для збереження проміжних результатів роботи користувача без необхідності створення облікових записів.");
-                AddParagraph("• FR-06 (Експорт у Word): генерація валідного бінарного файлу OpenXML (.docx) із закріпленням усіх стильових шаблонів.");
-                AddParagraph("Нефункціональні вимоги (NFR) включають високу швидкодію (час відгуку інтерфейсу менше 100 мс), роботу в офлайн-режимі завдяки локальним JS-бібліотекам та повну конфіденційність — студентські персональні дані обробляються локально у клієнтському браузері.");
+                SetH2("1.2. Конфігурація та глобальна обробка винятків (GlobalExceptionMiddleware):");
+                AddP("Модуль `GlobalExceptionMiddleware` гарантує, що жоден збій чи непередбачена ситуація (наприклад, некоректні символи у тексті, помилка парсингу моделі або таймаут зв'язку) не призведе до аварійної зупинки сервера. Усі помилки перехоплюються централізовано та повертаються клієнту у форматі JSON із відповідним HTTP-кодом (400 Bad Request, 404 Not Found, 500 Internal Server Error) та унікальним `TraceId` для аудиту.");
+                AddCodeBlock(
+@"// backend/Middlewares/GlobalExceptionMiddleware.cs
+public async Task InvokeAsync(HttpContext context)
+{
+    try
+    {
+        await _next(context);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, ""Критична системна помилка: {Message}"", ex.Message);
+        await HandleExceptionAsync(context, ex);
+    }
+}");
+
+                SetH2("1.3. Утиліти черг повідомлень RabbitMQ та взаємодія з API:");
+                AddP("Сервіс `RabbitMqService` реалізує взаємодію з брокером черг повідомлень за патерном Publisher-Subscriber. Для об'ємних навчальних робіт (дипломні проєкти, пояснювальні записки з великою кількістю скріншотів) синхронний HTTP-запит може викликати таймаут. `DocumentController.QueueReport` публікує задачу в чергу `document.generation.queue`, повертає клієнту статус HTTP 202 Accepted та ідентифікатор `JobId`, а фоновий воркер споживача черги здійснює рендеринг документа без блокування сервера.");
+
+                SetH2("1.4. Сервіси генерації документів та витягування даних:");
+                AddP("Сервіс `DocumentGeneratorService` приймає структуровану модель даних `FullReportModel`, витягує реквізити студента (ПІБ, група ІТ-32, дисципліна, тема), структурує розділи (мета, хід роботи, лістинг програми, висновки, бібліографію) та формує стандартизований потік байтів для завантаження клієнтом.");
                 selection.InsertBreak(7);
 
-                // ==========================================
-                // 5. РОЗДІЛ 2
-                // ==========================================
-                SetHeading("РОЗДІЛ 2. АРХІТЕКТУРА СИСТЕМИ ТА АЛГОРИТМИ ВЗАЄМОДІЇ");
-                SetSubHeading("2.1. Архітектурна схема вебсервісу «DocLab»");
-                AddParagraph("Архітектура платформи «DocLab» побудована на принципах модульності, слабкої зв'язності компонентів (Loose Coupling) та чіткого розмежування відповідальностей (Separation of Concerns). Система складається з наступних ключових рівнів:");
-                AddParagraph("1. Рівень представлення (Client-Side UI): сучасний SPA-інтерфейс, реалізований за допомогою чистого семантичного HTML5, оптимізованих CSS3-стилів та модульного JavaScript. Забезпечує миттєвий зворотний зв'язок при введенні користувацьких даних.");
-                AddParagraph("2. Серверний рівень (Server-Side Backend): мікросервіс на платформі C# ASP.NET Core, що надає REST API для серверної валідації, нормоконтролю, побудови бінарних файлів Word та керування чергами завдань.");
-                AddParagraph("3. Рівень асинхронних черг (Message Broker / Task Queue): сервіс черг RabbitMQ, що приймає довготривалі задачі (наприклад, пакетну конвертацію великих звітів зі складними графічними додатками) для фонового виконання.");
+                // ========================================================
+                // 2. ТЕХНІЧНА ДОКУМЕНТАЦІЯ ТА ВИМОГИ
+                // ========================================================
+                SetH1("2. ТЕХНІЧНА ДОКУМЕНТАЦІЯ, ВИМОГИ ТА АРХІТЕКТУРА (REQUIREMENTS SPECIFICATION)");
+                SetH2("2.1. Загальні відомості про вебресурс:");
+                AddBullet("Назва платформи", "«StudZvit» (слоган: «Розумний генератор студентської документації!»)");
+                AddBullet("Навчальний заклад", "Відокремлений структурний підрозділ «Рівненський кооперативний економіко-правовий фаховий коледж» (ВСП «РКЕПФК»)");
+                AddBullet("Відділення та комісія", "Відділення комп'ютерних технологій, Циклова комісія інженерії програмного забезпечення");
+                AddBullet("Спеціальність та група", "121 «Інженерія програмного забезпечення», група ІТ-32");
+                AddBullet("Керівник / викладач", "Ковальчук В. Б., м. Рівне, 2026 рік");
 
-                SetSubHeading("2.2. Алгоритм взаємодії модулів та схема Draw.io / Mermaid");
-                AddParagraph("Логіка роботи вебсервісу передбачає циклічний процес введення даних, їх нормативної валідації, динамічного відображення та фінальної генерації документа. На рисунку 2.1 наведено розроблену схему алгоритму функціонування платформи «DocLab», що була спроектована у середовищі Draw.io та верифікована за допомогою діаграми Mermaid.");
+                SetH2("2.2. Функціональні вимоги до модулів:");
+                AddBullet("FR-01 (Титульна сторінка)", "Введення повних реквізитів з миттєвим інтерактивним переглядом (Live Preview бланка А4).");
+                AddBullet("FR-02 (Конструктор звіту)", "Покрокове складання звіту: мета, теорія, хід роботи з підтримкою коду (C#, JS, Python), скріншоти, висновки, питання та вбудований список джерел.");
+                AddBullet("FR-03 (Автоматичний нормоконтроль)", "Виправлення прямих лапок на кутові «ялинки», дефісів на довгі тире ` — `, подвійних пробілів та апострофів.");
+                AddBullet("FR-04 (Швидкий тест на плагіат/ДТП)", "Експрес-розрахунок відсотка дубльованого тексту за алгоритмом шинглів.");
+                AddBullet("FR-05 (Експорт у Word)", "Генерація повноцінного бінарного файлу OpenXML (.docx) зі збереженням форматування.");
+                AddBullet("FR-06 (Локальні чернетки)", "Збереження звітів у пам'яті браузера (localStorage) з можливістю відкриття у будь-який момент.");
 
-                // Вставка зображення діаграми
-                string imagePath = @"C:\Users\TechHub\Desktop\StudDoc\diagram_doclab.png";
-                if (File.Exists(imagePath))
+                SetH2("2.3. Нормативні параметри оформлення документації:");
+                AddBullet("Поля аркуша А4", "Ліве: 30 мм, праве: 10 мм, верхнє: 20 мм, нижнє: 20 мм.");
+                AddBullet("Шрифтова гарнітура", "Times New Roman, 14 pt для тексту, 16 pt напівжирний для розділів, 12 pt для таблиць. Лістинг коду — Consolas 10 pt.");
+                AddBullet("Інтервали", "Міжрядковий — рівно 1.5 рядка. Абзацний відступ — рівно 1.25 см. Вирівнювання — по ширині сторінки (Justify).");
+
+                // ========================================================
+                // 3. ДІАГРАМИ ТА СХЕМИ АЛГОРИТМІВ
+                // ========================================================
+                SetH1("3. ДІАГРАМИ ТА СХЕМИ АЛГОРИТМІВ (MERMAID / DRAW.IO)");
+                AddP("Для наочного представлення взаємодії компонентів системи створено схему алгоритму функціонування вебресурсу у Mermaid.js та експортовано у графічний формат за допомогою Draw.io:");
+
+                // Вставка малюнка схеми
+                string imgFile = @"C:\Users\TechHub\Desktop\StudDoc\diagram_doclab.png";
+                if (File.Exists(imgFile))
                 {
                     selection.ParagraphFormat.Alignment = 1; // Center
-                    selection.ParagraphFormat.FirstLineIndent = 0;
-                    dynamic shape = selection.InlineShapes.AddPicture(imagePath);
-                    shape.Width = 420; // Оптимальна ширина в точках
+                    dynamic pic = selection.InlineShapes.AddPicture(imgFile);
+                    pic.Width = 430;
                     selection.TypeParagraph();
 
-                    selection.Font.Name = "Times New Roman";
-                    selection.Font.Size = 12;
+                    selection.Font.Name = "Arial";
+                    selection.Font.Size = 10;
                     selection.Font.Italic = 1;
-                    selection.Font.Bold = 0;
-                    selection.TypeText("Рис. 2.1. Схема алгоритму функціонування вебсервісу \"DocLab\" (Mermaid / Draw.io)");
+                    selection.Font.Color = 0x64748B;
+                    selection.TypeText("Рис. 3.1. Схема функціонального алгоритму взаємодії вебсервісу StudZvit");
                     selection.TypeParagraph();
                     selection.TypeParagraph();
-                    SetNormalStyle();
+                    SetNormal();
                 }
 
-                AddParagraph("Схема демонструє чітку послідовність етапів:");
-                AddParagraph("1. Введення реквізитів студента гр. ІТ-32, дисципліни та теми роботи.");
-                AddParagraph("2. Валідація заповненості обов'язкових полів. У разі виявлення помилок інтерфейс підсвічує відповідне поле та блокує некоректний експорт.");
-                AddParagraph("3. Динамічне оновлення інтерактивного бланка А4 у режимі реального часу (подія input).");
-                AddParagraph("4. Автоматичний нормоконтроль введеного тексту: виправлення лапок, тире, нерозривних пробілів.");
-                AddParagraph("5. Експорт звітного документа у файл .docx або збереження у локальні чернетки.");
-
-                SetSubHeading("2.3. Використання асинхронних черг повідомлень RabbitMQ");
-                AddParagraph("Для забезпечення високої масштабованості та відмовостійкості системи у бекенд інтегровано утиліту черг повідомлень RabbitMQ (`IRabbitMqService`). При генерації об'ємних пояснювальних записок або курсових робіт, що містять десятки лістингів коду та растрових ілюстрацій, синхронний HTTP-запит може призвести до перевищення таймауту браузера. Застосування патерну Publisher-Subscriber дозволяє поставити задачу в чергу `document.generation.queue`, миттєво повернути клієнту унікальний ідентифікатор завдання `jobId` зі статусом HTTP 202 Accepted, а фоновий воркер здійснює генерацію файлу без блокування основного потоку вебсервера.");
+                SetH2("3.1. Пояснення логіки та синтаксис Mermaid.js:");
+                AddCodeBlock(
+@"flowchart TD
+    Start([Початок]) --> Input[1. Введення даних: РКЕПФК, ІТ-32, предмет, тема]
+    Input --> Validate{Перевірка валідності}
+    Validate -- Некоректно --> Error[Підсвітити поле червоним та показати підказку]
+    Error --> Input
+    Validate -- Коректно --> LivePreview[2. Оновлення Live Preview бланка А4]
+    LivePreview --> TypoCheck[3. Перевірка правил: тире, лапки « », пробіли]
+    TypoCheck --> GenerateDocx[4. Клієнтська генерація docx.js / PDF]
+    GenerateDocx --> Finish([Готовий файл завантажено на ПК])");
+                AddP("Схема чітко показує 4 послідовні фази: 1) введення та валідація вхідних реквізитів; 2) формування бланка А4 у реальному часі; 3) очищення тексту від типографічних дефектів та розрахунок унікальності; 4) створення файлу документа.");
                 selection.InsertBreak(7);
 
-                // ==========================================
-                // 6. РОЗДІЛ 3
-                // ==========================================
-                SetHeading("РОЗДІЛ 3. ПРОГРАМНА РЕАЛІЗАЦІЯ ВЕБСЕРВІСУ «DOCLAB»");
-                SetSubHeading("3.1. Бекенд-архітектура на базі C# ASP.NET Core Web API");
-                AddParagraph("Бекенд системи розроблено на мові C# з використанням сучасної версії платформи .NET та фреймворку ASP.NET Core Web API. Проєкт організовано відповідно до кращих інженерних практик: контролери відповідають виключно за маршрутизацію HTTP-запитів та первинну валідацію, бізнес-логіка винесена у сервісний шар з інверсією керування (Dependency Injection), а неперехоплені помилки обробляються централізованим проміжним модулем (Middleware).");
+                // ========================================================
+                // 4. ДЕМОНСТРАЦІЯ РОБОТИ ВЕБРЕСУРСУ В БРАУЗЕРІ
+                // ========================================================
+                SetH1("4. ДЕМОНСТРАЦІЯ РОБОТИ ВЕБРЕСУРСУ В БРАУЗЕРІ");
+                AddP("Вебсервіс StudZvit функціонує як швидкий, автономний SPA-застосунок. Інтерфейс структуровано на 5 логічних вкладок:");
 
-                SetSubHeading("3.2. Контролери API: DocumentController та ValidationController");
-                AddParagraph("Контролер `DocumentController` забезпечує кінцеві точки для генерації титульних сторінок (`/api/document/title-page`), повних звітів (`/api/document/full-report`) та постановки важких завдань у чергу RabbitMQ (`/api/document/queue-report`). Нижче наведено фрагмент реалізації контролера:");
+                SetH2("4.1. Головна сторінка:");
+                AddP("Зустрічає користувача слоганом «Розумний генератор студентської документації!», банером 100% безкоштовного доступу та 3 основними кнопками дій: перейти до Конструктора звіту, створити Титульну сторінку або запустити Модуль автоматичного нормоконтролю.");
 
-                AddCodeBlock(
-@"// DocumentController.cs
-[ApiController]
-[Route(""api/[controller]"")]
-public class DocumentController : ControllerBase
-{
-    private readonly IDocumentGeneratorService _documentService;
-    private readonly IRabbitMqService _rabbitMqService;
+                SetH2("4.2. Модуль автоматичного нормоконтролю та швидкої перевірки на плагіат/ДТП:");
+                AddBullet("Блок 1 (Швидкий тест на плагіат/ДТП)", "Користувач вставляє фрагмент тексту та натискає «Розрахувати унікальність». Алгоритм шинглів визначає відсоток оригінальності (наприклад 92%), відсоток дубльованого тексту (ДТП: 8%) та статус («Висока унікальність»).");
+                AddBullet("Блок 2 (Нормоконтроль тексту за ДСТУ)", "Текстові поля введення та виправленого результату. В один клік дефіси замінюються на довгі тире ` — `, прямі лапки на «ялинки», видаляються подвійні пробіли.");
+                AddBullet("Блок параметрів", "Пам'ятка про обов'язкові академічні норми: поля 30-10-20-20 мм, шрифт Times New Roman 14 pt, 1.5 міжрядковий інтервал.");
 
-    public DocumentController(IDocumentGeneratorService docService, IRabbitMqService queueService)
-    {
-        _documentService = docService;
-        _rabbitMqService = queueService;
-    }
+                SetH2("4.3. Генератор титульної сторінки:");
+                AddP("Форма введення параметрів ліворуч містить попередньо заповнені реквізити коледжу (ВСП «РКЕПФК»), відділення комп'ютерних технологій, циклової комісії, дисципліни, теми та викладача (Ковальчук В. Б.). Праворуч розміщено інтерактивний бланк А4 Live Preview, що миттєво реагує на введення тексту студентом.");
 
-    [HttpPost(""title-page"")]
-    public async Task<IActionResult> GenerateTitlePage([FromBody] TitlePageModel model)
-    {
-        var fileBytes = await _documentService.GenerateTitlePageAsync(model);
-        return File(fileBytes, ""application/vnd.openxmlformats-officedocument.wordprocessingml.document"",
-            $""Титулка_{model.StudentName}_{model.Discipline}.docx"");
-    }
-}");
+                SetH2("4.4. Конструктор повного звіту:");
+                AddP("Містить покроковий акордеон із 8 розділів:");
+                AddBullet("Розділи 1-3", "Титулка (синхронізована), Мета роботи, Теоретичні відомості.");
+                AddBullet("Розділ 4 (Хід роботи та код)", "Текстовий опис ходу роботи та інтерактивний блок лістингу з кнопками швидкого вибору мови (C#, Python, JS, SQL, HTML/CSS). Шрифт коду — Consolas.");
+                AddBullet("Розділи 5-7", "Результати тестування зі скріншотами, Висновки (з можливістю автогенерації за метою), Контрольні запитання.");
+                AddBullet("Розділ 8 (Список використаних джерел)", "Вбудований генератор джерел (книги, електронні ресурси за посиланням URL, фахові статті).");
+                AddBullet("Чек-лист готовності", "Права бічна панель, яка в режимі реального часу підраховує % заповненості роботи та обсяг сторінок А4.");
 
-                AddParagraph("Контролер `ValidationController` надає кінцеві точки для експрес-оцінки оригінальності тексту (`/api/validation/plagiarism-fast`) та детальної перевірки типографічних параметрів (`/api/validation/normocontrol`).");
-
-                SetSubHeading("3.3. Сервіси бізнес-логіки: DocumentGeneratorService та NormoControlService");
-                AddParagraph("Сервіс `NormoControlService` реалізує автоматичне виправлення типографічних помилок на основі регулярних виразів RegEx (заміна дефісів на тире ` — `, лапок на «ялинки», видалення кратних пробілів), а також алгоритм швидкої оцінки дубльованого тексту (ДТП) методом шинглів (shingle size = 3).");
-
-                AddCodeBlock(
-@"// NormoControlService.cs (фрагмент аналізу шинглів)
-public PlagiarismReport FastPlagiarismCheck(string text)
-{
-    var words = Regex.Matches(text, @""[\p{L}\p{Nd}]+"").Select(m => m.Value.ToLower()).ToList();
-    var shingles = new HashSet<string>();
-    int duplicateCount = 0;
-
-    for (int i = 0; i < words.Count - 2; i++)
-    {
-        var shingle = $""{words[i]} {words[i + 1]} {words[i + 2]}"";
-        if (!shingles.Add(shingle))
-            duplicateCount++;
-    }
-
-    double dtp = Math.Round((double)duplicateCount / Math.Max(1, words.Count - 2) * 100, 1);
-    return new PlagiarismReport { OriginalityPercentage = Math.Max(0, 100 - dtp), DuplicateTextPercentage = dtp };
-}");
-
-                SetSubHeading("3.4. Глобальний обробник винятків: GlobalExceptionMiddleware");
-                AddParagraph("Для забезпечення високої надійності та безпеки платформи у конвеєр обробки запитів ASP.NET Core інтегровано `GlobalExceptionMiddleware`. Цей модуль гарантує, що жодна внутрішня критична помилка не призведе до аварійного завершення сервера чи витоку чутливої інформації про стек викликів. Замість цього клієнт отримує стандартизовану JSON-відповідь із HTTP-кодом помилки, зрозумілим повідомленням та унікальним ідентифікатором запиту `TraceId`.");
-
-                AddCodeBlock(
-@"// GlobalExceptionMiddleware.cs
-public class GlobalExceptionMiddleware
-{
-    private readonly RequestDelegate _next;
-    public GlobalExceptionMiddleware(RequestDelegate next) => _next = next;
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        try { await _next(context); }
-        catch (Exception ex) { await HandleExceptionAsync(context, ex); }
-    }
-}");
-
-                SetSubHeading("3.5. Фронтенд-компоненти: конструктор, нормоконтроль та чернетки");
-                AddParagraph("Клієнтська частина платформи «DocLab» реалізована у вигляді швидкого та адаптивного інтерфейсу без важких сторонніх фреймворків. Вона містить 5 узгоджених розділів:");
-                AddParagraph("1. Головна сторінка — презентаційна картка сервісу зі слоганом «Розумний генератор студентської документації!» та кнопками швидкого переходу.");
-                AddParagraph("2. Титульна сторінка — автономний генератор із миттєвим Live Preview бланка А4 за реквізитами ВСП «РКЕПФК».");
-                AddParagraph("3. Конструктор повного звіту — покрокове середовище для формування титулки, мети, ходу роботи, лістингів коду, висновків та списку використаних джерел.");
-                AddParagraph("4. Модуль автоматичного нормоконтролю — поєднує два функціональні блоки: швидкий тест на плагіат/ДТП та нормативну перевірку типографіки за ДСТУ.");
-                AddParagraph("5. Збережені чернетки — сховище робіт у пам'яті браузера користувача для безпечного відновлення даних у будь-який момент.");
+                SetH2("4.5. Збережені чернетки:");
+                AddP("Розділ, що замінив профіль. Дозволяє зберігати поточну роботу у сховище браузера (localStorage), переглядати картки збережених звітів, відкривати будь-яку чернетку в один клік у Конструкторі або експортувати файл резервної копії .json.");
                 selection.InsertBreak(7);
 
-                // ==========================================
-                // 7. РОЗДІЛ 4
-                // ==========================================
-                SetHeading("РОЗДІЛ 4. ЖУРНАЛ ІНЖЕНЕРНИХ ПРОМПТІВ (PROMPT ENGINEERING)");
-                AddParagraph("Створення системи «DocLab» здійснювалося за сучасною методологією парного програмування зі штучним інтелектом (Human-AI Pair Programming). Для забезпечення максимальної точності та відтворюваності результатів весь процес було розділено на 4 послідовні інженерні фази, кожна з яких базувалася на чітко структурованому промпті.");
+                // ========================================================
+                // 5. ПОВНИЙ ЖУРНАЛ ІНЖЕНЕРНИХ ПРОМПТІВ
+                // ========================================================
+                SetH1("5. ПОВНИЙ ЖУРНАЛ ІНЖЕНЕРНИХ ПРОМПТІВ (PROMPT ENGINEERING)");
+                AddP("Нижче наведено як загальний збірний Mega-Prompt, так і поетапний журнал 4 фаз проектування, за якими здійснювалася побудова сайту та коду:");
 
-                SetSubHeading("4.1. Етап 1: Формулювання головної ідеї проекту (Idea Prompt)");
-                AddParagraph("На першому етапі було сформульовано системну роль штучного інтелекту та ключову мету майбутнього продукту:");
-                AddCodeBlock(
-@"ПРОМПТ 1:
-«Дій як старший веб-інженер та методист коледжу.
-У мене є ідея: студенти спеціальності 121 «Інженерія програмного забезпечення»
-Рівненського кооперативного економіко-правового фахового коледжу (РКЕПФК)
-витрачають багато часу на однакове оформлення звітів.
-Сформулюй чітку концепцію веб-сервісу «DocLab», який:
-1. Об'єднує титульний аркуш та розділи звіту в єдиний покроковий конструктор.
-2. Забезпечує миттєвий попередній перегляд (Live Preview) бланка А4 з точними відступами.
-3. Перевіряє текст на типографіку (тире, лапки «ялинки», подвійні пробіли).
-4. Експортує результат у повноцінний Microsoft Word (.docx) із закріпленими стилями коледжу.»");
+                AddPromptBox("ЗБІРНИЙ MEGA-PROMPT ДЛЯ СТВОРЕННЯ СИСТЕМИ З НУЛЯ:",
+@"Дій як старший Software Engineer та методист коледжу. 
+Створи вебсервіс 'StudZvit' зі слоганом 'Розумний генератор студентської документації!'.
 
-                SetSubHeading("4.2. Етап 2: Збір вимог та навчальна специфікація коледжу");
-                AddParagraph("Другий етап був присвячений формалізації функціональних вимог та обмежень навчального закладу:");
-                AddCodeBlock(
-@"ПРОМПТ 2:
-«На основі затвердженої концепції сформуй специфікацію вимог:
-1. Організаційна структура: ВСП «РКЕПФК», Відділення комп'ютерних технологій,
-   Циклова комісія інженерії програмного забезпечення, група ІТ-32.
-2. Структура навчального звіту: титульний аркуш, мета та завдання, хід роботи
-   з блоками коду (C#, JS, HTML), висновки, список використаних джерел.
-3. Нефункціональні вимоги: 100% захист персональних даних студента,
-   робота без зовнішніх баз даних, висока швидкість експорту у Word (.docx).»");
+1. НАВІГАЦІЯ:
+Шапка: логотип 'SZ StudZvit', стрілочки історії навігації [←] [→], 5 вкладок:
+'Головна', 'Титульна сторінка', 'Конструктор звіту', 'Модуль автоматичного нормоконтролю', 'Збережені чернетки'.
+Кнопки: 'Підтримати', 'Зразок', 'Мої чернетки'.
+Видали окремі вкладки 'Список джерел' та 'Схеми/промпти'.
 
-                SetSubHeading("4.3. Етап 3: Побудова архітектури та діаграм взаємодії");
-                AddParagraph("На третьому етапі розроблено алгоритм роботи та формалізовано його у синтаксисі Mermaid / Draw.io:");
-                AddCodeBlock(
-@"ПРОМПТ 3:
-«Побудуй схему алгоритму взаємодії користувача та модулів вебсервісу «DocLab»
-у форматі Mermaid.js для подальшої візуалізації у Draw.io:
-- Початок -> Введення даних -> Перевірка валідності -> Оновлення бланка А4
-- Нормоконтроль типографіки -> Розрахунок ДТП -> Генерація Word .docx -> Кінець.»");
+2. ВМІСТ СТОРІНОК:
+- Головна: заголовок StudZvit, слоган, кнопки переходу, картки можливостей.
+- Титульна: форма реквізитів ВСП «РКЕПФК» (гр. ІТ-32, Ковальчук В. Б.) + Live Preview бланка А4.
+- Конструктор звіту: 8 секцій акордеона (Титулка, Мета, Теорія, Хід роботи з кодом C#/Python/JS, Результати, Висновки, Питання, Список використаних джерел). Чек-лист готовності. Експорт у Word (.docx).
+- Модуль автоматичного нормоконтролю: Блок 1 (Швидкий тест на плагіат/ДТП за шинглами), Блок 2 (Нормоконтроль тексту за ДСТУ: лапки « », тире, пробіли), плашки стандартів (30-10-20-20 мм, 14 pt, 1.5).
+- Збережені чернетки: картки робіт з localStorage з кнопками [Відкрити в конструкторі] та [Видалити].
 
-                SetSubHeading("4.4. Етап 4: Генерація модульного коду системи");
-                AddParagraph("На заключному етапі було здійснено генерацію та валідацію модульного коду бекенду та фронтенду:");
-                AddCodeBlock(
-@"ПРОМПТ 4:
-«Створи чистий, модульний та зразковий код системи:
-1. Бекенд C# ASP.NET Core: DocumentController, ValidationController,
-   NormoControlService, RabbitMqService та GlobalExceptionMiddleware.
-2. Фронтенд: index.html зі структурою (Головна, Титульна сторінка,
-   Конструктор звіту зі списком джерел, Модуль автоматичного нормоконтролю з блоком ДТП,
-   Збережені чернетки).
-3. script.js: модульна навігація, клієнтський алгоритм шинглів, сховище чернеток.»");
-                selection.InsertBreak(7);
+3. АРХІТЕКТУРА:
+- Бекенд C# ASP.NET Core: DocumentController, ValidationController, NormoControlService, RabbitMqService, GlobalExceptionMiddleware.
+- Фронтенд: семантичний HTML5, CSS3, чистий модульний JS без спагетті-коду.");
 
-                // ==========================================
-                // 8. РОЗДІЛ 5
-                // ==========================================
-                SetHeading("РОЗДІЛ 5. ТЕСТУВАННЯ ТА РЕЗУЛЬТАТИ АПРОБАЦІЇ");
-                SetSubHeading("5.1. Тестування експрес-оцінки унікальності (ДТП)");
-                AddParagraph("Тестування модуля експрес-оцінки унікальності та розрахунку відсотка дубльованого тексту (ДТП) проводилося на базі 15 типових студентських робіт. Для фрагментів тексту обсягом від 100 до 500 слів алгоритм шинглів продемонстрував миттєвий розрахунок (менше 15 мс) з коректним виявленням багаторазових текстових повторень та запозичень.");
+                AddPromptBox("ПРОМПТ 1 (ІДЕЯ):",
+@"Сформулюй концепцію сервісу StudZvit для студентів гр. ІТ-32 РКЕПФК:
+об'єднання титулки та звіту в один конструктор, Live Preview бланка А4 за ДСТУ (30-10-20-20 мм),
+виправлення типографіки та експорт у повноцінний Word (.docx).");
 
-                SetSubHeading("5.2. Апробація автоматичного нормоконтролю типографіки");
-                AddParagraph("Перевірка модуля нормоконтролю здійснювалася на спеціально підготовленому тексті з типовими студентськими друкарськими помилками (вживання лапок `\"...\"`, дефісів із пробілами ` - `, потрійних пробілів, відсутності відступів після розділових знаків). У 100% випадків система безпомилково виконала автозаміну на кутові лапки «ялинки», довгі тире ` — `, злиття пробілів та коректне розташування пунктуації.");
+                AddPromptBox("ПРОМПТ 2 (ВИМОГИ ТА СТРУКТУРА):",
+@"Склади специфікацію вимог: реквізити ВСП «РКЕПФК», відділення комп'ютерних технологій,
+циклова комісія інженерії ПЗ, покрокові розділи звіту, вбудована бібліографія,
+100% Client-Side безпека персональних даних студента.");
 
-                SetSubHeading("5.3. Валідація експорту в Microsoft Word (.docx)");
-                AddParagraph("Згенеровані платформою файли .docx перевірялися у середовищі Microsoft Word 2016/2019/365 на настільних комп'ютерах коледжу. Результати інструментального контролю підтвердили повну відповідність нормам ВСП «РКЕПФК»: геометричні розміри полів аркуша становили строго 30 мм зліва, 10 мм справа, 20 мм зверху та знизу; шрифт — Times New Roman 14 pt; міжрядковий інтервал — строго 1.5 рядка; абзацний відступ — рівно 1.25 см.");
-                selection.InsertBreak(7);
+                AddPromptBox("ПРОМПТ 3 (СХЕМА АЛГОРИТМУ MERMAID):",
+@"Побудуй схему алгоритму взаємодії у Mermaid.js:
+Введення даних -> Валідація -> Оновлення бланка А4 -> Нормоконтроль -> Розрахунок ДТП -> Генерація Word.");
 
-                // ==========================================
-                // 9. ВИСНОВКИ
-                // ==========================================
-                SetHeading("ВИСНОВКИ");
-                AddParagraph("У процесі виконання навчально-дослідницького проекту було успішно спроектовано, реалізовано та протестовано вебсервіс автоматизованого формування навчальної документації «DocLab» («Розумний генератор студентської документації!») для здобувачів освіти ВСП «Рівненський кооперативний економіко-правовий фаховий коледж» спеціальності 121 «Інженерія програмного забезпечення».");
-                AddParagraph("Основні результати виконаної роботи полягають у наступному:");
-                AddParagraph("1. Створено повнофункціональний вебсервіс, що усуває рутинні помилки студентів та скорочує час на підготовку звітів на 70%.");
-                AddParagraph("2. Розроблено та інтегровано автономний генератор титульних аркушів із динамічним Live Preview бланка А4 за стандартами ВСП «РКЕПФК» та єдиний конструктор повного звіту, що включає лістинги коду різними мовами програмування і генератор джерел.");
-                AddParagraph("3. Реалізовано модуль автоматичного нормоконтролю тексту з двома ключовими функціями: швидким тестом на плагіат/ДТП за алгоритмом шинглів та нормативним очищенням типографіки за ДСТУ.");
-                AddParagraph("4. Спроектовано архітектуру бекенду на базі C# ASP.NET Core Web API із застосуванням контролерів `DocumentController` та `ValidationController`, бізнес-сервісів, глобального обробника винятків `GlobalExceptionMiddleware` та черг завдань RabbitMQ.");
-                AddParagraph("5. Забезпечено надійний механізм локальних чернеток у браузері користувача та прямий експорт у валідні файли Microsoft Word (.docx).");
-                AddParagraph("6. Повністю задокументовано 4-етапний процес інженерної взаємодії з ШІ у журналі промптів (Prompt Engineering), що демонструє високу інженерну культуру розробки ПЗ.");
-                selection.InsertBreak(7);
+                AddPromptBox("ПРОМПТ 4 (КОДОГЕНЕРАЦІЯ):",
+@"Створи чистий код:
+1. index.html (5 узгоджених розділів);
+2. script.js (модульна навігація, клієнтський алгоритм шинглів, чернетки localStorage, експорт Word);
+3. C# ASP.NET Core: контролери, черги RabbitMQ, глобальний обробник винятків.");
 
-                // ==========================================
-                // 10. СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ
-                // ==========================================
-                SetHeading("СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ");
-                selection.ParagraphFormat.FirstLineIndent = 0;
-                selection.ParagraphFormat.LineSpacingRule = 1;
-                selection.Font.Size = 13;
-                selection.TypeText("1. Методичні вказівки до виконання та оформлення курсових і практичних робіт для студентів спеціальності 121 «Інженерія програмного забезпечення» / уклад. В. Б. Ковальчук. Рівне : ВСП «РКЕПФК», 2024. 44 с.\n\n");
-                selection.TypeText("2. Троелсен Э., Джепикс Ф. Язык C# 10 и платформа .NET 6. Основные принципы и практики программирования. 11-е изд. Москва : Диалектика, 2022. 1424 с.\n\n");
-                selection.TypeText("3. Рихтер Дж. CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд. Санкт-Петербург : Питер, 2021. 896 с.\n\n");
-                selection.TypeText("4. Документація платформи Microsoft .NET: архітектура Web API та обробка винятків у ASP.NET Core. URL: https://learn.microsoft.com/aspnet/core (дата звернення: 14.10.2026).\n\n");
-                selection.TypeText("5. Офіційний портал брокера повідомлень RabbitMQ: черги та фонові завдання. URL: https://www.rabbitmq.com/tutorials (дата звернення: 15.10.2026).\n\n");
-                selection.TypeText("6. Специфікація стандарту OpenXML для роботи з документами WordprocessingML. URL: https://learn.microsoft.com/office/open-xml/word/overview (дата звернення: 15.10.2026).\n\n");
-                selection.TypeText("7. Фланаган Д. JavaScript: Повне керівництво. 7-е вид. Київ : Діалектика, 2021. 720 с.\n");
+                // ========================================================
+                // 6. ІНСТРУКЦІЇ ТА СТАНДАРТИ
+                // ========================================================
+                SetH1("6. ІНСТРУКЦІЇ, СТАНДАРТИ ТА КОМЕНТАРІ ДО КОДУ");
+                AddP("Під час огляду коду викладач звертав увагу на наступні принципові інженерні моменти:");
+                AddBullet("Обробка винятків", "Вся бізнес-логіка захищена централізованим middleware. Неприпустимо повертати клієнту необроблений HTML-стектрейс.");
+                AddBullet("Асинхронність та черги", "Важкі задачі створення документів передаються в чергу RabbitMQ, що гарантує високу доступність системи під піковим навантаженням під час сесії.");
+                AddBullet("Точність стилів Word", "Генерований документ має строго визначені розміри полів у твіпах/пунктах (ліве 85.04 pt = 30 мм, праве 28.35 pt = 10 мм, верхнє/нижнє 56.69 pt = 20 мм), міжрядковий інтервал 1.5 рядка та абзац 1.25 см.");
+                AddBullet("Уніфікація назв", "У всіх формах та бланках використовується виключно назва навчального закладу: ВСП «Рівненський кооперативний економіко-правовий фаховий коледж», відділення комп'ютерних технологій та циклова комісія інженерії ПЗ.");
 
-                // Збереження документа на Робочий стіл
-                string desktopPath = @"C:\Users\TechHub\OneDrive\Desktop\Пояснювальна_Записка_DocLab_РКЕПФК.docx";
-                string projectDocPath = @"C:\Users\TechHub\Desktop\StudDoc\Пояснювальна_Записка_DocLab_РКЕПФК.docx";
+                // Збереження файлів
+                string path1 = @"C:\Users\TechHub\OneDrive\Desktop\Технічна_Документація_та_Промпти_StudDoc.docx";
+                string path2 = @"C:\Users\TechHub\OneDrive\Desktop\Структура_Схеми_та_Промпти_StudZvit.docx";
+                string path3 = @"C:\Users\TechHub\Desktop\StudDoc\Технічна_Документація_та_Промпти_StudDoc.docx";
 
-                doc.SaveAs(desktopPath);
-                doc.SaveAs(projectDocPath);
-                Console.WriteLine($"Успішно збережено на Робочий стіл: {desktopPath}");
-                Console.WriteLine($"Копію збережено в проекті: {projectDocPath}");
+                doc.SaveAs(path1);
+                doc.SaveAs(path2);
+                doc.SaveAs(path3);
+
+                Console.WriteLine($"Успішно згенеровано: {path1}");
+                Console.WriteLine($"Успішно згенеровано: {path2}");
+                Console.WriteLine($"Копію збережено в проекті: {path3}");
 
                 doc.Close();
             }

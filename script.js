@@ -1323,7 +1323,7 @@ function запуститиШвидкийТестПлагіату() {
 }
 
 function отриматиВсіЧернетки() {
-    var raw = localStorage.getItem("doclab_drafts_v2");
+    var raw = localStorage.getItem("studzvit_drafts_v2");
     if (!raw) return [];
     try {
         return JSON.parse(raw) || [];
@@ -1368,7 +1368,7 @@ function зберегтиПоточнийЗвітУЧернетки() {
 
     var drafts = отриматиВсіЧернетки();
     drafts.unshift(чернетка);
-    localStorage.setItem("doclab_drafts_v2", JSON.stringify(drafts));
+    localStorage.setItem("studzvit_drafts_v2", JSON.stringify(drafts));
     відобразитиЧернетки();
     показатиСповіщення("Чернетку «" + чернетка.назва + "» успішно збережено!", "успіх");
 }
@@ -1451,14 +1451,14 @@ function відкритиЧернетку(idx) {
 function видалитиЧернетку(idx) {
     var drafts = отриматиВсіЧернетки();
     drafts.splice(idx, 1);
-    localStorage.setItem("doclab_drafts_v2", JSON.stringify(drafts));
+    localStorage.setItem("studzvit_drafts_v2", JSON.stringify(drafts));
     відобразитиЧернетки();
     показатиСповіщення("Чернетку видалено", "інфо");
 }
 
 function очиститиВсіЧернетки() {
     if (!confirm("Ви впевнені, що бажаєте видалити всі збережені чернетки?")) return;
-    localStorage.removeItem("doclab_drafts_v2");
+    localStorage.removeItem("studzvit_drafts_v2");
     відобразитиЧернетки();
     показатиСповіщення("Усі чернетки очищено", "інфо");
 }
