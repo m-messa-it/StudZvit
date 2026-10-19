@@ -77,7 +77,7 @@
                 <button class="nav-tab active" data-page="головна" onclick="перейтиДо('головна')">Головна</button>
                 <button class="nav-tab" data-page="титулка" onclick="перейтиДо('титулка')">📄 Титульна сторінка</button>
                 <button class="nav-tab" data-page="конструктор" onclick="перейтиДо('конструктор')">📝 Конструктор звіту</button>
-                <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">🔍 Модуль автоматичного нормоконтролю</button>
+                <button class="nav-tab" data-page="нормоконтроль" onclick="перейтиДо('нормоконтроль')">🔍 Перевірка тексту</button>
                 <button class="nav-tab" data-page="чернетки" onclick="перейтиДо('чернетки')">📂 Збережені чернетки</button>
             </nav>
 
@@ -104,12 +104,12 @@
                 <h1 class="hero-title">StudZvit</h1>
                 <p class="hero-slogan" style="font-size:20px; font-weight:700; color:var(--accent-primary); margin-top:-8px; margin-bottom:12px;">Розумний генератор студентської документації!</p>
                 <p class="hero-desc">
-                    Повна свобода заповнення: створення титульних аркушів за вимогами коледжу, покроковий конструктор повного звіту з лістингом коду та джерелами, автоматичний нормоконтроль типографіки і швидкий тест на плагіат/ДТП з експортом у Microsoft Word (.docx).
+                    Повна свобода заповнення: створення титульних аркушів за вимогами коледжу, покроковий конструктор повного звіту з лістингом коду та джерелами, автоматична перевірка тексту та виправлення типографіки з експортом у Microsoft Word (.docx).
                 </p>
                 <div class="hero-buttons">
                     <button class="btn btn-primary" onclick="перейтиДо('конструктор')">📝 Конструктор звіту</button>
                     <button class="btn btn-secondary" onclick="перейтиДо('титулка')">📄 Титульна сторінка</button>
-                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Модуль автоматичного нормоконтролю</button>
+                    <button class="btn btn-outline-primary" onclick="перейтиДо('нормоконтроль')">🔍 Перевірка тексту</button>
                 </div>
             </div>
 
@@ -153,8 +153,8 @@
 
                 <div class="feature-box" onclick="перейтиДо('нормоконтроль')">
                     <div class="feature-icon-badge">✨</div>
-                    <h3>Модуль нормоконтролю</h3>
-                    <p>Швидкий тест на плагіат/ДТП (унікальність за шинглами) та автоматичне виправлення лапок «ялинок», тире, пробілів та абзаців.</p>
+                    <h3>Перевірка тексту</h3>
+                    <p>Автоматичне виправлення типографіки: лапки «ялинки», довгі тире замість дефісів, українські апострофи та прибирання подвійних пробілів.</p>
                     <span class="feature-link">Перевірити текст &rarr;</span>
                 </div>
 
@@ -731,12 +731,12 @@
             </div>
         </section>
 
-        <!-- ==================== 4. МОДУЛЬ АВТОМАТИЧНОГО НОРМОКОНТРОЛЮ ==================== -->
+        <!-- ==================== 4. ПЕРЕВІРКА ТЕКСТУ ==================== -->
         <section id="нормоконтроль" class="page-view" style="display:none;">
             <div class="page-header">
                 <div>
-                    <h2 class="page-title">Модуль автоматичного нормоконтролю</h2>
-                    <p class="page-subtitle">Два функціональні блоки: швидкий тест на плагіат/ДТП та нормативна перевірка тексту за академічними правилами.</p>
+                    <h2 class="page-title">Перевірка тексту</h2>
+                    <p class="page-subtitle">Автоматизована перевірка та нормативне виправлення тексту за академічними правилами.</p>
                 </div>
                 <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                     <button class="btn btn-sm btn-secondary btn-nav-back" onclick="навігаціяНазад()" title="Повернутися назад">&#8592; Назад</button>
@@ -744,44 +744,10 @@
                 </div>
             </div>
 
-            <!-- БЛОК 1: Швидкий тест на плагіат / ДТП -->
-            <div class="panel-card" style="margin-bottom:24px; border-left: 4px solid var(--accent-primary);">
-                <div class="panel-top-bar">
-                    <span class="panel-top-title">🔍 Блок 1. Швидкий тест на плагіат та ДТП (дубльованого тексту)</span>
-                    <span class="badge" style="background:#e0e7ff; color:#3730a3;">Алгоритм шинглів</span>
-                </div>
-                <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
-                    Миттєвий розрахунок оригінальності фрагмента та визначення частки запозичень (ДТП).
-                </p>
-                <textarea id="плагіат-вхід" class="form-control" rows="4" placeholder="Вставте фрагмент тексту роботи для експрес-оцінки унікальності..."></textarea>
-                <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="запуститиШвидкийТестПлагіату()">⚡ Розрахувати унікальність та ДТП</button>
-                    <button class="btn btn-secondary" onclick="вставитиЗразокДляПлагіату()">Вставити зразок</button>
-                </div>
-
-                <!-- Результат тесту плагіату -->
-                <div id="плагіат-результат-блок" style="display:none; margin-top:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; text-align:center;">
-                        <div style="background:#fff; border-radius:8px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-                            <div style="font-size:12px; color:var(--text-muted); font-weight:700;">ОРИГІНАЛЬНІСТЬ</div>
-                            <div id="плагіат-відсоток" style="font-size:28px; font-weight:900; color:var(--accent-emerald);">100%</div>
-                        </div>
-                        <div style="background:#fff; border-radius:8px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-                            <div style="font-size:12px; color:var(--text-muted); font-weight:700;">ДТП (ДУБЛІ)</div>
-                            <div id="плагіат-дтп" style="font-size:28px; font-weight:900; color:var(--accent-primary);">0%</div>
-                        </div>
-                        <div style="background:#fff; border-radius:8px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-                            <div style="font-size:12px; color:var(--text-muted); font-weight:700;">СТАТУС</div>
-                            <div id="плагіат-статус" style="font-size:16px; font-weight:800; margin-top:6px; color:var(--accent-emerald);">Висока унікальність</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- БЛОК 2: Нормоконтроль тексту за ДСТУ -->
+            <!-- Перевірка тексту -->
             <div class="panel-card" style="margin-bottom:24px; border-left: 4px solid var(--accent-emerald);">
                 <div class="panel-top-bar">
-                    <span class="panel-top-title">✨ Блок 2. Нормоконтроль тексту за ДСТУ</span>
+                    <span class="panel-top-title">✨ Перевірка тексту</span>
                     <button class="btn btn-sm btn-secondary" onclick="вставитиПрикладПомилок()">⚡ Приклад з типовими помилками</button>
                 </div>
                 <div class="nc-grid">
